@@ -109,15 +109,9 @@ const Hero = () => {
           <div className="flex justify-center lg:justify-start gap-4">
             <Link
               to="/signup"
-              className="px-6 py-3 rounded-xl bg-[var(--color-primary)] text-[var(--color-bg)] font-medium shadow-md hover:opacity-90 transition"
+              className="px-6 py-3 bg-[var(--color-gray)] border-1 rounded-3xl text-[var(--color-fg)] font-medium shadow-md hover:opacity-90 transition"
             >
               Get Started
-            </Link>
-            <Link
-              to="/problems"
-              className="px-6 py-3 rounded-xl border border-[var(--color-primary)] text-[var(--color-primary)] font-medium hover:bg-[var(--color-primary)] hover:text-[var(--color-bg)] transition"
-            >
-              Explore Problems
             </Link>
           </div>
         </div>

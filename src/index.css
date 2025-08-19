@@ -9,6 +9,7 @@
   --color-accent: oklch(0.75 0.16 45); /* Warm orange */
   --color-muted: oklch(0.25 0.02 95); /* Muted dark background */
   --color-border: oklch(0.30 0.02 95); /* Subtle dark borders */
+  --color-gray: oklch(0.45 0.02 95); /* Gray color */
 
   /* Semantic aliases */
   --color-success: var(--color-secondary);

@@ -15,7 +15,7 @@ const PageNotFound = () => {
         </h2>
 
         {/* Description */}
-        <p className="mt-4 text-lg text-[var(--color-muted)] max-w-md mx-auto">
+        <p className="mt-4 text-lg text-[var(--color-fg)] max-w-md mx-auto">
           Sorry, the page you’re looking for doesn’t exist or has been moved.
         </p>
 
@@ -29,7 +29,7 @@ const PageNotFound = () => {
           </Link>
           <Link
             to="/problems"
-            className="px-6 py-3 rounded-xl border border-[var(--color-primary)] text-[var(--color-primary)] font-medium hover:bg-[var(--color-primary)] hover:text-[var(--color-bg)] transition"
+            className="px-6 py-3 rounded-xl border border-[var(--color-warning)] text-[var(--color-warning)] font-medium hover:bg-[var(--color-warning)] hover:text-[var(--color-bg)] transition"
           >
             Explore Problems
           </Link>
