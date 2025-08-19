@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
+import Logo from "../../public/Logo.jpg"; // Assuming you have a logo image
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <nav className="bg-[var(--color-bg)] p-1 shadow-md border-b-[1px] border-cyan-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
           <Link to="/" className="flex items-center">
+            <img src={Logo} alt="Clear Signal Logo" className="h-8 mr-2 rounded-full" />
             <h1 className="text-[var(--color-fg)] text-2xl font-bold">
               Clear Signal
             </h1>
@@ -37,10 +39,10 @@ const Navbar = () => {
               Login
             </Link>
             <Link
-              to="/signup"
+              to="/subscription"
               className="px-3 py-1 rounded-md text-[var(--color-secondary)] border border-[var(--color-secondary)] hover:bg-[var(--color-secondary)] hover:text-[var(--color-bg)]"
             >
-              Sign Up
+              Premium   
             </Link>
           </div>
 

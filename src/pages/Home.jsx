@@ -1,10 +1,14 @@
 import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
 
 const Home = () => {
   return (
-    <main className="w-full min-h-screen bg-[var(--color-bg)]">
-        <Navbar/>
-    </main>
+    <>
+      <Navbar />
+      <main className="w-full min-h-screen bg-[var(--color-bg)]">
+        <Hero />
+      </main>
+    </>
   )
 }
 export default Home;
