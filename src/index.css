@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  /* ===== 🌙 Dark Theme ===== */
+  --color-bg: oklch(0.15 0.03 95);    /* Background (dark gray) */
+  --color-fg: oklch(0.95 0.02 95);    /* Text (almost white) */
+  --color-primary: oklch(0.75 0.12 250); /* Softer blue */
+  --color-secondary: oklch(0.70 0.14 155); /* Muted green */
+  --color-accent: oklch(0.75 0.16 45); /* Warm orange */
+  --color-muted: oklch(0.25 0.02 95); /* Muted dark background */
+  --color-border: oklch(0.30 0.02 95); /* Subtle dark borders */
+
+  /* Semantic aliases */
+  --color-success: var(--color-secondary);
+  --color-warning: oklch(0.85 0.18 95);
+  --color-error: oklch(0.70 0.18 25); 
+}
