@@ -1,8 +1,8 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import LearningCards from "../components/LearningCards";
-import WhyDeepML from "../components/WhyDeepML";
 import Footer from "../components/Footer";
+import WhyClearSignal from "../components/WhyClearSignal";
 
 const Home = () => {
   return (
@@ -11,7 +11,7 @@ const Home = () => {
       <main className="w-full min-h-screen bg-[var(--color-bg)]">
         <Hero />
         <LearningCards/>
-        <WhyDeepML/>
+        <WhyClearSignal/>
       </main>
       <Footer />
     </>

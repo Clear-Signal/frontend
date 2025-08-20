@@ -34,7 +34,7 @@ const features = [
   },
 ];
 
-const WhyDeepML = () => {
+const WhyClearSignal = () => {
   return (
     <section className="bg-var(--color-bg) text-white py-12">
       <h2 className="text-center text-2xl font-bold mb-10">Why Clear-Signal?</h2>
@@ -54,4 +54,4 @@ const WhyDeepML = () => {
   );
 };
 
-export default WhyDeepML;
+export default WhyClearSignal;
