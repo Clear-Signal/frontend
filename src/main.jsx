@@ -7,6 +7,9 @@ import Home from './pages/Home.jsx'
 import PageNotFound from './pages/PageNotFound.jsx'
 import AuthPage from './pages/AuthPage.jsx'
 import Profile from './pages/Profile.jsx'
+import ProblemsPage from './pages/Problems.jsx'
+import SubscriptionPage from './pages/Subscription.jsx'
+import LeaderboardPage from './pages/Leaderboard.jsx'
 
 const router = createBrowserRouter([
   {
@@ -24,6 +27,18 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <Profile />,
+      },
+      {
+        path: '/problems',
+        element: <ProblemsPage />,
+      },
+      {
+        path: '/subscription',
+        element: <SubscriptionPage />,
+      },
+      {
+        path: '/leaderboard',
+        element: <LeaderboardPage />,
       },
       {
         path: '*',
