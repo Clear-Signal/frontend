@@ -1,4 +1,5 @@
 import axios from "axios";
+import { nav } from "framer-motion/client";
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,9 +8,11 @@ const apiUrl = import.meta.env.VITE_APP_URL;
 export const AuthContext = createContext({
   user: null,
   login: () => {},
+  setUser: () => {},
   logout: () => {},
   register: () => {},
   updateUser: () => {},
+  navigate: () => {},
   error: null,
   loading: false,
 });
@@ -121,7 +124,17 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, register, updateUser, error, loading }}
+      value={{
+        user,
+        login,
+        logout,
+        register,
+        updateUser,
+        setUser,
+        error,
+        loading,
+        navigate,
+      }}
     >
       {children}
     </AuthContext.Provider>

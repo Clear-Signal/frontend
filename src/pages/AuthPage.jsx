@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { FaGoogle } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { MdEmail, MdVisibilityOff, MdVisibility } from "react-icons/md";
 import { RiKey2Fill } from "react-icons/ri";
 import { BiLogIn } from "react-icons/bi";
@@ -41,27 +41,20 @@ export default function AuthPage() {
 
     try {
       if (isSignup) {
-        // expect register to return a Promise
-        await register(email.trim(), password);
+        register(email.trim(), password);
       } else {
-        await login(email.trim(), password);
+        login(email.trim(), password);
       }
-      // if login/register succeeded, AuthContext should update app state and redirect as needed
     } catch (err) {
-      // If your auth functions throw, show the message.
       setLocalError(err?.message || "Something went wrong. Please try again.");
     }
   };
 
   const handleGoogle = async () => {
-    // placeholder: call your google auth flow here (if available in AuthContext)
-    // e.g. await loginWithGoogle();
     setLocalError(null);
     try {
       if (typeof window !== "undefined") {
-        // open provider or call context method
-        // If you don't have Google flow implemented, remove or implement it in AuthContext
-        // window.location.href = "/auth/google"; // example redirect flow
+        window.location.href = `${import.meta.env.VITE_APP_URL}/api/auth/google`;
       }
     } catch (err) {
       setLocalError("Google sign-in failed.");
@@ -111,7 +104,7 @@ export default function AuthPage() {
               onClick={handleGoogle}
               className="w-full flex items-center justify-center gap-2 border border-gray-700 bg-[#222] hover:bg-[#333] text-white py-2 px-4 rounded-lg transition mb-4 cursor-pointer"
             >
-              <FaGoogle />
+              <FcGoogle />
               Continue with Google
             </button>
 

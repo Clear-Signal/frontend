@@ -15,12 +15,10 @@ const Navbar = () => {
 
   const { user, logout } = useContext(AuthContext);
 
-  // Close menu when route changes (so the menu doesn't stay open after navigation)
   useEffect(() => {
     setIsOpen(false);
   }, [location]);
 
-  // Close menu when clicking outside (on mobile)
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (
