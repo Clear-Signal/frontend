@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './pages/Home.jsx'
 import PageNotFound from './pages/PageNotFound.jsx'
 import AuthPage from './pages/AuthPage.jsx'
+import Profile from './pages/Profile.jsx'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: '/sign-in',
         element: <AuthPage />,
+      },
+      {
+        path: '/profile',
+        element: <Profile />,
       },
       {
         path: '*',
