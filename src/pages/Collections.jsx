@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CollectionCard from "../components/collections/CollectionCard";
 import CollectionModal from "../components/collections/CollectionModal";
+import { useNavigate } from "react-router-dom";
 
 const COLLECTIONS = [
   {
@@ -47,6 +48,8 @@ const COLLECTIONS = [
 
 export default function CollectionsPage({ collections = COLLECTIONS }) {
   const [openCollection, setOpenCollection] = useState(null);
+  const navigate = useNavigate();
+
   function handleView(collection) {
     console.log("View collection:", collection.id);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -75,7 +78,7 @@ export default function CollectionsPage({ collections = COLLECTIONS }) {
       <CollectionModal
         isOpen={!!openCollection}
         onClose={() => setOpenCollection(null)}
-        onOpenProblem={(problem) => console.log("Open problem:", problem.id)}
+        onOpenProblem={(problem) => navigate(`/problems/${problem.id}`)}
       />
     </main>
   );

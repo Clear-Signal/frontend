@@ -11,6 +11,7 @@ import ProblemsPage from './pages/Problems.jsx'
 import SubscriptionPage from './pages/Subscription.jsx'
 import LeaderboardPage from './pages/Leaderboard.jsx'
 import CollectionsPage from './pages/Collections.jsx'
+import ProblemSolver from './pages/ProblemPage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       {
         path: '/problems',
         element: <ProblemsPage />,
+      },
+      {
+        path: '/problems/:id',
+        element: <ProblemSolver />,
       },
       {
         path: '/subscription',

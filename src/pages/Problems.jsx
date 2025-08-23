@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { FaBook, FaChartLine } from "react-icons/fa";
+import { AuthContext } from "../stores/authStore";
+import MiniCalendar from "../components/MiniCalendar";
 
-/* sample data - replace with real API data */
 const problems = [
   { id: 176, title: "Chi-square Probability Distribution", difficulty: "medium", category: "Probability", status: "New" },
   { id: 1, title: "Matrix-Vector Dot Product", difficulty: "easy", category: "Linear Algebra", status: "Unsolved" },
@@ -10,10 +11,8 @@ const problems = [
   { id: 4, title: "Calculate Mean by Row or Column", difficulty: "easy", category: "Linear Algebra", status: "Unsolved" },
   { id: 6, title: "Calculate Eigenvalues of a Matrix", difficulty: "medium", category: "Linear Algebra", status: "Unsolved" },
   { id: 12, title: "Singular Value Decomposition (SVD)", difficulty: "hard", category: "Linear Algebra", status: "Unsolved" },
-  // ...add more items or fetch from API
 ];
 
-/* mapping difficulties to CSS using theme tokens */
 const difficultyStyle = {
   easy: "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold",
   medium: "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold",
@@ -26,84 +25,14 @@ const difficultyColor = {
   hard: { bg: "var(--color-error)", text: "var(--color-bg)" },     // red-ish
 };
 
-/* Simple calendar component (no external libs) */
-function MiniCalendar() {
-  const now = new Date();
-  const [date, setDate] = useState(new Date(now.getFullYear(), now.getMonth(), 1));
-
-  const year = date.getFullYear();
-  const monthIndex = date.getMonth();
-  const monthName = date.toLocaleString(undefined, { month: "long" });
-
-  const days = useMemo(() => {
-    const firstDay = new Date(year, monthIndex, 1);
-    const lastDay = new Date(year, monthIndex + 1, 0);
-    const prefix = firstDay.getDay(); // 0..6 (Sun..Sat)
-    const total = lastDay.getDate();
-    const cells = [];
-
-    // blank prefix
-    for (let i = 0; i < prefix; i++) cells.push(null);
-    for (let d = 1; d <= total; d++) cells.push(new Date(year, monthIndex, d));
-    return cells;
-  }, [year, monthIndex]);
-
-  return (
-    <div>
-      <div className="flex items-center justify-between mb-3">
-        <button
-          type="button"
-          onClick={() => setDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1))}
-          className="px-2 py-1 rounded border border-[var(--color-border)] text-[var(--color-fg)]"
-        >
-          ‹
-        </button>
-
-        <div className="text-sm font-semibold text-[var(--color-fg)]">
-          {monthName} {year}
-        </div>
-
-        <button
-          type="button"
-          onClick={() => setDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1))}
-          className="px-2 py-1 rounded border border-[var(--color-border)] text-[var(--color-fg)]"
-        >
-          ›
-        </button>
-      </div>
-
-      <div className="grid grid-cols-7 gap-1 text-center text-[10px] text-[var(--color-fg)] mb-2">
-        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-      </div>
-
-      <div className="grid grid-cols-7 gap-2">
-        {days.map((d, i) => {
-          if (!d) return <div key={i} className="h-8 rounded bg-[transparent]" />;
-          // style special for today
-          const isToday = (new Date()).toDateString() === d.toDateString();
-          return (
-            <button
-              key={i}
-              type="button"
-              className={`h-8 rounded-md text-sm flex items-center justify-center text-[var(--color-fg)] ${isToday ? "bg-[var(--color-primary)]/80" : "bg-[var(--color-bg)]/30"}`}
-            >
-              {d.getDate()}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-/* main page */
 export default function ProblemsPage() {
   const [view, setView] = useState("table"); // "table" or "graph"
   const [query, setQuery] = useState("");
   const [difficulty, setDifficulty] = useState("all");
   const [category, setCategory] = useState("all");
 
-  /* categories derived from sample problems */
+  const {navigate} = useContext(AuthContext);
+
   const categories = useMemo(() => {
     const s = new Set(problems.map((p) => p.category));
     return ["All", ...Array.from(s)];
@@ -202,7 +131,7 @@ export default function ProblemsPage() {
                       </tr>
                     ) : (
                       filtered.map((p) => (
-                        <tr key={p.id} className="hover:bg-[var(--color-bg)]/6 transition">
+                        <tr key={p.id} className="transition cursor-pointer hover:bg-[var(--color-gray)]/10" onClick={() => navigate(`/problems/${p.id}`)}>
                           <td className="py-3 px-3 border-b border-[var(--color-border)] align-top">{p.id}</td>
                           <td className="py-3 px-3 border-b border-[var(--color-border)] align-top">{p.title}</td>
                           <td className="py-3 px-3 border-b border-[var(--color-border)] align-top">
@@ -258,9 +187,7 @@ export default function ProblemsPage() {
             <div className="text-sm text-[var(--color-fg)] mt-1">Completion Rate</div>
             <div className="mt-4 text-xl font-semibold">0</div>
             <div className="text-sm text-[var(--color-fg)]">Problems Solved</div>
-          </div>
-
-          
+          </div>          
         </aside>
       </div>
     </div>

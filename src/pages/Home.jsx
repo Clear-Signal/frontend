@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import Hero from "../components/Hero";
 import LearningCards from "../components/LearningCards";
 import WhyClearSignal from "../components/WhyClearSignal";

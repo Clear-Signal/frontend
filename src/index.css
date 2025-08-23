@@ -1,18 +1,51 @@
 @import "tailwindcss";
 
 @theme {
-  /* ===== 🌙 Dark Theme ===== */
-  --color-bg: oklch(0.15 0.03 95);    /* Background (dark gray) */
-  --color-fg: oklch(0.95 0.02 95);    /* Text (almost white) */
-  --color-primary: oklch(0.75 0.12 250); /* Softer blue */
-  --color-secondary: oklch(0.70 0.14 155); /* Muted green */
-  --color-accent: oklch(0.75 0.16 45); /* Warm orange */
-  --color-muted: oklch(0.25 0.02 95); /* Muted dark background */
-  --color-border: oklch(0.30 0.02 95); /* Subtle dark borders */
-  --color-gray: oklch(0.45 0.02 95); /* Gray color */
+  --color-bg: oklch(0.06 0.01 260);        /* darkest page background (near-black) */
+  --color-surface: oklch(0.12 0.02 260);   /* main card / panel background */
+  --color-surface-2: oklch(0.16 0.02 260); /* elevated surface (slightly lighter) */
+  --color-elevated: oklch(0.20 0.03 260);  /* used for headers, top bars */
+  --color-overlay: oklch(0.04 0.01 260);   /* modal/backdrop tint */
 
-  /* Semantic aliases */
+  --color-fg: oklch(0.96 0.02 260);        /* primary text — near white */
+  --color-subtle: oklch(0.80 0.01 260);    /* very subtle text for super-light UI */
+  --color-muted: oklch(0.30 0.02 260);     /* secondary, muted text & labels */
+  --color-gray: oklch(0.40 0.02 260);      /* neutral gray used for borders/inputs */
+
+  --color-border: oklch(0.18 0.02 260);    /* subtle border color for cards/inputs */
+
+  /* Primary: warm/golden (CTAs, selected rows, leaderboard highlight) */
+  --color-primary: oklch(0.82 0.14 95);    /* bright warm-gold */
+  --color-primary-strong: oklch(0.90 0.18 95); /* for badges / top emphasis */
+  --color-primary-muted: oklch(0.60 0.10 95);  /* soft golden backgrounds */
+
+  /* Secondary: teal/cyan for success, positive states */
+  --color-secondary: oklch(0.70 0.12 210); /* teal/cyan */
+  --color-secondary-muted: oklch(0.45 0.08 210);
+
+  /* Accent: warm orange for flame / attention */
+  --color-accent: oklch(0.75 0.16 45);
+
+  /* Semantic helpers */
   --color-success: var(--color-secondary);
-  --color-warning: oklch(0.85 0.18 95);
-  --color-error: oklch(0.70 0.18 25); 
+  --color-warning: oklch(0.92 0.18 85);   /* bright warm yellow (for badges/labels) */
+  --color-error: oklch(0.70 0.18 25);     /* red/pink error */
+
+  /* Utility tints (small UI uses) */
+  --glass-1: oklch(0.10 0.015 260); /* very dark translucent panel */
+  --glass-2: oklch(0.14 0.02 260);  /* lighter translucent panel */
+
+  /* Suggested usage aliases */
+  --bg-page: var(--color-bg);
+  --card-bg: var(--color-surface);
+  --card-bg-2: var(--color-surface-2);
+  --panel-border: var(--color-border);
+  --text-default: var(--color-fg);
+  --text-muted: var(--color-muted);
+  --brand: var(--color-primary);
+  --brand-strong: var(--color-primary-strong);
+  --accent: var(--color-accent);
+  --success: var(--color-success);
+  --danger: var(--color-error);
 }
+
