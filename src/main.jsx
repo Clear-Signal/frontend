@@ -10,6 +10,7 @@ import Profile from './pages/Profile.jsx'
 import ProblemsPage from './pages/Problems.jsx'
 import SubscriptionPage from './pages/Subscription.jsx'
 import LeaderboardPage from './pages/Leaderboard.jsx'
+import CollectionsPage from './pages/Collections.jsx'
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: '/leaderboard',
         element: <LeaderboardPage />,
+      },
+      {
+        path: '/collections',
+        element: <CollectionsPage />,
       },
       {
         path: '*',
