@@ -12,6 +12,9 @@ import SubscriptionPage from './pages/Subscription.jsx'
 import LeaderboardPage from './pages/Leaderboard.jsx'
 import CollectionsPage from './pages/Collections.jsx'
 import ProblemSolver from './pages/ProblemPage.jsx'
+import Signal0 from './pages/Signal0.jsx'
+import ForgotPassword from './pages/ForgotPassword.jsx'
+import ResetPassword from './pages/ResetPassword.jsx'
 
 const router = createBrowserRouter([
   {
@@ -27,12 +30,24 @@ const router = createBrowserRouter([
         element: <AuthPage />,
       },
       {
+        path: '/forgot-password',
+        element: <ForgotPassword />,
+      },
+      {
+        path: '/reset-password/:token',
+        element: <ResetPassword />,
+      },
+      {
         path: '/profile',
         element: <Profile />,
       },
       {
         path: '/problems',
         element: <ProblemsPage />,
+      },
+      {
+        path: '/signal0',
+        element: <Signal0 />,
       },
       {
         path: '/problems/:id',

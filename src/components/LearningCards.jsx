@@ -1,30 +1,31 @@
 import React from "react";
 import { FaMicrochip, FaBolt, FaEye, FaComments } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const topics = [
   {
     icon: <FaMicrochip size={30} />,
     title: "Machine Learning Fundamentals",
     description: "Master core ML concepts and algorithms.",
-    link: "#",
+    link: "/collections",
   },
   {
     icon: <FaBolt size={30} />,
     title: "Deep Neural Networks",
     description: "Explore advanced neural network architectures.",
-    link: "#",
+    link: "/collections",
   },
   {
     icon: <FaEye size={30} />,
     title: "Computer Vision",
     description: "Unlock the power of visual data analysis.",
-    link: "#",
+    link: "/collections",
   },
   {
     icon: <FaComments size={30} />,
     title: "Natural Language Processing",
     description: "Harness the potential of language in AI.",
-    link: "#",
+    link: "/collections",
   },
 ];
 
@@ -43,12 +44,12 @@ const LearningCards = () => {
             </div>
             <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
             <p className="text-sm text-gray-400 mb-4">{item.description}</p>
-            <a
-              href={item.link}
-              className="text-blue-400 hover:underline flex items-center gap-1"
+            <Link
+              to={item.link}
+              className="hover:underline flex items-center gap-1"
             >
               Learn more →
-            </a>
+            </Link>
           </div>
         ))}
       </div>

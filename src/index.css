@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
 @theme {
+  --font-sans: "Inter", sans-serif;
+  --font-serif: "Merriweather", serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --font-code: "Fira Code", monospace;
+
   --color-bg: oklch(0.06 0.01 260);        /* darkest page background (near-black) */
   --color-surface: oklch(0.12 0.02 260);   /* main card / panel background */
   --color-surface-2: oklch(0.16 0.02 260); /* elevated surface (slightly lighter) */
@@ -10,7 +15,7 @@
   --color-fg: oklch(0.96 0.02 260);        /* primary text — near white */
   --color-subtle: oklch(0.80 0.01 260);    /* very subtle text for super-light UI */
   --color-muted: oklch(0.30 0.02 260);     /* secondary, muted text & labels */
-  --color-gray: oklch(0.40 0.02 260);      /* neutral gray used for borders/inputs */
+  --color-gray: oklch(0.25 0.03 260);      /* neutral gray used for borders/inputs */
 
   --color-border: oklch(0.18 0.02 260);    /* subtle border color for cards/inputs */
 

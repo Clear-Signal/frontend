@@ -238,7 +238,7 @@ json.dumps({"results": results})
         {/* top toolbar */}
         <div className="flex items-center justify-between mb-4">
           <HeaderBadge />
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <label className="inline-flex items-center gap-2 text-sm">
               <input type="checkbox" checked={notebookMode} onChange={() => setNotebookMode((s) => !s)} />
               <span className="text-[var(--color-fg)]">Notebook Mode</span>
@@ -256,7 +256,7 @@ json.dumps({"results": results})
           {/* left column - description */}
           <div className="rounded-2xl border border-[var(--color-gray)] bg-[var(--color-muted)] p-6">
             {/* tabs */}
-            <div className="flex gap-4 mb-4 border-b border-[var(--color-gray)] pb-3">
+            <div className="flex gap-4 mb-4 border-b border-[var(--color-gray)] pb-3 not-sm:overflow-scroll">
               <button onClick={() => setTab("desc")} className={`pb-2 ${tab === "desc" ? "border-b-2 border-[var(--color-primary)]" : "text-[var(--color-fg)]"} cursor-pointer`}>Description</button>
               <button onClick={() => setTab("solution")} className={`pb-2 ${tab === "solution" ? "border-b-2 border-[var(--color-primary)]" : "text-[var(--color-fg)]"} cursor-pointer`}>Solution</button>
               <button onClick={() => setTab("video")} className={`pb-2 ${tab === "video" ? "border-b-2 border-[var(--color-primary)]" : "text-[var(--color-fg)]"} cursor-pointer`}>Video</button>
@@ -335,7 +335,7 @@ json.dumps({"results": results})
             />
 
             {/* controls */}
-            <div className="mt-3 flex items-center gap-3">
+            <div className="mt-3 flex items-center gap-3 flex-wrap">
               <button
                 onClick={handleRun}
                 disabled={running}

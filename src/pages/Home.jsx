@@ -29,7 +29,7 @@ const Home = () => {
     }
   }, [navigate]);
   return (
-    <main className="w-full min-h-screen bg-[var(--color-bg)]">
+    <main className="font-serif w-full min-h-screen bg-[var(--color-bg)]">
       <Hero />
       <LearningCards />
       <WhyClearSignal />
