@@ -1,6 +1,6 @@
 import { useState } from "react";
-import CollectionCard from "../components/CollectionCard";
-import CollectionModal from "../components/CollectionModal";
+import CollectionCard from "../components/collections/CollectionCard";
+import CollectionModal from "../components/collections/CollectionModal";
 
 const COLLECTIONS = [
   {

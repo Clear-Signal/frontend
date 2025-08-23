@@ -14,20 +14,16 @@ export default function AuthPage() {
   const [localError, setLocalError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
-  // from your AuthContext
   const { login, register, loading, error } = useContext(AuthContext);
 
-  // submit handler for the form
   const submitForm = async (e) => {
     e.preventDefault();
     setLocalError(null);
 
-    // simple client-side validation
     if (!email.trim()) {
       setLocalError("Please enter your email address.");
       return;
     }
-    // basic email pattern (simple)
     const emailPattern = /\S+@\S+\.\S+/;
     if (!emailPattern.test(email)) {
       setLocalError("Please enter a valid email address.");

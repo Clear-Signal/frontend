@@ -10,12 +10,18 @@ const Home = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
 
-    const name = params.get("name");
+    console.log(params);
+
+    const fullName = params.get("fullName");
     const email = params.get("email");
     const role = params.get("role");
+    const gitHubUsername = params.get("gitHubUsername");
+    const linkedInProfileURL = params.get("linkedInProfileURL");
+    const kaggleUsername = params.get("kaggleUsername");
+    const profilePic = params.get("profilePic");
 
-    if (name && email && role) {
-      const userData = {data:{ fullName: name, email, role }};
+    if (fullName && email && role) {
+      const userData = {data:{ fullName, email, role, gitHubUsername, linkedInProfileURL, kaggleUsername, profilePic }};
 
       setUser(userData);
 

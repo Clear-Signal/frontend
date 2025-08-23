@@ -1,5 +1,5 @@
 import { FiChevronRight, FiExternalLink } from "react-icons/fi";
-import { initialsFromTitle } from "../utils/helper";
+import { initialsFromTitle } from "../../utils/helper";
 
 export default function CollectionCard({ collection, onView, setOpenCollection }) {
   const { title, sections, progress = 0, badgeUrl, resource } = collection;
