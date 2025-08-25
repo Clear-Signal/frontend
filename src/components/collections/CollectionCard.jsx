@@ -5,7 +5,7 @@ export default function CollectionCard({ collection, onView, setOpenCollection }
   const { title, sections, progress = 0, badgeUrl, resource } = collection;
   return (
     <article
-      className="group relative rounded-xl border border-[var(--color-muted)] bg-[var(--color-gray)] overflow-hidden flex flex-col hover:scale-105 transition-transform duration-250 ease-in-out cursor-pointer"
+      className="group relative rounded-xl border border-[var(--color-muted)] bg-[var(--color-gray)]/20 overflow-hidden flex flex-col hover:scale-105 transition-transform duration-250 ease-in-out cursor-pointer"
       aria-labelledby={`col-${collection.id}-title`}
       onClick={() => setOpenCollection((prev) => (prev === collection ? null : collection))}
     >
@@ -44,7 +44,7 @@ export default function CollectionCard({ collection, onView, setOpenCollection }
       </div>
 
       {/* bottom CTA row */}
-      <div className="mt-auto border-t border-[var(--panel-border)] bg-[var(--card-bg-2)]/40 px-6 py-4 flex items-center justify-between">
+      <div className="mt-auto border-t border-[var(--panel-border)] bg-[var(--color-muted)]/50 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
             onClick={() => onView(collection)}

@@ -1,9 +1,9 @@
 // ProblemSolverWithMonaco.jsx
 import { useEffect, useRef, useState, useCallback } from "react";
 import Editor from "@monaco-editor/react";
-import { FiPlay, FiRefreshCw, FiSave, FiExternalLink } from "react-icons/fi";
+import {  FiRefreshCw, FiSave, FiClock} from "react-icons/fi";
+import { BsFillLightningChargeFill } from "react-icons/bs";
 
-// SAMPLE_PROBLEM: Confusion Matrix & F1 Score
 export const SAMPLE_PROBLEM = {
   id: "confusion-f1",
   title: "Confusion Matrix & F1 Score",
@@ -150,7 +150,6 @@ function confusionF1(y_true, y_pred, positive_label) {
 export default function ProblemSolver() {
   const [tab, setTab] = useState("desc"); // desc | solution | video | comments
   const [lang, setLang] = useState("python"); // python | js
-  const [notebookMode, setNotebookMode] = useState(false);
   const [pyodide, setPyodide] = useState(null);
   const [loadingPyodide, setLoadingPyodide] = useState(false);
   const [code, setCode] = useState(SAMPLE_PROBLEM.templatePython);
@@ -319,7 +318,7 @@ json.dumps({"results": results})
     // read CSS variables to create theme colours
     const style = getComputedStyle(document.documentElement);
     const bg =
-      style.getPropertyValue("--bg-page")?.trim() ||
+      style.getPropertyValue("--color-surface")?.trim() ||
       style.getPropertyValue("--color-bg-hex")?.trim() ||
       "#000102";
     const fg =
@@ -404,49 +403,11 @@ json.dumps({"results": results})
     }
   }, [code]);
 
-  // UI: HeaderBadge component (unchanged)
-  const HeaderBadge = () => (
-    <div className="inline-flex items-center gap-3">
-      <div className="w-12 h-12 rounded-full bg-[var(--color-bg)] flex items-center justify-center border border-[var(--color-gray)]">
-        <div className="text-[var(--color-fg)] font-bold">DL</div>
-      </div>
-      <div>
-        <div className="text-lg font-semibold">{SAMPLE_PROBLEM.title}</div>
-        <div className="text-xs text-[var(--color-fg)]">
-          {SAMPLE_PROBLEM.difficulty} · {SAMPLE_PROBLEM.category}
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-fg)] p-4">
       <div className="mx-5">
-        <div className="flex items-center justify-between mb-4">
-          <HeaderBadge />
-          <div className="flex items-center gap-2 flex-wrap">
-            <label className="inline-flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={notebookMode}
-                onChange={() => setNotebookMode((s) => !s)}
-              />
-              <span className="text-[var(--color-fg)]">Notebook Mode</span>
-            </label>
-
-            <select
-              value={lang}
-              onChange={(e) => setLang(e.target.value)}
-              className="bg-[var(--color-bg)] border border-[var(--color-gray)] rounded px-2 py-1"
-            >
-              <option value="python">Python</option>
-              <option value="js">JavaScript</option>
-            </select>
-          </div>
-        </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="md:max-h-screen overflow-scroll rounded-2xl border border-[var(--color-gray)] bg-[var(--color-bg)]/10 p-6">
+          <div className="md:max-h-screen overflow-scroll rounded-2xl border border-[var(--color-gray)] bg-[var(--color-gray)]/20 p-6">
             <div className="flex gap-4 mb-4 border-b border-[var(--color-gray)] pb-3 overflow-auto">
               <button
                 onClick={() => setTab("desc")}
@@ -494,6 +455,9 @@ json.dumps({"results": results})
               {tab === "desc" && (
                 <>
                   <h2 className="text-2xl font-bold">{SAMPLE_PROBLEM.title}</h2>
+                  <p className="text-sm text-[var(--color-primary)]">
+                    {SAMPLE_PROBLEM.difficulty}
+                  </p>
                   <p className="mt-2 text-[var(--color-fg)] whitespace-pre-wrap">
                     {SAMPLE_PROBLEM.description}
                   </p>
@@ -502,13 +466,13 @@ json.dumps({"results": results})
                     <div className="mt-2 text-sm text-[var(--color-fg)]">
                       Input:
                     </div>
-                    <pre className="mt-2 p-3 rounded bg-[var(--color-surface-2)] border border-[var(--color-gray)] text-sm">
+                    <pre className="mt-2 p-3 rounded bg-[var(--color-gray)]/20 border border-[var(--color-gray)] text-sm">
                       {SAMPLE_PROBLEM.exampleIn}
                     </pre>
                     <div className="mt-3 text-sm text-[var(--color-fg)]">
                       Output:
                     </div>
-                    <pre className="mt-2 p-3 rounded bg-[var(--color-surface-2)] border border-[var(--color-gray)] text-sm">
+                    <pre className="mt-2 p-3 rounded bg-[var(--color-gray)]/20 border border-[var(--color-gray)] text-sm">
                       {SAMPLE_PROBLEM.exampleOut}
                     </pre>
                   </div>
@@ -553,28 +517,17 @@ json.dumps({"results": results})
 
           <div className="max-h-screen rounded-2xl border border-[var(--color-gray)] bg-[var(--color-bg)]/10 p-4 flex flex-col">
             <div className="flex items-start justify-between gap-2 mb-3">
-              <div className="text-sm text-[var(--color-fg)]">
-                Editor ({lang.toUpperCase()})
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => {
-                    const w = window.open();
-                    w.document.body.innerText = code;
-                  }}
-                  title="Open in new tab"
-                  className="p-1 rounded border border-[var(--color-gray)]"
-                >
-                  <FiExternalLink />
-                </button>
-                <button
-                  onClick={() => {
-                    setCode((c) => c + "\n# Note: appended snippet");
-                  }}
-                  className="p-1 rounded border border-[var(--color-gray)]"
-                >
-                  +
-                </button>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <select
+                    value={lang}
+                    onChange={(e) => setLang(e.target.value)}
+                    className="bg-[var(--color-bg)] border border-[var(--color-gray)] rounded-md px-8 py-1"
+                  >
+                    <option value="numpy">Numpy</option>
+                    <option value="pytorch">PyTorch</option>
+                  </select>
+                </div>
               </div>
             </div>
 
@@ -582,8 +535,8 @@ json.dumps({"results": results})
             <div className="flex-1 min-h-[320px]">
               <Editor
                 height="100%"
-                defaultLanguage={lang === "python" ? "python" : "javascript"}
-                language={lang === "python" ? "python" : "javascript"}
+                defaultLanguage={"python"}
+                language={"python"}
                 value={code}
                 onChange={(value) => setCode(value ?? "")}
                 beforeMount={beforeMount}
@@ -598,41 +551,46 @@ json.dumps({"results": results})
                   automaticLayout: true,
                   scrollBeyondLastLine: false,
                   wordWrap: "off",
+                  mouseWheelZoom: true
                 }}
               />
             </div>
 
-            <div className="mt-3 flex items-center gap-3 flex-wrap">
+            <div className="mt-3 flex justify-between items-center gap-3 flex-wrap">
               <button
                 onClick={handleRun}
                 disabled={running}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--brand)] text-[var(--color-bg)] rounded cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--text-default)] text-[var(--color-bg)] rounded cursor-pointer"
               >
-                <FiPlay /> {running ? "Running..." : "Run Code"}
+                <BsFillLightningChargeFill /> {running ? "Running..." : "Run Code"}
               </button>
 
-              <button
-                onClick={handleReset}
-                className="inline-flex items-center gap-2 px-3 py-2 border border-[var(--color-gray)] rounded cursor-pointer"
-              >
-                <FiRefreshCw /> Reset
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleReset}
+                  className="inline-flex items-center gap-2 px-3 py-2 border border-[var(--color-gray)] rounded cursor-pointer"
+                >
+                  <FiRefreshCw /> Reset
+                </button>
 
-              <button
-                onClick={handleSave}
-                className="inline-flex items-center gap-2 px-3 py-2 border border-[var(--color-gray)] rounded cursor-pointer"
-              >
-                <FiSave /> Save
-              </button>
-
-              <div className="ml-auto text-sm text-[var(--color-fg)]">
-                Notebook: {notebookMode ? "On" : "Off"}
+                <button
+                  onClick={handleSave}
+                  className="inline-flex items-center gap-2 px-3 py-2 border border-[var(--color-gray)] rounded cursor-pointer"
+                >
+                  <FiSave /> Save Code
+                </button>
+                <button
+                  onClick={handleSave}
+                  className="inline-flex items-center gap-2 px-3 py-2 border border-[var(--color-gray)] rounded cursor-pointer"
+                >
+                  <FiClock /> Submission
+                </button>
               </div>
             </div>
 
             <div className="mt-4">
               <div className="text-sm text-[var(--color-fg)] mb-2">Output</div>
-              <pre className="max-h-36 overflow-auto p-3 rounded bg-[var(--color-surface-2)] border border-[var(--color-gray)] text-sm whitespace-pre-wrap">
+              <pre className="max-h-36 overflow-auto p-3 rounded bg-[var(--color-surface)] border border-[var(--color-gray)] text-sm whitespace-pre-wrap">
                 {output || "No output yet."}
               </pre>
             </div>
