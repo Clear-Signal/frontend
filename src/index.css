@@ -6,39 +6,39 @@
   --font-mono: "JetBrains Mono", monospace;
   --font-code: "Fira Code", monospace;
 
-  --color-bg: oklch(0.06 0.01 260);        /* darkest page background (near-black) */
-  --color-surface: oklch(0.12 0.02 260);   /* main card / panel background */
-  --color-surface-2: oklch(0.16 0.02 260); /* elevated surface (slightly lighter) */
-  --color-elevated: oklch(0.20 0.03 260);  /* used for headers, top bars */
-  --color-overlay: oklch(0.04 0.01 260);   /* modal/backdrop tint */
+  --color-bg: #0f0f12;        /* darkest page background (near-black) */
+  --color-surface: #1e1e23;   /* main card / panel background */
+  --color-surface-2: #28282e; /* elevated surface (slightly lighter) */
+  --color-elevated: #35353d;  /* used for headers, top bars */
+  --color-overlay: #0a0a0c;   /* modal/backdrop tint */
 
-  --color-fg: oklch(0.96 0.02 260);        /* primary text — near white */
-  --color-subtle: oklch(0.80 0.01 260);    /* very subtle text for super-light UI */
-  --color-muted: oklch(0.30 0.02 260);     /* secondary, muted text & labels */
-  --color-gray: oklch(0.25 0.03 260);      /* neutral gray used for borders/inputs */
+  --color-fg: #f4f3f9;        /* primary text — near white */
+  --color-subtle: #cccad1;    /* very subtle text for super-light UI */
+  --color-muted: #4d4d59;     /* secondary, muted text & labels */
+  --color-gray: #42424c;      /* neutral gray used for borders/inputs */
 
-  --color-border: oklch(0.18 0.02 260);    /* subtle border color for cards/inputs */
+  --color-border: #2e2e35;    /* subtle border color for cards/inputs */
 
   /* Primary: warm/golden (CTAs, selected rows, leaderboard highlight) */
-  --color-primary: oklch(0.82 0.14 95);    /* bright warm-gold */
-  --color-primary-strong: oklch(0.90 0.18 95); /* for badges / top emphasis */
-  --color-primary-muted: oklch(0.60 0.10 95);  /* soft golden backgrounds */
+  --color-primary: #f9ca6c;        /* bright warm-gold */
+  --color-primary-strong: #ffd97a; /* for badges / top emphasis */
+  --color-primary-muted: #997d48;  /* soft golden backgrounds */
 
   /* Secondary: teal/cyan for success, positive states */
-  --color-secondary: oklch(0.70 0.12 210); /* teal/cyan */
-  --color-secondary-muted: oklch(0.45 0.08 210);
+  --color-secondary: #5bbdd6;       /* teal/cyan */
+  --color-secondary-muted: #397586;
 
   /* Accent: warm orange for flame / attention */
-  --color-accent: oklch(0.75 0.16 45);
+  --color-accent: #f29e4d;
 
   /* Semantic helpers */
   --color-success: var(--color-secondary);
-  --color-warning: oklch(0.92 0.18 85);   /* bright warm yellow (for badges/labels) */
-  --color-error: oklch(0.70 0.18 25);     /* red/pink error */
+  --color-warning: #ffdd6a;   /* bright warm yellow (for badges/labels) */
+  --color-error: #bb4237;     /* red/pink error */
 
   /* Utility tints (small UI uses) */
-  --glass-1: oklch(0.10 0.015 260); /* very dark translucent panel */
-  --glass-2: oklch(0.14 0.02 260);  /* lighter translucent panel */
+  --glass-1: #19191d; /* very dark translucent panel */
+  --glass-2: #232329; /* lighter translucent panel */
 
   /* Suggested usage aliases */
   --bg-page: var(--color-bg);
@@ -53,4 +53,3 @@
   --success: var(--color-success);
   --danger: var(--color-error);
 }
-

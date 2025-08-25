@@ -1,16 +1,15 @@
+// Home.jsx
+import React, { useContext, useEffect } from "react";
 import Hero from "../components/Hero";
 import LearningCards from "../components/LearningCards";
 import WhyClearSignal from "../components/WhyClearSignal";
-import { useContext, useEffect } from "react";
 import { AuthContext } from "../stores/authStore";
 
-const Home = () => {
+export default function Home() {
   const { setUser, navigate } = useContext(AuthContext);
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-
-    console.log(params);
-
     const fullName = params.get("fullName");
     const email = params.get("email");
     const role = params.get("role");
@@ -20,20 +19,24 @@ const Home = () => {
     const profilePic = params.get("profilePic");
 
     if (fullName && email && role) {
-      const userData = {data:{ fullName, email, role, gitHubUsername, linkedInProfileURL, kaggleUsername, profilePic }};
-
+      const userData = {
+        data: { fullName, email, role, gitHubUsername, linkedInProfileURL, kaggleUsername, profilePic },
+      };
       setUser(userData);
-
       localStorage.setItem("user", JSON.stringify(userData));
       navigate("/", { replace: true });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
+
   return (
-    <main className="font-serif w-full min-h-screen bg-[var(--color-bg)]">
+    <main className="min-h-screen font-sans bg-[var(--bg-page)] text-[var(--text-default)]">
       <Hero />
       <LearningCards />
       <WhyClearSignal />
+      <footer className="py-12 text-[var(--text-muted)] text-center">
+        © {new Date().getFullYear()} Clear Signal — Practice Machine Learning & Data Science
+      </footer>
     </main>
   );
-};
-export default Home;
+}

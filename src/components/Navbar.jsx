@@ -60,7 +60,7 @@ const Navbar = () => {
   const userLabel = user?.name || user?.username || user?.email || "Profile";
 
   return (
-    <nav className="font-code bg-[var(--bg-page)] border-b border-[var(--panel-border)]">
+    <nav className="font-code bg-[var(--bg-page)] border-b-2 border-[var(--color-muted)]">
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -132,7 +132,7 @@ const Navbar = () => {
               ) : (
                 <Link
                   to="/sign-in"
-                  className="flex items-center gap-2 px-4 py-1 rounded-full bg-[var(--card-bg)] text-[var(--text-default)] hover:opacity-95 transition"
+                  className="flex items-center gap-2 px-4 py-1 rounded-full border border-[var(--color-fg)] bg-[var(--card-bg)] text-[var(--text-default)] hover:bg-[var(--color-fg)]/10 transition"
                 >
                   <CiLogin /> <span className="hidden sm:inline">Login</span>
                 </Link>

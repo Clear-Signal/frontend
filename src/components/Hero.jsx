@@ -1,12 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
-/**
- * Hero
- * - Canvas lives inside the hero region (not full-window)
- * - Particles follow pointer and are subtly repelled from it
- * - Colors are read from CSS variables so theme stays consistent
- */
 const Hero = () => {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
@@ -24,9 +18,18 @@ const Hero = () => {
 
     // read colors from CSS variables (falls back to hardcoded if missing)
     const style = getComputedStyle(document.documentElement);
-    const BRAND = style.getPropertyValue("--brand")?.trim() || style.getPropertyValue("--color-primary")?.trim() || "#d9a200";
-    const ACCENT = style.getPropertyValue("--accent")?.trim() || style.getPropertyValue("--color-accent")?.trim() || "#ff8a3d";
-    const SURFACE2 = style.getPropertyValue("--card-bg-2")?.trim() || style.getPropertyValue("--color-surface-2")?.trim() || "#202227";
+    const BRAND =
+      style.getPropertyValue("--brand")?.trim() ||
+      style.getPropertyValue("--color-primary")?.trim() ||
+      "#d9a200";
+    const ACCENT =
+      style.getPropertyValue("--accent")?.trim() ||
+      style.getPropertyValue("--color-accent")?.trim() ||
+      "#ff8a3d";
+    const SURFACE2 =
+      style.getPropertyValue("--card-bg-2")?.trim() ||
+      style.getPropertyValue("--color-surface-2")?.trim() ||
+      "#202227";
     const FG = style.getPropertyValue("--text-default")?.trim() || "#f5f5f5";
 
     let dpr = Math.max(1, window.devicePixelRatio || 1);
@@ -113,11 +116,11 @@ const Hero = () => {
         // choose color — gradient between brand and accent, faint
         let color;
         if (this.hueChoice < 0.45) {
-          color = `rgba(222, 163, 20, ${this.baseAlpha})`; // warm gold-ish fallback
+          color = `rgba(60, 60, 60, ${this.baseAlpha})`; // dark gray
         } else if (this.hueChoice < 0.75) {
-          color = `rgba(255,140,61, ${this.baseAlpha})`; // orange-ish
+          color = `rgba(120, 120, 120, ${this.baseAlpha})`; // medium gray
         } else {
-          color = `rgba(94, 200, 190, ${this.baseAlpha * 0.8})`; // teal-ish
+          color = `rgba(200, 200, 200, ${this.baseAlpha * 0.8})`; // light gray
         }
 
         // draw soft circle
@@ -131,7 +134,9 @@ const Hero = () => {
     }
 
     // init particles
-    const area = container.getBoundingClientRect().width * container.getBoundingClientRect().height;
+    const area =
+      container.getBoundingClientRect().width *
+      container.getBoundingClientRect().height;
     particlesRef.current = createParticlesForArea(area);
 
     // handle pointer events: pointermove covers mouse + touch
@@ -149,8 +154,12 @@ const Hero = () => {
     };
 
     container.addEventListener("pointermove", onPointerMove, { passive: true });
-    container.addEventListener("pointerleave", onPointerLeave, { passive: true });
-    container.addEventListener("pointercancel", onPointerLeave, { passive: true });
+    container.addEventListener("pointerleave", onPointerLeave, {
+      passive: true,
+    });
+    container.addEventListener("pointercancel", onPointerLeave, {
+      passive: true,
+    });
 
     // ResizeObserver to resize canvas and re-create particle count on resize
     const ro = new ResizeObserver(() => {
@@ -208,47 +217,37 @@ const Hero = () => {
       aria-label="Hero"
     >
       {/* particle canvas that fills the hero container */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none"
+      />
 
-      <div className="relative max-w-7xl mx-auto px-6 py-20 lg:py-28 flex flex-col lg:flex-row items-center gap-12">
-        {/* Left Content */}
-        <div className="flex-1 text-center lg:text-left space-y-6 z-10">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight">
-            Master <span className="text-[var(--brand)]">AI/ML</span>
-            <br />
-            with Challenges & <span className="text-[var(--accent)]">Leaderboards</span>
+      <div className="max-w-7xl mx-auto px-6 py-20 lg:py-28 flex flex-col items-center gap-12">
+        <div className="flex-1 text-center space-y-6 z-10">
+          <h1 className="text-4xl sm:text-5xl lg:text-8xl font-extrabold leading-tight tracking-tight">
+            Clear <span className="text-[var(--brand)]">Signal</span>
           </h1>
 
-          <p className="text-lg text-[var(--text-fg)] max-w-xl mx-auto lg:mx-0">
-            Sharpen your skills, solve real-world problems, and climb the leaderboard. Join a vibrant
-            coding community built for learning and career growth.
+          <p className="text-center text-lg text-[var(--text-fg)] max-w-xl mx-auto">
+            Sharpen your skills, solve real-world problems, and climb the
+            leaderboard. Join a vibrant coding community built for learning and
+            career growth.
           </p>
 
-          <div className="flex justify-center lg:justify-start gap-4">
+          <div className="flex justify-center gap-4">
             <Link
               to="/problems"
-              className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[var(--brand)] text-[var(--bg-page)] font-semibold shadow-lg hover:brightness-105 transition"
+              className="inline-flex items-center gap-3 px-6 py-3 text-xl rounded-full border border-[var(--text-default)] text-[var(--text-default)] font-semibold shadow-lg hover:brightness-105 transition hover:bg-[var(--color-fg)]/10"
             >
               Get Started
             </Link>
 
             <Link
               to="/collections"
-              className="inline-flex items-center gap-3 px-5 py-3 rounded-full border border-[var(--panel-border)] text-[var(--text-default)] bg-[var(--color-elevated)] hover:bg-[var(--color-gray)]/50 transition"
+              className="hidden sm:inline-flex items-center gap-3 px-5 py-3 rounded-full border border-[var(--panel-border)] text-[var(--bg-page)] bg-[var(--text-default)] hover:bg-[var(--color-fg)]/70 transition"
             >
               Browse Collections
             </Link>
-          </div>
-        </div>
-
-        {/* Right Illustration */}
-        <div className="hidden lg:flex flex-1 justify-center lg:justify-end z-10">
-          <div className="relative w-72 h-72 lg:w-96 lg:h-96 rounded-full flex items-center justify-center bg-[var(--card-bg)] border border-[var(--panel-border)] shadow-2xl">
-            <div className="absolute -inset-6 rounded-full blur-3xl opacity-40"
-                 style={{ background: `radial-gradient(circle at 20% 30%, ${getComputedStyle(document.documentElement).getPropertyValue('--brand') || '#d9a200'} 0%, transparent 30%), radial-gradient(circle at 80% 70%, ${getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#ff8a3d'} 0%, transparent 28%)` }} />
-            <div className="relative w-40 h-40 rounded-full bg-[var(--card-bg-2)] flex items-center justify-center border border-[var(--panel-border)]">
-              <code className="text-6xl font-extrabold text-[var(--brand)]">{'</>'}</code>
-            </div>
           </div>
         </div>
       </div>

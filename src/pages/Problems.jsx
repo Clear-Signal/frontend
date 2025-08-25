@@ -76,7 +76,7 @@ export default function ProblemsPage() {
                 <select
                   value={difficulty}
                   onChange={(e) => setDifficulty(e.target.value)}
-                  className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded w-40 text-[var(--color-fg)]"
+                  className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-fg)]/10 rounded w-40 text-[var(--color-fg)]"
                 >
                   <option value="all">Select Difficulty</option>
                   <option value="easy">Easy</option>
@@ -87,7 +87,7 @@ export default function ProblemsPage() {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded w-44 text-[var(--color-fg)]"
+                  className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-fg)]/10 rounded w-44 text-[var(--color-fg)]"
                 >
                   <option value="all">Select Category</option>
                   {categories.map((c) => (
@@ -95,7 +95,7 @@ export default function ProblemsPage() {
                   ))}
                 </select>
 
-                <select className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-border)] rounded text-[var(--color-fg)]">
+                <select className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-fg)]/10 rounded text-[var(--color-fg)]">
                   <option>Sort by ID</option>
                 </select>
               </div>
@@ -124,17 +124,17 @@ export default function ProblemsPage() {
                     </tr>
                   </thead>
 
-                  <tbody>
+                  <tbody >
                     {filtered.length === 0 ? (
                       <tr>
                         <td colSpan={5} className="py-6 text-center text-[var(--color-fg)]">No problems found</td>
                       </tr>
                     ) : (
                       filtered.map((p) => (
-                        <tr key={p.id} className="transition cursor-pointer hover:bg-[var(--color-gray)]/10" onClick={() => navigate(`/problems/${p.id}`)}>
-                          <td className="py-3 px-3 border-b border-[var(--color-border)] align-top">{p.id}</td>
-                          <td className="py-3 px-3 border-b border-[var(--color-border)] align-top">{p.title}</td>
-                          <td className="py-3 px-3 border-b border-[var(--color-border)] align-top">
+                        <tr key={p.id} className="bg-[var(--color-muted)]/50 transition cursor-pointer hover:bg-[var(--color-muted)]/90" onClick={() => navigate(`/problems/${p.id}`)}>
+                          <td className="py-3 px-3 border-b-2 border-[var(--color-fg)]/10 align-top">{p.id}</td>
+                          <td className="py-3 px-3 border-b-2 border-[var(--color-fg)]/10 align-top">{p.title}</td>
+                          <td className="py-3 px-3 border-b-2 border-[var(--color-fg)]/10 align-top">
                             <span
                               className={difficultyStyle[p.difficulty]}
                               style={{ background: difficultyColor[p.difficulty].bg, color: difficultyColor[p.difficulty].text }}
@@ -142,8 +142,8 @@ export default function ProblemsPage() {
                               {p.difficulty}
                             </span>
                           </td>
-                          <td className="py-3 px-3 border-b border-[var(--color-border)] align-top">{p.category}</td>
-                          <td className="py-3 px-3 border-b border-[var(--color-border)] align-top">
+                          <td className="py-3 px-3 border-b-2 border-[var(--color-fg)]/10 align-top">{p.category}</td>
+                          <td className="py-3 px-3 border-b-2 border-[var(--color-fg)]/10 align-top">
                             <span className="text-[var(--color-fg)] text-xs">{p.status}</span>
                           </td>
                         </tr>

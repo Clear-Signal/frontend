@@ -37,7 +37,7 @@ const LearningCards = () => {
         {topics.map((item, index) => (
           <div
             key={index}
-            className="bg-zinc-900 rounded-xl p-6 shadow-md hover:shadow-lg transition"
+            className="rounded-2xl border border-[var(--color-fg)] p-6 shadow-md hover:bg-[var(--color-fg)]/10 transition cursor-pointer"
           >
             <div className="flex justify-center items-center w-12 h-12 rounded-full bg-zinc-800 mb-4">
               {item.icon}

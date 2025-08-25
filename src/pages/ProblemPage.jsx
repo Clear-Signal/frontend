@@ -1,51 +1,148 @@
-import { useEffect, useRef, useState } from "react";
-import { FiPlay, FiRefreshCw, FiSave, FiX, FiExternalLink } from "react-icons/fi";
+// ProblemSolverWithMonaco.jsx
+import { useEffect, useRef, useState, useCallback } from "react";
+import Editor from "@monaco-editor/react";
+import { FiPlay, FiRefreshCw, FiSave, FiExternalLink } from "react-icons/fi";
 
-/**
- * ProblemSolver - a responsive problem solving page with runnable code
- *
- * Notes:
- *  - Python execution uses Pyodide loaded from CDN (dynamic import).
- *  - JS execution uses Function() sandbox (not secure for untrusted code).
- *  - Replace example problem content & test harness with your own backend tests if needed.
- */
+// SAMPLE_PROBLEM: Confusion Matrix & F1 Score
+export const SAMPLE_PROBLEM = {
+  id: "confusion-f1",
+  title: "Confusion Matrix & F1 Score",
+  difficulty: "Medium",
+  category: "Evaluation Metrics",
+  description: `
+Given two arrays: ground-truth labels (y_true) and predicted labels (y_pred), and a specified positive label,
+compute the confusion matrix counts (TP, FP, FN, TN) for the positive label, then compute precision, recall and F1 score.
 
-const SAMPLE_PROBLEM = {
-  id: "matrix-dot",
-  title: "Matrix-Vector Dot Product",
-  difficulty: "Easy",
-  category: "Linear Algebra",
-  description: `Write a Python function that computes the dot product of a matrix and a vector.
-The function should return a list representing the resulting vector if the operation is valid,
-or -1 if the matrix and vector dimensions are incompatible. A matrix (a list of lists)
-can be dotted with a vector (a list) only if the number of columns in the matrix equals the length of the vector.`.trim(),
-  exampleIn: `a = [[1, 2], [2, 4]]\nb = [1, 2]`,
-  exampleOut: `[5, 10]`,
-  reasoning: `Multiply each row of the matrix by the vector and sum.`,
-  // code templates for Python and JS
-  templatePython: `def matrix_dot_vector(a: list[list[int|float]], b: list[int|float]) -> list | int:
+Rules:
+- TP: true == positive_label && pred == positive_label
+- FP: true != positive_label && pred == positive_label
+- FN: true == positive_label && pred != positive_label
+- TN: true != positive_label && pred != positive_label
+
+Precision = TP / (TP + FP) if TP+FP > 0 else 0.0
+Recall    = TP / (TP + FN) if TP+FN > 0 else 0.0
+F1        = 2 * precision * recall / (precision + recall) if precision+recall > 0 else 0.0
+
+Return an object with numeric fields: { tp, fp, fn, tn, precision, recall, f1 }.
+Round precision, recall and f1 to 4 decimal places in the output.
+  `.trim(),
+  inputFormat: `Three values:
+- y_true: array (list) of labels (numbers or strings)
+- y_pred: array (list) of labels (numbers or strings)
+- positive_label: label value treated as positive (number or string)
+Both arrays have equal length (n >= 1).`,
+  outputFormat: `An object/dictionary with:
+{
+  tp: int,
+  fp: int,
+  fn: int,
+  tn: int,
+  precision: float (rounded to 4 decimals),
+  recall: float (rounded to 4 decimals),
+  f1: float (rounded to 4 decimals)
+}`,
+  exampleIn: `y_true = [1, 0, 1, 1, 0, 1]
+y_pred = [1, 0, 0, 1, 0, 1]
+positive_label = 1`,
+  exampleOut: `{
+  "tp": 3,
+  "fp": 0,
+  "fn": 1,
+  "tn": 2,
+  "precision": 1.0,
+  "recall": 0.75,
+  "f1": 0.8571
+}`,
+  reasoning: `Count per-class outcomes using the positive label; compute precision/recall with safe divisions (0 if denominator zero).`,
+  // starter templates
+  templatePython: `def confusion_f1(y_true: list, y_pred: list, positive_label) -> dict:
     """
-    Return a list where each element is the dot product of a row of 'a' with 'b'.
-    If the number of columns in 'a' does not match len(b), return -1.
+    Return a dict: { tp, fp, fn, tn, precision, recall, f1 }
+    Round precision, recall and f1 to 4 decimal places.
     """
+    # implement here
     pass
 `,
-  templateJS: `// Implement matrixDotVector(a, b)
-// a: array of arrays, b: array
-// return array result or -1 if incompatible
-function matrixDotVector(a, b) {
-  // ...
-  return  null;
+  templateJS: `// y_true: array, y_pred: array, positive_label: value
+function confusionF1(y_true, y_pred, positive_label) {
+  // return object: { tp, fp, fn, tn, precision, recall, f1 }
+  // implement here
+  return null;
 }`,
-  // example tests - you can expand to multiple tests or pull from server
+  // tests for your harness (the runner used earlier expects input and expected)
   tests: [
+    // 1 - normal mixed case
     {
-      input: { a: [[1, 2], [2, 4]], b: [1, 2] },
-      expected: [5, 10],
+      input: {
+        y_true: [1, 0, 1, 1, 0, 1],
+        y_pred: [1, 0, 0, 1, 0, 1],
+        positive_label: 1,
+      },
+      expected: {
+        tp: 3,
+        fp: 0,
+        fn: 1,
+        tn: 2,
+        precision: 1.0,
+        recall: 0.75,
+        f1: 0.8571,
+      },
     },
+    // 2 - all predicted positive (no true positives)
     {
-      input: { a: [[1, 2, 3]], b: [1, 2] },
-      expected: -1,
+      input: { y_true: [0, 0, 0, 0], y_pred: [1, 1, 1, 1], positive_label: 1 },
+      expected: {
+        tp: 0,
+        fp: 4,
+        fn: 0,
+        tn: 0,
+        precision: 0.0,
+        recall: 0.0,
+        f1: 0.0,
+      },
+    },
+    // 3 - perfect prediction
+    {
+      input: { y_true: [1, 1, 1], y_pred: [1, 1, 1], positive_label: 1 },
+      expected: {
+        tp: 3,
+        fp: 0,
+        fn: 0,
+        tn: 0,
+        precision: 1.0,
+        recall: 1.0,
+        f1: 1.0,
+      },
+    },
+    // 4 - string labels
+    {
+      input: {
+        y_true: ["spam", "ham", "spam", "ham"],
+        y_pred: ["spam", "spam", "ham", "ham"],
+        positive_label: "spam",
+      },
+      expected: {
+        tp: 1,
+        fp: 1,
+        fn: 1,
+        tn: 1,
+        precision: 0.5,
+        recall: 0.5,
+        f1: 0.5,
+      },
+    },
+    // 5 - positive label not present
+    {
+      input: { y_true: [0, 0, 0], y_pred: [0, 0, 0], positive_label: 1 },
+      expected: {
+        tp: 0,
+        fp: 0,
+        fn: 0,
+        tn: 3,
+        precision: 0.0,
+        recall: 0.0,
+        f1: 0.0,
+      },
     },
   ],
 };
@@ -59,46 +156,50 @@ export default function ProblemSolver() {
   const [code, setCode] = useState(SAMPLE_PROBLEM.templatePython);
   const [output, setOutput] = useState("");
   const [running, setRunning] = useState(false);
-  const [savedSnippets] = useState({}); // placeholder if you add save
-  const editorRef = useRef(null);
 
-  // if user switches language, use template for that language
+  // Monaco editor refs
+  const monacoEditorRef = useRef(null);
+  const monacoInstanceRef = useRef(null);
+
+  // Load pyodide lazily when switching to python
   useEffect(() => {
-    setCode(lang === "python" ? SAMPLE_PROBLEM.templatePython : SAMPLE_PROBLEM.templateJS);
-    // load pyodide lazily only when language is python
+    setCode(
+      lang === "python"
+        ? SAMPLE_PROBLEM.templatePython
+        : SAMPLE_PROBLEM.templateJS
+    );
     if (lang === "python" && !pyodide && !loadingPyodide) {
       loadPyodideAsync();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
-  // dynamic import and initialization of pyodide
   async function loadPyodideAsync() {
     setLoadingPyodide(true);
     try {
-      // dynamic import of pyodide
-      const pyodideModule = await import("https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js");
+      const pyodideModule = await import(
+        "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"
+      );
       const py = await pyodideModule.loadPyodide({
         indexURL: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/",
       });
       setPyodide(py);
       setOutput((o) => o + "\n[Pyodide loaded — Python execution available]\n");
     } catch (err) {
-      setOutput((o) => o + `\n[Failed to load Pyodide: ${err.message || err}]\n`);
+      setOutput(
+        (o) => o + `\n[Failed to load Pyodide: ${err.message || err}]\n`
+      );
     } finally {
       setLoadingPyodide(false);
     }
   }
 
-  // helper: run JS code with simple harness
+  // ======= Execution helpers (unchanged / slightly adapted) =======
   function runJS(userCode) {
-    // careful: Function executes in page context; for untrusted code you must sandbox (e.g. Web Worker)
-    // We wrap code and run tests, return JSON string with results.
     try {
       const harness = `
         "use strict";
         ${userCode}
-        // run tests
         const tests = ${JSON.stringify(SAMPLE_PROBLEM.tests)};
         const results = [];
         for (let t of tests) {
@@ -112,22 +213,17 @@ export default function ProblemSolver() {
         return JSON.stringify({ results });
       `;
       const fn = new Function(harness);
-      const resJson = fn(); // might throw
+      const resJson = fn();
       return { success: true, output: JSON.parse(resJson) };
     } catch (err) {
       return { success: false, error: err.toString() };
     }
   }
 
-  // helper: run Python code with pyodide and harness
   async function runPython(userCode) {
     if (!pyodide) {
       return { success: false, error: "Pyodide not loaded" };
     }
-
-    // Build a python script that:
-    // - defines user's code (matrix_dot_vector)
-    // - runs tests and returns a JSON string as the last expression
     const testsPy = JSON.stringify(SAMPLE_PROBLEM.tests);
     const full = `
 ${userCode}
@@ -144,13 +240,11 @@ for t in tests:
         results.append({"ok": ok, "got": out, "expected": t["expected"]})
     except Exception as e:
         results.append({"ok": False, "error": traceback.format_exc()})
-# return result
 json.dumps({"results": results})
 `.trim();
 
     try {
       const pyResult = await pyodide.runPythonAsync(full);
-      // pyResult will be a JS string (json)
       const parsed = JSON.parse(pyResult);
       return { success: true, output: parsed };
     } catch (err) {
@@ -158,35 +252,27 @@ json.dumps({"results": results})
     }
   }
 
-  // run code action
+  // ======= Run / Reset / Save actions =======
   async function handleRun() {
     setOutput("");
     setRunning(true);
 
     if (lang === "js") {
       const res = runJS(code);
-      if (res.success) {
-        setOutput(JSON.stringify(res.output, null, 2));
-      } else {
-        setOutput("Error: " + (res.error || "Unknown"));
-      }
+      if (res.success) setOutput(JSON.stringify(res.output, null, 2));
+      else setOutput("Error: " + (res.error || "Unknown"));
       setRunning(false);
       return;
     }
 
-    // python
     if (lang === "python") {
       if (!pyodide) {
         setOutput("Loading Python runtime... (please wait)");
         await loadPyodideAsync();
-        // after load, continue
       }
       const res = await runPython(code);
-      if (res.success) {
-        setOutput(JSON.stringify(res.output, null, 2));
-      } else {
-        setOutput("Error: " + (res.error || "Unknown"));
-      }
+      if (res.success) setOutput(JSON.stringify(res.output, null, 2));
+      else setOutput("Error: " + (res.error || "Unknown"));
       setRunning(false);
       return;
     }
@@ -196,12 +282,22 @@ json.dumps({"results": results})
   }
 
   function handleReset() {
-    setCode(lang === "python" ? SAMPLE_PROBLEM.templatePython : SAMPLE_PROBLEM.templateJS);
+    setCode(
+      lang === "python"
+        ? SAMPLE_PROBLEM.templatePython
+        : SAMPLE_PROBLEM.templateJS
+    );
     setOutput("");
+    // update Monaco value manually if editor mounted
+    if (monacoEditorRef.current)
+      monacoEditorRef.current.setValue(
+        lang === "python"
+          ? SAMPLE_PROBLEM.templatePython
+          : SAMPLE_PROBLEM.templateJS
+      );
   }
 
   function handleSave() {
-    // simple client-side save to localStorage
     try {
       const key = `snippet_${SAMPLE_PROBLEM.id}_${lang}`;
       localStorage.setItem(key, code);
@@ -211,7 +307,6 @@ json.dumps({"results": results})
     }
   }
 
-  // load saved snippet on mount (if present)
   useEffect(() => {
     const key = `snippet_${SAMPLE_PROBLEM.id}_${lang}`;
     const saved = localStorage.getItem(key);
@@ -219,7 +314,97 @@ json.dumps({"results": results})
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lang]);
 
-  // small UI helpers
+  // ======= Monaco theme & mount hooks =======
+  const beforeMount = useCallback((monaco) => {
+    // read CSS variables to create theme colours
+    const style = getComputedStyle(document.documentElement);
+    const bg =
+      style.getPropertyValue("--bg-page")?.trim() ||
+      style.getPropertyValue("--color-bg-hex")?.trim() ||
+      "#000102";
+    const fg =
+      style.getPropertyValue("--text-default")?.trim() ||
+      style.getPropertyValue("--color-fg-hex")?.trim() ||
+      "#eaf2ff";
+    const gutter =
+      style.getPropertyValue("--panel-border")?.trim() ||
+      "rgba(234,242,255,0.06)";
+    const selection =
+      style.getPropertyValue("--brand")?.trim() ||
+      style.getPropertyValue("--color-primary-hex")?.trim() ||
+      "#e1c34b";
+    const accent =
+      style.getPropertyValue("--accent")?.trim() ||
+      style.getPropertyValue("--color-accent-hex")?.trim() ||
+      "#ff8950";
+    const editorBackground = bg;
+
+    // define a custom theme that uses your CSS variables (fallback to hex)
+    monaco.editor.defineTheme("clearSignalDark", {
+      base: "vs-dark",
+      inherit: true,
+      rules: [
+        {
+          token: "",
+          background: editorBackground.replace(/\s/g, ""),
+          foreground: fg.replace(/\s/g, ""),
+        },
+        { token: "keyword", foreground: selection.replace("#", "") },
+        { token: "number", foreground: accent.replace("#", "") },
+      ],
+      colors: {
+        "editor.background": editorBackground,
+        "editor.foreground": fg,
+        "editorLineNumber.foreground": gutter,
+        "editorLineNumber.activeForeground": fg,
+        "editorCursor.foreground": selection,
+        "editor.selectionBackground": selection + "55",
+        "editor.inactiveSelectionBackground": selection + "22",
+        "editorIndentGuide.background": "rgba(255,255,255,0.02)",
+        "editorIndentGuide.activeBackground": "rgba(255,255,255,0.04)",
+        "editorLineNumber.background": editorBackground,
+        "editorWidget.background": "rgba(10,10,10,0.75)",
+      },
+    });
+
+    // set some TypeScript/JS defaults if needed
+    monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
+    // (no return value)
+  }, []);
+
+  const handleEditorMount = useCallback((editor, monaco) => {
+    monacoEditorRef.current = editor;
+    monacoInstanceRef.current = monaco;
+    // apply our theme
+    monaco.editor.setTheme("clearSignalDark");
+    // set some editor-level options programmatically if desired
+    editor.updateOptions({
+      fontFamily: `"JetBrains Mono", "Fira Code", monospace`,
+      fontSize: 13,
+      minimap: { enabled: false },
+      scrollBeyondLastLine: false,
+      smoothScrolling: true,
+      automaticLayout: true,
+      wordWrap: "off",
+      tabSize: 2,
+    });
+
+    // If you want to bind Cmd/Ctrl+Enter to run:
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
+      handleRun();
+    });
+    // set initial value (monaco will manage it via value prop too)
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // update monaco value when `code` state changes externally (e.g., reset)
+  useEffect(() => {
+    if (monacoEditorRef.current) {
+      const current = monacoEditorRef.current.getValue();
+      if (current !== code) monacoEditorRef.current.setValue(code);
+    }
+  }, [code]);
+
+  // UI: HeaderBadge component (unchanged)
   const HeaderBadge = () => (
     <div className="inline-flex items-center gap-3">
       <div className="w-12 h-12 rounded-full bg-[var(--color-bg)] flex items-center justify-center border border-[var(--color-gray)]">
@@ -227,7 +412,9 @@ json.dumps({"results": results})
       </div>
       <div>
         <div className="text-lg font-semibold">{SAMPLE_PROBLEM.title}</div>
-        <div className="text-xs text-[var(--color-fg)]">{SAMPLE_PROBLEM.difficulty} · {SAMPLE_PROBLEM.category}</div>
+        <div className="text-xs text-[var(--color-fg)]">
+          {SAMPLE_PROBLEM.difficulty} · {SAMPLE_PROBLEM.category}
+        </div>
       </div>
     </div>
   );
@@ -235,53 +422,102 @@ json.dumps({"results": results})
   return (
     <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-fg)] p-4">
       <div className="mx-5">
-        {/* top toolbar */}
         <div className="flex items-center justify-between mb-4">
           <HeaderBadge />
           <div className="flex items-center gap-2 flex-wrap">
             <label className="inline-flex items-center gap-2 text-sm">
-              <input type="checkbox" checked={notebookMode} onChange={() => setNotebookMode((s) => !s)} />
+              <input
+                type="checkbox"
+                checked={notebookMode}
+                onChange={() => setNotebookMode((s) => !s)}
+              />
               <span className="text-[var(--color-fg)]">Notebook Mode</span>
             </label>
 
-            <select value={lang} onChange={(e) => setLang(e.target.value)} className="bg-[var(--color-bg)] border border-[var(--color-gray)] rounded px-2 py-1">
+            <select
+              value={lang}
+              onChange={(e) => setLang(e.target.value)}
+              className="bg-[var(--color-bg)] border border-[var(--color-gray)] rounded px-2 py-1"
+            >
               <option value="python">Python</option>
               <option value="js">JavaScript</option>
             </select>
           </div>
         </div>
 
-        {/* main layout */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* left column - description */}
-          <div className="rounded-2xl border border-[var(--color-gray)] bg-[var(--color-muted)] p-6">
-            {/* tabs */}
-            <div className="flex gap-4 mb-4 border-b border-[var(--color-gray)] pb-3 not-sm:overflow-scroll">
-              <button onClick={() => setTab("desc")} className={`pb-2 ${tab === "desc" ? "border-b-2 border-[var(--color-primary)]" : "text-[var(--color-fg)]"} cursor-pointer`}>Description</button>
-              <button onClick={() => setTab("solution")} className={`pb-2 ${tab === "solution" ? "border-b-2 border-[var(--color-primary)]" : "text-[var(--color-fg)]"} cursor-pointer`}>Solution</button>
-              <button onClick={() => setTab("video")} className={`pb-2 ${tab === "video" ? "border-b-2 border-[var(--color-primary)]" : "text-[var(--color-fg)]"} cursor-pointer`}>Video</button>
-              <button onClick={() => setTab("comments")} className={`pb-2 ${tab === "comments" ? "border-b-2 border-[var(--color-primary)]" : "text-[var(--color-fg)]"} cursor-pointer`}>Comments</button>
+          <div className="md:max-h-screen overflow-scroll rounded-2xl border border-[var(--color-gray)] bg-[var(--color-bg)]/10 p-6">
+            <div className="flex gap-4 mb-4 border-b border-[var(--color-gray)] pb-3 overflow-auto">
+              <button
+                onClick={() => setTab("desc")}
+                className={`pb-2 ${
+                  tab === "desc"
+                    ? "border-b-2 border-[var(--color-primary)]"
+                    : "text-[var(--color-fg)]"
+                } cursor-pointer`}
+              >
+                Description
+              </button>
+              <button
+                onClick={() => setTab("solution")}
+                className={`pb-2 ${
+                  tab === "solution"
+                    ? "border-b-2 border-[var(--color-primary)]"
+                    : "text-[var(--color-fg)]"
+                } cursor-pointer`}
+              >
+                Solution
+              </button>
+              <button
+                onClick={() => setTab("video")}
+                className={`pb-2 ${
+                  tab === "video"
+                    ? "border-b-2 border-[var(--color-primary)]"
+                    : "text-[var(--color-fg)]"
+                } cursor-pointer`}
+              >
+                Video
+              </button>
+              <button
+                onClick={() => setTab("comments")}
+                className={`pb-2 ${
+                  tab === "comments"
+                    ? "border-b-2 border-[var(--color-primary)]"
+                    : "text-[var(--color-fg)]"
+                } cursor-pointer`}
+              >
+                Comments
+              </button>
             </div>
 
-            {/* content */}
             <div className="prose prose-invert max-w-none">
               {tab === "desc" && (
                 <>
                   <h2 className="text-2xl font-bold">{SAMPLE_PROBLEM.title}</h2>
-                  <p className="mt-2 text-[var(--color-fg)] whitespace-pre-wrap">{SAMPLE_PROBLEM.description}</p>
-
+                  <p className="mt-2 text-[var(--color-fg)] whitespace-pre-wrap">
+                    {SAMPLE_PROBLEM.description}
+                  </p>
                   <div className="mt-6">
                     <h4 className="font-semibold">Example:</h4>
-                    <div className="mt-2 text-sm text-[var(--color-fg)]">Input:</div>
-                    <pre className="mt-2 p-3 rounded bg-[var(--color-surface-2)] border border-[var(--color-gray)] text-sm">{SAMPLE_PROBLEM.exampleIn}</pre>
-
-                    <div className="mt-3 text-sm text-[var(--color-fg)]">Output:</div>
-                    <pre className="mt-2 p-3 rounded bg-[var(--color-surface-2)] border border-[var(--color-gray)] text-sm">{SAMPLE_PROBLEM.exampleOut}</pre>
+                    <div className="mt-2 text-sm text-[var(--color-fg)]">
+                      Input:
+                    </div>
+                    <pre className="mt-2 p-3 rounded bg-[var(--color-surface-2)] border border-[var(--color-gray)] text-sm">
+                      {SAMPLE_PROBLEM.exampleIn}
+                    </pre>
+                    <div className="mt-3 text-sm text-[var(--color-fg)]">
+                      Output:
+                    </div>
+                    <pre className="mt-2 p-3 rounded bg-[var(--color-surface-2)] border border-[var(--color-gray)] text-sm">
+                      {SAMPLE_PROBLEM.exampleOut}
+                    </pre>
                   </div>
 
                   <div className="mt-6">
                     <h4 className="font-semibold">Reasoning:</h4>
-                    <p className="mt-2 text-[var(--color-fg)]">{SAMPLE_PROBLEM.reasoning}</p>
+                    <p className="mt-2 text-[var(--color-fg)]">
+                      {SAMPLE_PROBLEM.reasoning}
+                    </p>
                   </div>
                 </>
               )}
@@ -289,52 +525,83 @@ json.dumps({"results": results})
               {tab === "solution" && (
                 <>
                   <h3 className="text-lg font-semibold">Hints / Solution</h3>
-                  <p className="text-[var(--color-fg)] mt-2">You can compute dot product by iterating rows and summing element-wise products. For Python, use list comprehensions or loops. Check dimension compatibility first.</p>
+                  <p className="text-[var(--color-fg)] mt-2">
+                    Compute dot product row-wise. Check dimensions first.
+                  </p>
                 </>
               )}
 
               {tab === "video" && (
                 <>
                   <h3 className="text-lg font-semibold">Video</h3>
-                  <p className="text-[var(--color-fg)] mt-2">(Video placeholder — embed your tutorial here)</p>
+                  <p className="text-[var(--color-fg)] mt-2">
+                    (Video placeholder)
+                  </p>
                 </>
               )}
 
               {tab === "comments" && (
                 <>
                   <h3 className="text-lg font-semibold">Comments</h3>
-                  <p className="text-[var(--color-fg)] mt-2">No comments yet.</p>
+                  <p className="text-[var(--color-fg)] mt-2">
+                    No comments yet.
+                  </p>
                 </>
               )}
             </div>
           </div>
 
-          {/* right column - editor & run */}
-          <div className="rounded-2xl border border-[var(--color-gray)] bg-[var(--color-muted)] p-4 flex flex-col">
-            {/* editor area */}
+          <div className="max-h-screen rounded-2xl border border-[var(--color-gray)] bg-[var(--color-bg)]/10 p-4 flex flex-col">
             <div className="flex items-start justify-between gap-2 mb-3">
-              <div className="text-sm text-[var(--color-fg)]">Editor ({lang.toUpperCase()})</div>
+              <div className="text-sm text-[var(--color-fg)]">
+                Editor ({lang.toUpperCase()})
+              </div>
               <div className="flex items-center gap-2">
-                <button onClick={() => {
-                  // open editor in new tab with content (data URL)
-                  const html = `<pre>${encodeURIComponent(code)}</pre>`;
-                  const w = window.open();
-                  w.document.body.innerText = code;
-                }} title="Open in new tab" className="p-1 rounded border border-[var(--color-gray)]">
+                <button
+                  onClick={() => {
+                    const w = window.open();
+                    w.document.body.innerText = code;
+                  }}
+                  title="Open in new tab"
+                  className="p-1 rounded border border-[var(--color-gray)]"
+                >
                   <FiExternalLink />
                 </button>
-                <button onClick={() => { setCode((c)=>c+"\n# Note: appended snippet"); }} className="p-1 rounded border border-[var(--color-gray)]">+</button>
+                <button
+                  onClick={() => {
+                    setCode((c) => c + "\n# Note: appended snippet");
+                  }}
+                  className="p-1 rounded border border-[var(--color-gray)]"
+                >
+                  +
+                </button>
               </div>
             </div>
 
-            <textarea
-              ref={editorRef}
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              className="flex-1 min-h-[320px] p-4 rounded bg-[var(--color-elevated)] border border-[var(--color-gray)] font-mono text-sm resize-none focus:outline-none"
-            />
+            {/* Monaco Editor */}
+            <div className="flex-1 min-h-[320px]">
+              <Editor
+                height="100%"
+                defaultLanguage={lang === "python" ? "python" : "javascript"}
+                language={lang === "python" ? "python" : "javascript"}
+                value={code}
+                onChange={(value) => setCode(value ?? "")}
+                beforeMount={beforeMount}
+                onMount={handleEditorMount}
+                theme="clearSignalDark"
+                options={{
+                  minimap: { enabled: false },
+                  fontFamily: `"JetBrains Mono", "Fira Code", monospace`,
+                  fontSize: 13,
+                  lineNumbers: "on",
+                  tabSize: 2,
+                  automaticLayout: true,
+                  scrollBeyondLastLine: false,
+                  wordWrap: "off",
+                }}
+              />
+            </div>
 
-            {/* controls */}
             <div className="mt-3 flex items-center gap-3 flex-wrap">
               <button
                 onClick={handleRun}
@@ -344,21 +611,30 @@ json.dumps({"results": results})
                 <FiPlay /> {running ? "Running..." : "Run Code"}
               </button>
 
-              <button onClick={handleReset} className="inline-flex items-center gap-2 px-3 py-2 border border-[var(--color-gray)] rounded cursor-pointer">
+              <button
+                onClick={handleReset}
+                className="inline-flex items-center gap-2 px-3 py-2 border border-[var(--color-gray)] rounded cursor-pointer"
+              >
                 <FiRefreshCw /> Reset
               </button>
 
-              <button onClick={handleSave} className="inline-flex items-center gap-2 px-3 py-2 border border-[var(--color-gray)] rounded cursor-pointer">
+              <button
+                onClick={handleSave}
+                className="inline-flex items-center gap-2 px-3 py-2 border border-[var(--color-gray)] rounded cursor-pointer"
+              >
                 <FiSave /> Save
               </button>
 
-              <div className="ml-auto text-sm text-[var(--color-fg)]">Notebook: {notebookMode ? "On" : "Off"}</div>
+              <div className="ml-auto text-sm text-[var(--color-fg)]">
+                Notebook: {notebookMode ? "On" : "Off"}
+              </div>
             </div>
 
-            {/* output */}
             <div className="mt-4">
               <div className="text-sm text-[var(--color-fg)] mb-2">Output</div>
-              <pre className="max-h-36 overflow-auto p-3 rounded bg-[var(--color-surface-2)] border border-[var(--color-gray)] text-sm whitespace-pre-wrap">{output || "No output yet."}</pre>
+              <pre className="max-h-36 overflow-auto p-3 rounded bg-[var(--color-surface-2)] border border-[var(--color-gray)] text-sm whitespace-pre-wrap">
+                {output || "No output yet."}
+              </pre>
             </div>
           </div>
         </div>

@@ -42,7 +42,7 @@ const WhyClearSignal = () => {
         {features.map((item, index) => (
           <div
             key={index}
-            className="bg-zinc-900 p-6 rounded-xl border border-zinc-800 shadow hover:shadow-lg transition"
+            className="p-6 rounded-2xl border border-[var(--color-fg)] shadow hover:bg-[var(--color-fg)]/10 transition cursor-pointer"
           >
             <div className="flex items-center mb-8 text-fg">{item.icon}</div>
             <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
