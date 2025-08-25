@@ -88,7 +88,7 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem }) {
     >
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className="absolute inset-0 bg-[var(--color-bg)]/70 backdrop-blur-sm"
         onMouseDown={(e) => {
           // close when clicking outside modal content
           if (e.target === backdropRef.current) onClose && onClose();
@@ -99,7 +99,7 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem }) {
       <div
         ref={modalRef}
         tabIndex={-1}
-        className="relative z-10 w-full max-w-4xl h-[80vh] rounded-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-muted)] shadow-2xl focus:outline-none"
+        className="relative z-10 w-full max-w-4xl h-[80vh] rounded-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl focus:outline-none"
       >
         {/* Header */}
         <header className="flex items-start gap-4 p-6 border-b border-[var(--color-border)]">
@@ -127,7 +127,7 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem }) {
 
             {/* progress bar */}
             <div className="mt-4">
-              <div className="text-xs text-[var(--color-muted)] mb-2">
+              <div className="text-xs text-[var(--text-default)] mb-2">
                 {progress}% Complete
               </div>
               <div className="w-full h-2 rounded-full bg-[var(--color-bg)]/40 border border-[var(--color-border)] overflow-hidden">
@@ -148,7 +148,7 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem }) {
                 href={externalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3 py-2 rounded text-sm border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-fg)]"
+                className="inline-flex items-center gap-2 px-3 py-2 rounded text-sm border border-[var(--color-gray)] bg-[var(--color-surface)] text-[var(--color-fg)]"
               >
                 <FiExternalLink />
                 Open in new tab
@@ -173,9 +173,9 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem }) {
               sections.map((section, si) => (
                 <section
                   key={section.id || si}
-                  className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-lg overflow-hidden"
+                  className="bg-[var(--color-surface-2)] border border-[var(--color-gray)] rounded-lg overflow-hidden"
                 >
-                  <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-border)] bg-[var(--color-bg)]/60">
+                  <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-gray)] bg-[var(--color-bg)]/60">
                     <div className="text-lg font-semibold">
                       {si + 1}. {section.title}
                     </div>
@@ -194,7 +194,7 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem }) {
                         <button
                           key={prob.id || pi}
                           onClick={() => onOpenProblem && onOpenProblem(prob)}
-                          className="w-full text-left px-4 py-3 rounded-md bg-[transparent] border border-[var(--color-border)] hover:bg-[var(--color-gray)]/50 transition flex items-center gap-3 cursor-pointer"
+                          className="w-full text-left px-4 py-3 rounded-md bg-[transparent] border border-[var(--color-gray)] hover:bg-[var(--color-gray)]/50 transition flex items-center gap-3 cursor-pointer"
                           title={prob.title}
                         >
                           <div className="flex-1 min-w-0">

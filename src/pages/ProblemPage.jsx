@@ -565,7 +565,7 @@ json.dumps({"results": results})
                 <BsFillLightningChargeFill /> {running ? "Running..." : "Run Code"}
               </button>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-row items-center flex-wrap gap-2">
                 <button
                   onClick={handleReset}
                   className="inline-flex items-center gap-2 px-3 py-2 border border-[var(--color-gray)] rounded cursor-pointer"

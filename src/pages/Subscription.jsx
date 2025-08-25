@@ -91,7 +91,7 @@ export default function SubscriptionPage() {
           onClick={() => setSelected("monthly")}
           className={`cursor-pointer rounded-2xl border border-[var(--color-border)] p-8 shadow-sm transition
             ${selected === "monthly" ? "ring-2 ring-[var(--color-warning)]" : ""}
-            bg-[var(--color-muted)]`}
+            bg-[var(--color-surface)]`}
           aria-selected={selected === "monthly"}
         >
           <div className="flex flex-col h-full">
@@ -169,7 +169,7 @@ export default function SubscriptionPage() {
           onClick={() => setSelected("yearly")}
           className={`relative h-full cursor-pointer rounded-2xl border-2 p-8 transition
             ${selected === "yearly" ? "border-[var(--color-warning)] ring-2 ring-[var(--color-warning)]" : "border-[var(--color-border)]"}
-            bg-[var(--color-muted)]`}
+            bg-[var(--color-surface)]`}
           aria-selected={selected === "yearly"}
         >
           {/* recommended badge */}
