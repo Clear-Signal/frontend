@@ -404,7 +404,7 @@ json.dumps({"results": results})
   }, [code]);
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-fg)] p-4">
+    <div className="min-h-screen bg-[var(--color-bg-black)] text-[var(--color-fg)] p-4">
       <div className="mx-5">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="md:max-h-screen overflow-scroll rounded-2xl border border-[var(--color-gray)] bg-[var(--color-gray)]/20 p-6">

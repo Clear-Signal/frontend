@@ -56,15 +56,12 @@ export default function CollectionsPage({ collections = COLLECTIONS }) {
   }
 
   return (
-    <main className="min-h-screen bg-[var(--color-bg)] text-[var(--color-fg)] py-12">
+    <main className="min-h-screen bg-[var(--color-bg-black)] text-[var(--color-fg)] py-12">
       <div className="max-w-7xl mx-auto px-6">
         <header className="text-center mb-10">
           <h1 className="text-3xl sm:text-4xl font-semibold">
             Problem Collections
           </h1>
-          <p className="mt-2 text-sm text-[var(--color-fg)]">
-            Collections grouped by topic — complete sections to earn badges.
-          </p>
         </header>
 
         <section>

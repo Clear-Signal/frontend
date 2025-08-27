@@ -85,7 +85,7 @@ export default function Signal0() {
   }, [problems, query, selectedDifficulties]);
 
   return (
-    <div className="font-mono min-h-screen w-full relative bg-[var(--bg-page)] text-[var(--text-default)]">
+    <div className="font-mono min-h-screen w-full relative bg-[var(--color-bg-black)] text-[var(--text-default)]">
       {/* subtle background grid */}
       <div
         aria-hidden
@@ -101,8 +101,8 @@ export default function Signal0() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-28">
         {/* Search + Filter */}
         <div className="flex flex-col lg:flex-row items-start gap-4">
-          <div className="flex-1 w-full">
-            <label htmlFor="signal-search" className="sr-only">
+          <div className="flex-1 w-full ">
+            <label htmlFor="signal-search" className="sr-only  ">
               Search questions and collections
             </label>
             <div className="relative">
@@ -115,16 +115,14 @@ export default function Signal0() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search questions and collections..."
-                className="w-full rounded-xl py-3 sm:py-3 pl-12 pr-4 bg-[var(--color-elevated)] border border-[var(--color-muted)] text-[var(--text-default)] placeholder:text-[var(--color-fg)] focus:outline-none focus:ring-2 focus:ring-[var(--brand)] transition"
+                className="w-full rounded-xl py-3 sm:py-3 pl-12 pr-4 bg-[var(--color-bg-black)] border border-[var(--color-muted)] text-[var(--text-default)] placeholder:text-[var(--color-fg)] focus:outline-none focus:ring-2 focus:ring-[var(--brand)] transition"
                 aria-label="Search questions and collections"
               />
             </div>
           </div>
 
           <div className="flex items-center gap-3 w-full lg:w-auto">
-            <div className="text-sm text-[var(--color-fg)] hidden sm:block">
-              {filtered.length} items ({problems.length} total)
-            </div>
+           
 
             <div className="relative">
               <button

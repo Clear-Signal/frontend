@@ -179,7 +179,7 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem }) {
                     <div className="text-lg font-semibold">
                       {si + 1}. {section.title}
                     </div>
-                    <div className="text-sm text-[var(--color-accent)]">
+                    <div className="text-sm text-green-500">
                       {section.progress ?? 0}% Completed
                     </div>
                   </div>

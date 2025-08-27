@@ -7,7 +7,7 @@ import { LiaDiscord } from "react-icons/lia";
 import ThemeToggle from "./ThemeToggle";
 import { AuthContext } from "../stores/authStore";
 
-const Navbar = () => {
+const Navbar = ({ activeNav, setActiveNav }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
   const btnRef = useRef(null);
@@ -60,7 +60,7 @@ const Navbar = () => {
   const userLabel = user?.name || user?.username || user?.email || "Profile";
 
   return (
-    <nav className="font-code bg-[var(--color-bg-black)] border-b-2 border-[var(--color-muted)]">
+    <nav className="font-code py-1 bg-[var(--color-bg-black)] border-b-2 border-[var(--color-gray)]">
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -70,41 +70,53 @@ const Navbar = () => {
               alt="Clear Signal Logo"
               className="h-8 w-8 rounded-full object-cover border border-[var(--panel-border)]"
             />
-            <h1 className="text-[var(--text-default)] text-lg md:text-xl font-bold sm:min-w-[180px]">
-              Clear Signal
+            <h1 className="text-[var(--text-default)] text-lg md:text-xl font-bold sm:min-w-[180px]" onClick={() => setActiveNav("Home")}>
+              Clear-Signal
             </h1>
           </Link>
 
           {/* Desktop menu */}
-          <div className="hidden lg:flex lg:items-center lg:gap-8 w-full">
+          <div className="hidden text-lg lg:flex lg:items-center lg:gap-8 w-full">
             <div className="flex gap-6 items-center">
-              <Link
+              {/* <Link
                 to="/"
                 className="text-[var(--text-gray)] hover:text-[var(--text-default)] transition"
               >
                 Home
-              </Link>
+              </Link> */}
               <Link
                 to="/problems"
-                className="text-[var(--text-gray)] hover:text-[var(--text-default)] transition"
+                className={` hover:text-[var(--text-default)] transition ${
+                  activeNav === "Problems" ? "text-[var(--text-default)] underline" : "text-[var(--text-gray)]"
+                }`}
+                onClick={() => setActiveNav("Problems")}
               >
                 Problems
               </Link>
               <Link
                 to="/collections"
-                className="text-[var(--text-gray)] hover:text-[var(--text-default)] transition"
+                className={` hover:text-[var(--text-default)] transition ${
+                  activeNav === "Collections" ? "text-[var(--text-default)] underline" : "text-[var(--text-gray)]"
+                }`}
+                onClick={() => setActiveNav("Collections")}
               >
                 Collections
               </Link>
               <Link
                 to="/signal0"
-                className="text-[var(--text-gray)] hover:text-[var(--text-default)] transition"
+                className={` hover:text-[var(--text-default)] transition ${
+                  activeNav === "Signal-0" ? "text-[var(--text-default)] underline" : "text-[var(--text-gray)]"
+                }`}
+                onClick={() => setActiveNav("Signal-0")}
               >
                 Signal-0
               </Link>
               <Link
                 to="/leaderboard"
-                className="text-[var(--text-gray)] hover:text-[var(--text-default)] transition"
+                className={` hover:text-[var(--text-default)] transition ${
+                  activeNav === "Leaderboard" ? "text-[var(--text-default)] underline" : "text-[var(--text-gray)]"
+                }`}
+                onClick={() => setActiveNav("Leaderboard")}
               >
                 Leaderboard
               </Link>

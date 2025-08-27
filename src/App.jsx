@@ -1,12 +1,13 @@
 // App.jsx
 import { Outlet } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AuthProvider from "./stores/authStore";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Lenis from "@studio-freight/lenis";
 
 const App = () => {
+  const [activeNav, setActiveNav] = useState("Home");
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,   // higher = more delay
@@ -27,7 +28,7 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <Navbar />
+      <Navbar activeNav={activeNav} setActiveNav={setActiveNav} />
       <Outlet />
       <Footer />
     </AuthProvider>

@@ -1,37 +1,115 @@
 import { useContext, useMemo, useState } from "react";
-import { FaBook, FaChartLine } from "react-icons/fa";
+import { FaBook, FaChartLine, FaChevronDown, FaArrowRight } from "react-icons/fa";
 import { AuthContext } from "../stores/authStore";
 import MiniCalendar from "../components/MiniCalendar";
+import { Listbox } from "@headlessui/react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const problems = [
-  { id: 176, title: "Chi-square Probability Distribution", difficulty: "medium", category: "Probability", status: "New" },
-  { id: 1, title: "Matrix-Vector Dot Product", difficulty: "easy", category: "Linear Algebra", status: "Unsolved" },
-  { id: 2, title: "Transpose of a Matrix", difficulty: "easy", category: "Linear Algebra", status: "Unsolved" },
-  { id: 3, title: "Reshape Matrix", difficulty: "easy", category: "Linear Algebra", status: "Unsolved" },
-  { id: 4, title: "Calculate Mean by Row or Column", difficulty: "easy", category: "Linear Algebra", status: "Unsolved" },
-  { id: 6, title: "Calculate Eigenvalues of a Matrix", difficulty: "medium", category: "Linear Algebra", status: "Unsolved" },
-  { id: 12, title: "Singular Value Decomposition (SVD)", difficulty: "hard", category: "Linear Algebra", status: "Unsolved" },
+  {
+    id: 176,
+    title: "Chi-square Probability Distribution",
+    difficulty: "medium",
+    category: "Probability",
+    status: "New",
+  },
+  {
+    id: 1,
+    title: "Matrix-Vector Dot Product",
+    difficulty: "easy",
+    category: "Linear Algebra",
+    status: "Unsolved",
+  },
+  {
+    id: 2,
+    title: "Transpose of a Matrix",
+    difficulty: "easy",
+    category: "Linear Algebra",
+    status: "Unsolved",
+  },
+  {
+    id: 3,
+    title: "Reshape Matrix",
+    difficulty: "easy",
+    category: "Linear Algebra",
+    status: "Unsolved",
+  },
+  {
+    id: 4,
+    title: "Calculate Mean by Row or Column",
+    difficulty: "easy",
+    category: "Linear Algebra",
+    status: "Unsolved",
+  },
+  {
+    id: 6,
+    title: "Calculate Eigenvalues of a Matrix",
+    difficulty: "medium",
+    category: "Linear Algebra",
+    status: "Unsolved",
+  },
+  {
+    id: 12,
+    title: "Singular Value Decomposition (SVD)",
+    difficulty: "hard",
+    category: "Linear Algebra",
+    status: "Unsolved",
+  },
 ];
 
 const difficultyStyle = {
   easy: "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold",
-  medium: "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold",
+  medium:
+    "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold",
   hard: "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold",
 };
 
 const difficultyColor = {
-  easy: { bg: "var(--color-secondary)", text: "var(--color-bg)" }, // green-ish
-  medium: { bg: "var(--color-warning)", text: "var(--color-bg)" }, // yellow-ish
-  hard: { bg: "var(--color-error)", text: "var(--color-bg)" },     // red-ish
+  easy: { bg: "#22C55E", text: "var(--color-bg)" },
+  medium: { bg: "#EAB308", text: "var(--color-bg)" },
+  hard: { bg: "#EF4444", text: "var(--color-bg)" },
 };
 
+// ✅ Reusable dropdown component
+function Dropdown({ value, setValue, options, width = "w-44" }) {
+  return (
+    <div className={`relative ${width}`}>
+      <Listbox value={value} onChange={setValue}>
+        <Listbox.Button className="flex justify-between items-center w-full px-3 py-2 rounded bg-[var(--color-bg)] border border-[var(--color-fg)]/10 text-[var(--color-fg)]">
+          <span className="truncate">
+            {value.charAt(0).toUpperCase() + value.slice(1)}
+          </span>
+          <FaChevronDown className="ml-2 text-xs" />
+        </Listbox.Button>
+        <Listbox.Options className="absolute mt-1 w-full rounded-md bg-zinc-900 border border-[var(--color-muted)] shadow-lg max-h-60 overflow-auto focus:outline-none z-50">
+          {options.map((opt) => (
+            <Listbox.Option
+              key={opt}
+              value={opt}
+              className={({ active }) =>
+                `cursor-pointer select-none px-3 py-2 ${
+                  active ? "bg-zinc-800 text-white" : "text-[var(--color-fg)]"
+                }`
+              }
+            >
+              {opt.charAt(0).toUpperCase() + opt.slice(1)}
+            </Listbox.Option>
+          ))}
+        </Listbox.Options>
+      </Listbox>
+    </div>
+  );
+}
+
 export default function ProblemsPage() {
-  const [view, setView] = useState("table"); // "table" or "graph"
+  const [view, setView] = useState("table");
   const [query, setQuery] = useState("");
   const [difficulty, setDifficulty] = useState("all");
   const [category, setCategory] = useState("all");
 
-  const {navigate} = useContext(AuthContext);
+  const [expanded, setExpanded] = useState(false);
+
+  const { navigate } = useContext(AuthContext);
 
   const categories = useMemo(() => {
     const s = new Set(problems.map((p) => p.category));
@@ -42,28 +120,75 @@ export default function ProblemsPage() {
     return problems.filter((p) => {
       if (difficulty !== "all" && p.difficulty !== difficulty) return false;
       if (category !== "all" && p.category !== category) return false;
-      if (query && !p.title.toLowerCase().includes(query.toLowerCase())) return false;
+      if (query && !p.title.toLowerCase().includes(query.toLowerCase()))
+        return false;
       return true;
     });
   }, [query, difficulty, category]);
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-fg)] p-6">
-      {/* Top bar */}
-      <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between mb-6 mx-auto">
-        <div />
-        <button
-          className="inline-flex items-center gap-3 px-6 py-2 rounded-full border border-[var(--color-fg)] bg-[var(--color-bg)] fg:bg-[var(--color-bg)]/90 text-[var(--color-fg)]"
-          type="button"
-        >
-          🎯 Daily Challenge
-        </button>
-      </div>
+    <div className="min-h-screen bg-[var(--color-bg-black)] text-[var(--color-fg)] p-6">
+      <div className="mx-auto grid grid-cols-1 lg:grid-cols-8 gap-6">
+        {/* Main explorer */}
+        <section className="lg:col-span-5">
+          <div className="flex flex-col items-center justify-center mb-6 mx-auto">
+            {/* Daily Challenge Button */}
+            {!expanded && (
+              <motion.button
+                whileHover={{ scale: 1.05, rotateX: 5, rotateY: -5 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                onClick={() => setExpanded(true)}
+                className="inline-flex items-center text-xl gap-3 px-6 py-2 rounded-full border-2 border-[var(--color-fg)] bg-[var(--color-bg)] text-[var(--color-fg)] shadow-lg shadow-black/30 cursor-pointer"
+                type="button"
+              >
+                🎯 Daily Challenge
+              </motion.button>
+            )}
 
-      <div className=" mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Main explorer (spans 3 cols on lg) */}
-        <section className="lg:col-span-3">
-          <div className="rounded-2xl border border-[var(--color-fg)] bg-[var(--color-bg)] p-5 shadow-sm">
+            {/* Expanded Card */}
+            <AnimatePresence>
+              {expanded && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                  transition={{ duration: 0.3 }}
+                  className="max-w-sm w-full bg-zinc-900 text-white rounded-2xl shadow-xl px-10 py-14 mt-4 border border-white"
+                >
+                  <h2 className="text-2xl font-bold tracking-widest mb-2">
+                    DAILY CHALLENGE
+                  </h2>
+                  <div className="h-[1px] w-16 bg-white/30 mb-4"></div>
+
+                  <h3 className="text-xl font-semibold mb-2">
+                    Implement Recall Metric in Binary Classification
+                  </h3>
+                  <p className="text-sm text-gray-400 mb-1">Problem ID: 52</p>
+                  <p className="text-sm text-gray-400 my-5 ">
+                    Enhance your coding skills with today's elegant challenge.
+                  </p>
+
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    className="w-full flex justify-center items-center gap-2 px-4 py-3 rounded-full bg-white text-black font-semibold shadow-md cursor-pointer"
+                  >
+                    Solve it now <FaArrowRight className="hover:translate-x-1 transition-transform" size={18} />
+                  </motion.button>
+
+                  {/* Collapse button */}
+                  <button
+                    onClick={() => setExpanded(false)}
+                    className="mt-4 w-full text-sm text-gray-400 hover:text-gray-200 cursor-pointer"
+                  >
+                    Close ✖
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <div className="rounded-2xl border-[1px] border-[var(--color-muted)] bg-[var(--color-bg-black)] p-5 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold flex items-center gap-3">
                 <FaBook /> Problem Explorer
@@ -73,31 +198,28 @@ export default function ProblemsPage() {
             {/* filters */}
             <div className="flex flex-col md:flex-row md:items-center md:gap-3 mb-4">
               <div className="flex items-center gap-2 flex-1 flex-wrap">
-                <select
-                  value={difficulty}
-                  onChange={(e) => setDifficulty(e.target.value)}
-                  className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-fg)]/10 rounded w-40 text-[var(--color-fg)]"
-                >
-                  <option value="all">Select Difficulty</option>
-                  <option value="easy">Easy</option>
-                  <option value="medium">Medium</option>
-                  <option value="hard">Hard</option>
-                </select>
+                <Dropdown
+                  value={
+                    difficulty === "all" ? "select difficulty" : difficulty
+                  }
+                  setValue={setDifficulty}
+                  options={["all", "easy", "medium", "hard"]}
+                  width="w-40"
+                />
 
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-fg)]/10 rounded w-44 text-[var(--color-fg)]"
-                >
-                  <option value="all">Select Category</option>
-                  {categories.map((c) => (
-                    <option key={c} value={c === "All" ? "all" : c}>{c}</option>
-                  ))}
-                </select>
+                <Dropdown
+                  value={category === "all" ? "select category" : category}
+                  setValue={setCategory}
+                  options={["all", ...categories.filter((c) => c !== "All")]}
+                  width="w-44"
+                />
 
-                <select className="px-3 py-2 bg-[var(--color-bg)] border border-[var(--color-fg)]/10 rounded text-[var(--color-fg)]">
-                  <option>Sort by ID</option>
-                </select>
+                <Dropdown
+                  value={"Sort by ID"}
+                  setValue={() => {}}
+                  options={["Sort by ID"]}
+                  width="w-40"
+                />
               </div>
 
               <div className="mt-3 md:mt-0 md:ml-auto w-full md:w-64">
@@ -115,36 +237,69 @@ export default function ProblemsPage() {
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse text-sm">
                   <thead>
-                    <tr className="text-left text-[var(--color-fg)]">
-                      <th className="py-2 px-3 border-b border-[var(--color-border)] w-16">ID</th>
-                      <th className="py-2 px-3 border-b border-[var(--color-border)]">Title</th>
-                      <th className="py-2 px-3 border-b border-[var(--color-border)] w-32">Difficulty</th>
-                      <th className="py-2 px-3 border-b border-[var(--color-border)] w-40">Category</th>
-                      <th className="py-2 px-3 border-b border-[var(--color-border)] w-28">Status</th>
+                    <tr className="text-left bg-zinc-900 text-[var(--color-fg)]">
+                      <th className="py-2 px-3 border-b border-[var(--color-fg)] w-16">
+                        ID
+                      </th>
+                      <th className="py-2 px-3 border-b border-[var(--color-fg)]">
+                        Title
+                      </th>
+                      <th className="py-2 px-3 border-b border-[var(--color-fg)] w-32">
+                        Difficulty
+                      </th>
+                      <th className="py-2 px-3 border-b border-[var(--color-fg)] w-40">
+                        Category
+                      </th>
+                      <th className="py-2 px-3 border-b border-[var(--color-fg)] w-28">
+                        Status
+                      </th>
                     </tr>
                   </thead>
 
-                  <tbody >
+                  <tbody>
                     {filtered.length === 0 ? (
                       <tr>
-                        <td colSpan={5} className="py-6 text-center text-[var(--color-fg)]">No problems found</td>
+                        <td
+                          colSpan={5}
+                          className="py-6 text-center text-[var(--color-fg)]"
+                        >
+                          No problems found
+                        </td>
                       </tr>
                     ) : (
                       filtered.map((p) => (
-                        <tr key={p.id} className="bg-[var(--color-muted)]/50 transition cursor-pointer hover:bg-[var(--color-muted)]/90" onClick={() => navigate(`/problems/${p.id}`)}>
-                          <td className="py-3 px-3 border-b-2 border-[var(--color-fg)]/10 align-top">{p.id}</td>
-                          <td className="py-3 px-3 border-b-2 border-[var(--color-fg)]/10 align-top">{p.title}</td>
-                          <td className="py-3 px-3 border-b-2 border-[var(--color-fg)]/10 align-top">
+                        <tr
+                          key={p.id}
+                          className="bg-zinc-900 transition cursor-pointer hover:bg-zinc-800"
+                          onClick={() => navigate(`/problems/${p.id}`)}
+                        >
+                          <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">
+                            {p.id}
+                          </td>
+                          <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">
+                            {p.title}
+                          </td>
+                          <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">
                             <span
                               className={difficultyStyle[p.difficulty]}
-                              style={{ background: difficultyColor[p.difficulty].bg, color: difficultyColor[p.difficulty].text }}
+                              style={{
+                                background: difficultyColor[p.difficulty].bg,
+                                color: difficultyColor[p.difficulty].text,
+                                minWidth: "80px",
+                                justifyContent: "center",
+                                fontSize: "0.875rem",
+                              }}
                             >
                               {p.difficulty}
                             </span>
                           </td>
-                          <td className="py-3 px-3 border-b-2 border-[var(--color-fg)]/10 align-top">{p.category}</td>
-                          <td className="py-3 px-3 border-b-2 border-[var(--color-fg)]/10 align-top">
-                            <span className="text-[var(--color-fg)] text-xs">{p.status}</span>
+                          <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">
+                            {p.category}
+                          </td>
+                          <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">
+                            <span className="text-[var(--color-fg)] text-xs">
+                              {p.status}
+                            </span>
                           </td>
                         </tr>
                       ))
@@ -158,36 +313,48 @@ export default function ProblemsPage() {
               </div>
             )}
 
-            {/* pagination placeholder */}
+            {/* pagination */}
             <div className="mt-4 flex justify-between items-center text-sm text-[var(--color-fg)]">
               <div>Previous</div>
               <div className="flex gap-2 items-center">
-                <button className="px-3 py-1 rounded border border-[var(--color-border)]">1</button>
-                <button className="px-3 py-1 rounded border border-[var(--color-border)]">2</button>
-                <button className="px-3 py-1 rounded border border-[var(--color-border)]">3</button>
+                <button className="px-3 py-1 rounded border border-[var(--color-border)]">
+                  1
+                </button>
+                <button className="px-3 py-1 rounded border border-[var(--color-border)]">
+                  2
+                </button>
+                <button className="px-3 py-1 rounded border border-[var(--color-border)]">
+                  3
+                </button>
                 <span>...</span>
-                <button className="px-3 py-1 rounded border border-[var(--color-border)]">Next</button>
+                <button className="px-3 py-1 rounded border border-[var(--color-border)]">
+                  Next
+                </button>
               </div>
             </div>
           </div>
         </section>
 
         {/* Sidebar */}
-        <aside className="space-y-6">
-          {/* Calendar card */}
-          <div className="rounded-2xl border border-[var(--color-fg)] bg-[var(--color-bg)] p-4">
-            <div className="text-lg font-semibold mb-3">Progress Calendar</div>
+        <aside className="max-w-md lg:grid gap-6 lg:-col-end-1 lg:col-span-2">
+          <div className="rounded-2xl border border-[var(--color-muted)] bg-zinc-900 p-4">
+            <div className="text-xl text-center font-semibold mb-3">
+              Progress Calendar
+            </div>
             <MiniCalendar />
           </div>
 
-          {/* Stats card */}
-          <div className="rounded-2xl border border-[var(--color-fg)] bg-[var(--color-bg)] p-4 text-center">
+          <div className="rounded-2xl border border-[var(--color-muted)] bg-zinc-900 p-4 text-center">
             <div className="text-sm text-[var(--color-fg)]">Your Stats</div>
             <div className="mt-3 text-2xl font-bold">0.00%</div>
-            <div className="text-sm text-[var(--color-fg)] mt-1">Completion Rate</div>
+            <div className="text-sm text-[var(--color-fg)] mt-1">
+              Completion Rate
+            </div>
             <div className="mt-4 text-xl font-semibold">0</div>
-            <div className="text-sm text-[var(--color-fg)]">Problems Solved</div>
-          </div>          
+            <div className="text-sm text-[var(--color-fg)]">
+              Problems Solved
+            </div>
+          </div>
         </aside>
       </div>
     </div>

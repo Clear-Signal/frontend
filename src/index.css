@@ -9,7 +9,7 @@
   --color-bg: #0f0f12;        /* darkest page background (near-black) */
   --color-bg-black: #000;  /* absolute black (for overlays) */
   --color-surface: #1e1e23;   /* main card / panel background */
-  --color-surface-2: #28282e; /* elevated surface (slightly lighter) */
+  --color-bg-gray: #27272a; /* elevated surface (slightly lighter) */
   --color-elevated: #35353d;  /* used for headers, top bars */
   --color-overlay: #0a0a0c;   /* modal/backdrop tint */
 
@@ -17,7 +17,7 @@
   --color-subtle: #cccad1;    /* very subtle text for super-light UI */
   --color-muted: #4d4d59;     /* secondary, muted text & labels */
   --color-gray: #42424c;      /* neutral gray used for borders/inputs */
-  --color-light-gray: #718096; /* light gray for backgrounds and borders */
+  --color-light-gray: #9CA3AF; /* light gray for backgrounds and borders */
 
   --color-border: #2e2e35;    /* subtle border color for cards/inputs */
 
