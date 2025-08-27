@@ -36,15 +36,15 @@ const features = [
 
 const WhyClearSignal = () => {
   return (
-    <section className="bg-var(--color-bg) text-white py-12">
+    <section className="bg-[var(--color-bg-black)] text-white py-12">
       <h2 className="text-center text-2xl font-bold mb-10">Why Clear-Signal?</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto px-8">
         {features.map((item, index) => (
           <div
             key={index}
-            className="p-6 rounded-2xl border border-[var(--color-fg)] shadow hover:bg-[var(--color-fg)]/10 transition cursor-pointer"
+            className="p-6 py-12 rounded-3xl border border-[var(--color-fg)] shadow hover:bg-gradient-to-br hover:from-[var(--color-gray)]/50 hover:to-[var(--color-bg-black)] hover:scale-105 transition duration-700 cursor-pointer"
           >
-            <div className="flex items-center mb-8 text-fg">{item.icon}</div>
+            <div className="ml-3 flex items-center mb-8 text-fg">{item.icon}</div>
             <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
             <p className="text-sm text-gray-400">{item.description}</p>
           </div>

@@ -60,7 +60,7 @@ const Navbar = () => {
   const userLabel = user?.name || user?.username || user?.email || "Profile";
 
   return (
-    <nav className="font-code bg-[var(--bg-page)] border-b-2 border-[var(--color-muted)]">
+    <nav className="font-code bg-[var(--color-bg-black)] border-b-2 border-[var(--color-muted)]">
       <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -80,31 +80,31 @@ const Navbar = () => {
             <div className="flex gap-6 items-center">
               <Link
                 to="/"
-                className="text-[var(--text-default)] hover:text-[var(--brand)] transition"
+                className="text-[var(--text-gray)] hover:text-[var(--text-default)] transition"
               >
                 Home
               </Link>
               <Link
                 to="/problems"
-                className="text-[var(--text-default)] hover:text-[var(--brand)] transition"
+                className="text-[var(--text-gray)] hover:text-[var(--text-default)] transition"
               >
                 Problems
               </Link>
               <Link
                 to="/collections"
-                className="text-[var(--text-default)] hover:text-[var(--brand)] transition"
+                className="text-[var(--text-gray)] hover:text-[var(--text-default)] transition"
               >
                 Collections
               </Link>
               <Link
                 to="/signal0"
-                className="text-[var(--text-default)] hover:text-[var(--brand)] transition"
+                className="text-[var(--text-gray)] hover:text-[var(--text-default)] transition"
               >
                 Signal-0
               </Link>
               <Link
                 to="/leaderboard"
-                className="text-[var(--text-default)] hover:text-[var(--brand)] transition"
+                className="text-[var(--text-gray)] hover:text-[var(--text-default)] transition"
               >
                 Leaderboard
               </Link>

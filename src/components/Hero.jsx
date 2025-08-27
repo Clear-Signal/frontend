@@ -1,254 +1,335 @@
-import { useEffect, useRef } from "react";
+// Hero.jsx
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
+/**
+ * Hero with dotted background:
+ *  - same-size / same-color dots
+ *  - smooth position-based parallax (follows pointer direction slowly)
+ *  - morphs into a circular arrangement when hovering the Get Started button
+ *  - dotted SVG ring that fades in when circle mode is active
+ */
 const Hero = () => {
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
+  const roRef = useRef(null);
+
+  // particle store
   const particlesRef = useRef([]);
-  const pointerRef = useRef({ x: -9999, y: -9999, active: false });
+  // parallax offset (eased)
+  const offsetRef = useRef({ x: 0, y: 0 });
+  // last pointer position relative to container
+  const pointerPosRef = useRef({ x: null, y: null, inside: false });
+  // whether circle morph is active (state)
+  const [circleMode, setCircleMode] = useState(false);
+  // mirror state into a ref so the animation closure can read latest value
+  const circleModeRef = useRef(circleMode);
+
+  // constants for appearance
+  const DOT_COLOR_RGB = "255,255,255"; // r,g,b - single color for all dots
+  const DOT_RADIUS = 2.1; // identical radius for all particles
+  const DOT_ALPHA = 0.9; // identical alpha for all particles
+
+  // update ref whenever circleMode changes so main animation sees it
+  useEffect(() => {
+    circleModeRef.current = circleMode;
+  }, [circleMode]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
     const canvas = canvasRef.current;
     const container = containerRef.current;
     if (!canvas || !container) return;
-    const ctx = canvas.getContext("2d", { alpha: true });
 
-    // read colors from CSS variables (falls back to hardcoded if missing)
-    const style = getComputedStyle(document.documentElement);
-    const BRAND =
-      style.getPropertyValue("--brand")?.trim() ||
-      style.getPropertyValue("--color-primary")?.trim() ||
-      "#d9a200";
-    const ACCENT =
-      style.getPropertyValue("--accent")?.trim() ||
-      style.getPropertyValue("--color-accent")?.trim() ||
-      "#ff8a3d";
-    const SURFACE2 =
-      style.getPropertyValue("--card-bg-2")?.trim() ||
-      style.getPropertyValue("--color-surface-2")?.trim() ||
-      "#202227";
-    const FG = style.getPropertyValue("--text-default")?.trim() || "#f5f5f5";
+    const ctx = canvas.getContext("2d", { alpha: true });
+    if (!ctx) {
+      console.warn("2D canvas context not available");
+      return;
+    }
 
     let dpr = Math.max(1, window.devicePixelRatio || 1);
 
-    // helper to size canvas to container
+    // safe resize and transform setup to avoid DOMMatrixInit errors
     const resizeCanvas = () => {
       const rect = container.getBoundingClientRect();
       dpr = Math.max(1, window.devicePixelRatio || 1);
+
       canvas.width = Math.max(1, Math.floor(rect.width * dpr));
       canvas.height = Math.max(1, Math.floor(rect.height * dpr));
       canvas.style.width = `${Math.floor(rect.width)}px`;
       canvas.style.height = `${Math.floor(rect.height)}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Try to set transform safely:
+      try {
+        if (typeof ctx.resetTransform === "function") {
+          ctx.resetTransform();
+          ctx.scale(dpr, dpr);
+        } else if (typeof ctx.setTransform === "function") {
+          // some runtimes may validate setTransform differently; wrap in try/catch
+          try {
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          } catch (err) {
+            try {
+              ctx.setTransform(1, 0, 0, 1, 0, 0);
+              ctx.scale(dpr, dpr);
+            } catch (err2) {
+              // fallback to scale (may multiply transforms but prevents crash)
+              try {
+                ctx.scale(dpr, dpr);
+              } catch (err3) {
+                console.warn("canvas transform fallback failed", err3);
+              }
+            }
+          }
+        } else if (typeof ctx.scale === "function") {
+          ctx.scale(dpr, dpr);
+        }
+      } catch (err) {
+        // final fallback
+        try {
+          ctx.scale(dpr, dpr);
+        } catch (ignored) {}
+      }
     };
 
-    resizeCanvas(); // initial
+    // create a regular grid of particles
+    const initParticles = () => {
+      const rect = container.getBoundingClientRect();
+      const w = rect.width * 1.25;
+      const h = rect.height * 1.25;
 
-    // particle system tuned to area
-    function createParticlesForArea(area) {
-      // density factor: particles per 100k px^2
-      const density = 0.0006; // tweaked for visuals/perf
-      const targetCount = Math.max(24, Math.floor(area * density));
+      // spacing controls density (lower spacing => more dots)
+      const spacing = Math.max(28, Math.floor(Math.min(w, h) / 18));
+      const jitter = spacing * 0.05;
+
+      const cols = Math.ceil(w / spacing) + 2;
+      const rows = Math.ceil(h / spacing) + 2;
       const arr = [];
-      for (let i = 0; i < targetCount; i++) arr.push(new Particle());
-      return arr;
-    }
-
-    // basic random helpers
-    const rand = (min, max) => Math.random() * (max - min) + min;
-    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-
-    // Particle class
-    function Particle() {
-      // initialized later with actual size
-      this.init = () => {
-        const rect = container.getBoundingClientRect();
-        this.x = rand(0, rect.width);
-        this.y = rand(0, rect.height);
-        this.radius = rand(0.9, 3.2);
-        this.vx = rand(-0.25, 0.25);
-        this.vy = rand(-0.25, 0.25);
-        this.baseAlpha = rand(0.18, 0.9);
-        // pick a subtle color mix from brand/accent/surface
-        this.hueChoice = Math.random();
-        // precompute a tiny gradient for nicer look (will be recreated on draw scale)
-      };
-
-      this.update = (dt) => {
-        // basic movement
-        this.x += this.vx * dt;
-        this.y += this.vy * dt;
-
-        // keep inside bounds softly
-        const rect = container.getBoundingClientRect();
-        if (this.x < -10) this.x = rect.width + 10;
-        if (this.x > rect.width + 10) this.x = -10;
-        if (this.y < -10) this.y = rect.height + 10;
-        if (this.y > rect.height + 10) this.y = -10;
-
-        // pointer interaction: gentle repulsion
-        if (pointerRef.current.active) {
-          const dx = this.x - pointerRef.current.x;
-          const dy = this.y - pointerRef.current.y;
-          const dist2 = dx * dx + dy * dy;
-          const minR = 40;
-          if (dist2 < 9000) {
-            const dist = Math.sqrt(dist2) || 0.001;
-            const force = clamp((100 - dist) / 100, -0.6, 1.2);
-            // apply small push away from pointer
-            this.vx += (dx / dist) * 0.02 * force;
-            this.vy += (dy / dist) * 0.02 * force;
-            //limit speeds
-            this.vx = clamp(this.vx, -1.2, 1.2);
-            this.vy = clamp(this.vy, -1.2, 1.2);
-          }
+      let idx = 0;
+      for (let r = -1; r < rows - 1; r++) {
+        for (let c = -1; c < cols - 1; c++) {
+          const baseX =
+            c * spacing +
+            spacing / 2 +
+            (w - cols * spacing) / 2 +
+            (Math.random() - 0.5) * jitter;
+          const baseY =
+            r * spacing +
+            spacing / 2 +
+            (h - rows * spacing) / 2 +
+            (Math.random() - 0.5) * jitter;
+          arr.push({
+            idx: idx++,
+            baseX,
+            baseY,
+            x: baseX,
+            y: baseY,
+            // same radius and alpha for all particles
+            radius: DOT_RADIUS,
+            alpha: DOT_ALPHA,
+            targetX: baseX,
+            targetY: baseY,
+            isCircleTargetsSet: false,
+          });
         }
+      }
+      particlesRef.current = arr;
+    };
 
-        // slight friction
-        this.vx *= 0.995;
-        this.vy *= 0.995;
-      };
+    // compute circle targets for morph
+    const computeCircleTargets = () => {
+      const rect = container.getBoundingClientRect();
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const rad = Math.min(rect.width, rect.height) * 0.58; // radius
+      const len = particlesRef.current.length;
+      // map evenly around circle; keep a tiny jitter to avoid perfect mechanical dots
+      for (let i = 0; i < len; i++) {
+        const t = i / len;
+        const angle = t * Math.PI * 2;
+        const jitterR = (Math.random() - 0.5) * 5; // small radial jitter
+        const px = cx + (rad ) * Math.cos(angle);
+        const py = cy + (rad) * Math.sin(angle);
+        particlesRef.current[i].targetX = px;
+        particlesRef.current[i].targetY = py;
+      }
+    };
 
-      this.draw = (ctx) => {
-        // choose color — gradient between brand and accent, faint
-        let color;
-        if (this.hueChoice < 0.45) {
-          color = `rgba(60, 60, 60, ${this.baseAlpha})`; // dark gray
-        } else if (this.hueChoice < 0.75) {
-          color = `rgba(120, 120, 120, ${this.baseAlpha})`; // medium gray
-        } else {
-          color = `rgba(200, 200, 200, ${this.baseAlpha * 0.8})`; // light gray
-        }
+    const resetTargetsToBase = () => {
+      for (const p of particlesRef.current) {
+        p.targetX = p.baseX;
+        p.targetY = p.baseY;
+      }
+    };
 
-        // draw soft circle
-        ctx.beginPath();
-        ctx.fillStyle = color;
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fill();
-      };
+    // initial sizing & particles
+    resizeCanvas();
+    initParticles();
 
-      this.init();
-    }
-
-    // init particles
-    const area =
-      container.getBoundingClientRect().width *
-      container.getBoundingClientRect().height;
-    particlesRef.current = createParticlesForArea(area);
-
-    // handle pointer events: pointermove covers mouse + touch
+    // pointer handling (store pointer pos inside container)
     const onPointerMove = (e) => {
       const rect = container.getBoundingClientRect();
-      pointerRef.current.x = e.clientX - rect.left;
-      pointerRef.current.y = e.clientY - rect.top;
-      pointerRef.current.active = true;
+      pointerPosRef.current.x = e.clientX - rect.left;
+      pointerPosRef.current.y = e.clientY - rect.top;
+      pointerPosRef.current.inside = true;
     };
     const onPointerLeave = () => {
-      pointerRef.current.active = false;
-      // move pointer far away so particles eventually return to natural motion
-      pointerRef.current.x = -9999;
-      pointerRef.current.y = -9999;
+      pointerPosRef.current.inside = false;
     };
-
     container.addEventListener("pointermove", onPointerMove, { passive: true });
-    container.addEventListener("pointerleave", onPointerLeave, {
-      passive: true,
-    });
-    container.addEventListener("pointercancel", onPointerLeave, {
-      passive: true,
-    });
+    container.addEventListener("pointerleave", onPointerLeave, { passive: true });
+    container.addEventListener("pointercancel", onPointerLeave, { passive: true });
 
-    // ResizeObserver to resize canvas and re-create particle count on resize
+    // ResizeObserver: resize canvas + re-init particles; recompute circle targets if needed
     const ro = new ResizeObserver(() => {
       resizeCanvas();
-      // re-create particles with new density
-      const rect = container.getBoundingClientRect();
-      particlesRef.current = createParticlesForArea(rect.width * rect.height);
+      initParticles();
+      if (circleModeRef.current) {
+        computeCircleTargets();
+        particlesRef.current.forEach((p) => (p.isCircleTargetsSet = true));
+      } else {
+        // ensure base targets
+        resetTargetsToBase();
+        particlesRef.current.forEach((p) => (p.isCircleTargetsSet = false));
+      }
     });
     ro.observe(container);
+    roRef.current = ro;
 
     // animation loop
     let lastTs = performance.now();
+
     const tick = (ts) => {
-      const dt = clamp((ts - lastTs) / 16.67, 0.2, 2.2); // normalized to ~60FPS frame length
+      const dt = Math.max(0.6, Math.min(2.5, (ts - lastTs) / (1000 / 60)));
       lastTs = ts;
 
-      // clear with subtle surface tint so particles look layered
+      // clear canvas
       ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
 
-      // slight overlay vignette for depth (optional subtle)
-      ctx.save();
-      // draw particles
-      const particles = particlesRef.current;
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        p.update(dt);
-        p.draw(ctx);
+      // if circleMode is active (read from ref), ensure targets are computed
+      if (circleModeRef.current) {
+        if (!particlesRef.current[0]?.isCircleTargetsSet) {
+          computeCircleTargets();
+          particlesRef.current.forEach((p) => (p.isCircleTargetsSet = true));
+        }
+      } else {
+        if (particlesRef.current[0]?.isCircleTargetsSet) {
+          resetTargetsToBase();
+          particlesRef.current.forEach((p) => (p.isCircleTargetsSet = false));
+        }
       }
 
-      // optionally draw faint connecting lines for nearby particles (commented for perf)
-      // drawLinks(ctx, particles);
+      // PARALLAX: position-based, follows pointer relative to center,
+      // eased so movement is smooth and slow
+      const rect = container.getBoundingClientRect();
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const ptr = pointerPosRef.current;
+      const PARALLAX_FACTOR = 0.03; // how strongly pointer offset affects target
+      const EASE = 0.08; // easing for offset towards target
 
-      ctx.restore();
+      let targetOffX = 0;
+      let targetOffY = 0;
+      if (ptr.inside && ptr.x !== null) {
+        targetOffX = (ptr.x - cx) * PARALLAX_FACTOR;
+        targetOffY = (ptr.y - cy) * PARALLAX_FACTOR;
+      }
+      // ease current offset towards target
+      offsetRef.current.x += (targetOffX - offsetRef.current.x) * EASE;
+      offsetRef.current.y += (targetOffY - offsetRef.current.y) * EASE;
 
+      const offX = offsetRef.current.x;
+      const offY = offsetRef.current.y;
+
+      // draw every particle, lerping toward target for smooth circle morph
+      for (let i = 0; i < particlesRef.current.length; i++) {
+        const p = particlesRef.current[i];
+
+        const targetX = p.targetX;
+        const targetY = p.targetY;
+
+        // lerp factor depends on mode: slightly faster when morphing into circle
+        const lerpFactor = circleModeRef.current ? 0.025 : 0.025;
+
+        p.x += (targetX - p.x) * lerpFactor;
+        p.y += (targetY - p.y) * lerpFactor;
+
+
+        const drawX = p.x + offX;
+        const drawY = p.y + offY;
+
+        ctx.beginPath();
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = `rgba(${DOT_COLOR_RGB},1)`;
+        ctx.arc(drawX, drawY, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.globalAlpha = 1;
       rafRef.current = requestAnimationFrame(tick);
     };
 
     rafRef.current = requestAnimationFrame(tick);
 
-    // cleanup on unmount
+    // cleanup
     return () => {
-      cancelAnimationFrame(rafRef.current);
-      ro.disconnect();
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (roRef.current) roRef.current.disconnect();
       container.removeEventListener("pointermove", onPointerMove);
       container.removeEventListener("pointerleave", onPointerLeave);
       container.removeEventListener("pointercancel", onPointerLeave);
     };
+    // run once
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // When circleMode toggles we don't need to call computeCircleTargets from outside
+  // because the animation loop detects circleModeRef.current and computes there.
+  // However, update circleModeRef so the loop sees the change immediately.
+  useEffect(() => {
+    circleModeRef.current = circleMode;
+  }, [circleMode]);
 
   return (
     <section
       ref={containerRef}
-      className="relative overflow-hidden bg-[var(--bg-page)] text-[var(--text-default)]"
+      className="relative overflow-hidden bg-[var(--color-bg-black)] text-white min-h-[72vh] lg:min-h-screen flex items-center"
       aria-label="Hero"
     >
-      {/* particle canvas that fills the hero container */}
+      {/* canvas */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
+        aria-hidden
       />
 
-      <div className="max-w-7xl mx-auto px-6 py-20 lg:py-28 flex flex-col items-center gap-12">
-        <div className="flex-1 text-center space-y-6 z-10">
-          <h1 className="text-4xl sm:text-5xl lg:text-8xl font-extrabold leading-tight tracking-tight">
-            Clear <span className="text-[var(--brand)]">Signal</span>
-          </h1>
+      {/* content */}
+      <div className="relative z-10 w-full max-w-6xl mx-auto px-6 py-20 flex flex-col items-center text-center">
+        <h1 className="font-bold text-[4.2rem] leading-[0.9] lg:text-[6rem] lg:leading-[0.88] tracking-tight">
+          <span className="inline-block mr-2">Clear-</span>
+          <span className="inline-block">Signal</span>
+          <span
+            className="inline-block min-w-3 min-h-22 rounded-sm align-middle ml-3 bg-slate-400/50 animate-pulse "
+          />
+        </h1>
 
-          <p className="text-center text-lg text-[var(--text-fg)] max-w-xl mx-auto">
-            Sharpen your skills, solve real-world problems, and climb the
-            leaderboard. Join a vibrant coding community built for learning and
-            career growth.
-          </p>
+        <p className="mt-6 max-w-xl text-[1.1rem] text-sky-300/90 font-medium tracking-wide">
+          Practice Machine Learning and Data Science
+          <br />
+          problems
+        </p>
 
-          <div className="flex justify-center gap-4">
-            <Link
-              to="/problems"
-              className="inline-flex items-center gap-3 px-6 py-3 text-xl rounded-full border border-[var(--text-default)] text-[var(--text-default)] font-semibold shadow-lg hover:brightness-105 transition hover:bg-[var(--color-fg)]/10"
-            >
-              Get Started
-            </Link>
-
-            <Link
-              to="/collections"
-              className="hidden sm:inline-flex items-center gap-3 px-5 py-3 rounded-full border border-[var(--panel-border)] text-[var(--bg-page)] bg-[var(--text-default)] hover:bg-[var(--color-fg)]/70 transition"
-            >
-              Browse Collections
-            </Link>
-          </div>
+        <div className="mt-12">
+          {/* Button: hovering this button toggles circle mode */}
+          <Link
+            to="/problems"
+            onPointerEnter={() => setCircleMode(true)}
+            onPointerLeave={() => setCircleMode(false)}
+            className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border border-white/30 bg-[var(--color-bg-black)]/60 text-white font-semibold text-lg transition-transform transform hover:scale-105 hover:bg-white/10 duration-300 shadow-md"
+          >
+            Get Started
+          </Link>
         </div>
       </div>
     </section>

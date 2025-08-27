@@ -34,9 +34,6 @@ export default function Home() {
       <Hero />
       <LearningCards />
       <WhyClearSignal />
-      <footer className="py-12 text-[var(--text-muted)] text-center">
-        © {new Date().getFullYear()} Clear Signal — Practice Machine Learning & Data Science
-      </footer>
     </main>
   );
 }

@@ -31,22 +31,22 @@ const topics = [
 
 const LearningCards = () => {
   return (
-    <div className="text-white py-12">
+    <div className="bg-[var(--color-bg-black)] text-white py-12">
       <h2 className="text-center text-2xl font-bold mb-8">What Will You Learn?</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto px-8">
         {topics.map((item, index) => (
           <div
             key={index}
-            className="rounded-2xl border border-[var(--color-fg)] p-6 shadow-md hover:bg-[var(--color-fg)]/10 hover:scale-105 transition cursor-pointer"
+            className="rounded-2xl border border-[var(--color-fg)] px-6 py-9 shadow-md hover:bg-[var(--color-fg)]/10 transition duration-500 cursor-pointer"
           >
-            <div className="flex justify-center items-center w-12 h-12 rounded-full bg-[var(--card-bg-2)] mb-4">
+            <div className="flex justify-center items-center w-12 h-12 rounded-full text-[var(--card-bg)] bg-[var(--text-default)] mb-4">
               {item.icon}
             </div>
             <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
             <p className="text-sm text-gray-400 mb-4">{item.description}</p>
             <Link
               to={item.link}
-              className="hover:underline flex items-center gap-1"
+              className="hover:translate-x-2 transition flex items-center gap-1"
             >
               Learn more →
             </Link>
