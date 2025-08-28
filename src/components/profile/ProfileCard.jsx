@@ -10,7 +10,7 @@ export default function ProfileCard({ user, stats, onLogout }) {
 
   return (
     <aside className="lg:col-span-4">
-      <div className="rounded-xl bg-[var(--color-bg)] border border-[var(--color-border)] p-6 shadow-sm flex flex-col gap-6">
+      <div className="rounded-xl bg-zinc-800/50 border border-[var(--color-border)] p-6 shadow-sm flex flex-col gap-6">
         {/* Top */}
         <div className="flex items-center gap-4">
           {avatar ? (
@@ -38,22 +38,22 @@ export default function ProfileCard({ user, stats, onLogout }) {
         </div>
 
         {/* Small stat grid */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="rounded-lg p-4 bg-[var(--color-bg)] border border-[var(--color-border)]">
+        <div className="grid grid-cols-2 gap-4 ">
+          <div className="rounded-lg p-4 bg-zinc-800 border border-[var(--color-border)] hover:-translate-y-1 transition duration-300">
             <p className="text-xs text-[var(--color-fg)]">Problems Solved</p>
             <div className="text-2xl font-bold mt-2 text-[var(--color-fg)]">
               {stats.problemsSolved}
             </div>
           </div>
 
-          <div className="rounded-lg p-4 bg-[var(--color-bg)] border border-[var(--color-border)]">
+          <div className="rounded-lg p-4 bg-zinc-800 border border-[var(--color-border)] hover:-translate-y-1 transition duration-300">
             <p className="text-xs text-[var(--color-fg)]">Current Streak</p>
             <div className="text-2xl font-bold mt-2 text-[var(--color-fg)]">
               {stats.currentStreakDays} days
             </div>
           </div>
 
-          <div className="col-span-2 rounded-lg p-6 bg-[var(--color-bg)] border border-[var(--color-border)] flex items-center justify-between">
+          <div className="col-span-2 rounded-lg p-6 bg-zinc-800 border border-[var(--color-border)] flex items-center justify-between hover:-translate-y-1 transition duration-300">
             <div>
               <p className="text-xs text-[var(--color-fg)]">Favorite Category</p>
               <div className="text-sm font-semibold mt-2 text-[var(--color-fg)]">
@@ -62,8 +62,8 @@ export default function ProfileCard({ user, stats, onLogout }) {
             </div>
           </div>
 
-          <div className="col-span-2 rounded-xl p-4 border border-[var(--color-border)] flex items-center justify-between" style={{ backgroundColor: "transparent" }}>
-            <div className="flex-1 p-4 rounded-lg" style={{ backgroundColor: "rgba(255,255,255,0.02)" }}>
+          <div className="col-span-2 rounded-xl border border-[var(--color-border)] flex items-center justify-between hover:-translate-y-1 transition duration-300" style={{ backgroundColor: "transparent" }}>
+            <div className="flex-1 p-4 rounded-lg bg-zinc-800 ">
               <p className="text-xs text-[var(--color-fg)]">Maximum Flame Score Attained</p>
               <div className="text-3xl font-bold mt-2 flex items-center gap-3 text-[var(--color-fg)]">
                 <FaFire className="text-[var(--color-accent)]" />
@@ -77,7 +77,7 @@ export default function ProfileCard({ user, stats, onLogout }) {
         <div>
           <button
             onClick={() => onLogout && onLogout()}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-[var(--color-muted)] hover:bg-[var(--color-bg)]/60 border border-[var(--color-border)] text-[var(--color-fg)]"
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-zinc-800 hover:bg-red-800/50 border border-[var(--color-border)] text-[var(--color-fg)] hover:scale-105 transition duration-500 cursor-pointer"
           >
             <CiLogout className="text-[var(--color-fg)]" />
             Logout

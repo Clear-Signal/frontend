@@ -56,3 +56,21 @@
   --success: var(--color-success);
   --danger: var(--color-error);
 }
+
+@layer utilities {
+  .grid-bg {
+    /* positioning handled by Tailwind; only visuals here */
+    background-image:
+      linear-gradient(to right, #000 1px, transparent 1px),
+      linear-gradient(to bottom, #000 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, #000 70%, transparent 100%);
+  }
+
+  /* dark-mode override */
+  .dark .grid-bg {
+    background-image:
+      linear-gradient(to right, #23272e 1px, transparent 1px),
+      linear-gradient(to bottom, #23272e 1px, transparent 1px);
+  }
+}

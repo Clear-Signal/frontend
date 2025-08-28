@@ -23,22 +23,22 @@ const DATA = [
 function initials(name) {
   if (!name) return "U";
   const parts = name.trim().split(" ").filter(Boolean);
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return (parts[0][0] + parts[1][0]).toUpperCase();
+  if (parts.length === 1) return parts[0].slice(0, 1).toUpperCase();
+  return (parts[0][0]).toUpperCase();
 }
 
 const TOP_STYLES = [
   {
-    bg: "linear-gradient(90deg,#f6d365,#fda085)", // gold-ish
-    text: "text-black",
+    bg: "linear-gradient(90deg, #FFD700, #FFCC66)", // gold
+    text: "text-black text-semibold text-2xl",
   },
   {
-    bg: "linear-gradient(90deg,#e6e6e6,#cfcfcf)", // silver-ish
-    text: "text-black",
+    bg: "linear-gradient(90deg, #E6E6E6, #C0C0C0)", // silver
+    text: "text-black text-semibold text-2xl",
   },
   {
-    bg: "linear-gradient(90deg,#f3e3d7,#f9efe6)", // bronze/light
-    text: "text-black",
+    bg: "linear-gradient(90deg, #F5F5DC, #EED9C4)", // bronze / beige
+    text: "text-black text-semibold text-2xl",
   },
 ];
 
@@ -83,20 +83,20 @@ export default function LeaderboardPage() {
                 return (
                   <li
                     key={row.id}
-                    className={`flex items-center m-4 rounded-xl gap-8 px-4 py-3 md:px-6 md:py-4 transition-colors cursor-pointer ${
-                      rank <= 3 ? "" : "bg-[var(--color-bg-gray)] hover:scale-101 hover:shadow-xl"
+                    className={`flex items-center m-4 rounded-xl gap-8 px-4 py-3 md:px-6 md:py-4 transition-colors cursor-pointer hover:scale-101 hover:shadow-xl ${
+                      rank <= 3 ? "" : "bg-[var(--color-bg-gray)]"
                     }`}
                     role="listitem"
+                    style={
+                          topStyle
+                            ? { background: topStyle.bg, color: "#000" }
+                            : {}
+                        }
                   >
                     {/* Rank */}
                     <div className="w-14 flex items-center justify-center">
                       <div
                         className={`w-10 h-10  flex items-center justify-center font-semibold text-sm`}
-                        style={
-                          topStyle
-                            ? { background: topStyle.bg, color: "#000" }
-                            : {}
-                        }
                         aria-hidden
                       >
                         {rank <= 3 ? (
@@ -112,13 +112,13 @@ export default function LeaderboardPage() {
                     {/* Avatar + name */}
                     <div className="flex-1 flex items-center gap-4 min-w-0">
                       <div
-                        className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold bg-gray text-[var(--color-fg)]"
+                        className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold ${rank <= 3 ? "bg-gray/20 text-black" : "bg-gray  text-[var(--color-fg)]"}`}
                       >
                         {initials(row.name)}
                       </div>
 
                       <div className="min-w-0">
-                        <div className="font-medium truncate">{row.name}</div>
+                        <div className="font-bold truncate">{row.name}</div>
                         {/* small extra text or country can go here */}
                       </div>
                     </div>
@@ -126,7 +126,7 @@ export default function LeaderboardPage() {
                     {/* score */}
                     <div className="w-28 text-right">
                       <div
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold bg-gray"
+                        className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold ${rank<=3 ? "bg-gray/20" : "bg-gray"}`}
                       >
                         <span className="font-mono">{row.score.toLocaleString()}</span>
                         <FaFire className="text-[var(--color-accent)]" />

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaBars, FaTimes, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
+import { FaBars, FaTimes, FaUserCircle, FaSignOutAlt, FaBell, FaFire } from "react-icons/fa";
 import Logo from "../../public/Logo.jpg";
 import { CiLogin } from "react-icons/ci";
 import { LiaDiscord } from "react-icons/lia";
@@ -56,125 +56,139 @@ const Navbar = ({ activeNav, setActiveNav }) => {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // helper: display name fallback
   const userLabel = user?.name || user?.username || user?.email || "Profile";
 
   return (
-    <nav className="font-code py-1 bg-[var(--color-bg-black)] border-b-2 border-[var(--color-gray)]">
-      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3">
+    <nav className="font-code py-2 bg-[var(--color-bg-black)] border-b border-[var(--color-gray)]">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14">
+          {/* Left: Logo */}
+          <Link to="/" className="flex gap-3" onClick={() => setActiveNav("Home")}>
             <img
               src={Logo}
-              alt="Clear Signal Logo"
-              className="h-8 w-8 rounded-full object-cover border border-[var(--panel-border)]"
+              alt="Logo"
+              className="h-9 w-9 rounded-full object-cover border border-[var(--panel-border)]"
             />
-            <h1 className="text-[var(--text-default)] text-lg md:text-xl font-bold sm:min-w-[180px]" onClick={() => setActiveNav("Home")}>
-              Clear-Signal
-            </h1>
+            <h1 className="text-[var(--text-default)] text-lg font-semibold hidden sm:inline">Clear-Signal</h1>
           </Link>
 
-          {/* Desktop menu */}
-          <div className="hidden text-lg lg:flex lg:items-center lg:gap-8 w-full">
+          {/* Center: primary nav (desktop only) */}
+          <div className="hidden lg:flex lg:items-center lg:gap-8 flex-1 pl-6">
             <div className="flex gap-6 items-center">
-              {/* <Link
-                to="/"
-                className="text-[var(--text-gray)] hover:text-[var(--text-default)] transition"
-              >
-                Home
-              </Link> */}
               <Link
                 to="/problems"
-                className={` hover:text-[var(--text-default)] transition ${
+                className={`transition text-lg ${
                   activeNav === "Problems" ? "text-[var(--text-default)] underline" : "text-[var(--text-gray)]"
                 }`}
                 onClick={() => setActiveNav("Problems")}
               >
                 Problems
               </Link>
+
               <Link
                 to="/collections"
-                className={` hover:text-[var(--text-default)] transition ${
+                className={`transition text-lg ${
                   activeNav === "Collections" ? "text-[var(--text-default)] underline" : "text-[var(--text-gray)]"
                 }`}
                 onClick={() => setActiveNav("Collections")}
               >
                 Collections
               </Link>
-              <Link
-                to="/signal0"
-                className={` hover:text-[var(--text-default)] transition ${
-                  activeNav === "Signal-0" ? "text-[var(--text-default)] underline" : "text-[var(--text-gray)]"
-                }`}
-                onClick={() => setActiveNav("Signal-0")}
-              >
-                Signal-0
-              </Link>
+
               <Link
                 to="/leaderboard"
-                className={` hover:text-[var(--text-default)] transition ${
+                className={`transition text-lg ${
                   activeNav === "Leaderboard" ? "text-[var(--text-default)] underline" : "text-[var(--text-gray)]"
                 }`}
                 onClick={() => setActiveNav("Leaderboard")}
               >
                 Leaderboard
               </Link>
-            </div>
-
-            <div className="ml-auto flex items-center gap-4">
-              {user ? (
-                <>
-                  <Link
-                    to="/profile"
-                    className="flex items-center gap-2 text-[var(--text-default)] hover:text-[var(--brand)] transition"
-                  >
-                    {/* If you have user.avatar, use <img src={user.avatar} .../> */}
-                    <FaUserCircle className="text-[var(--text-default)]" />
-                    <span className="hidden sm:inline truncate max-w-[200px]">{userLabel}</span>
-                  </Link>
-                  <button
-                    onClick={() => logout && logout()}
-                    className="text-[var(--text-default)] hover:text-[var(--brand)] cursor-pointer"
-                    aria-label="Logout"
-                  >
-                    <FaSignOutAlt />
-                  </button>
-                </>
-              ) : (
-                <Link
-                  to="/sign-in"
-                  className="flex items-center gap-2 px-4 py-1 rounded-full border border-[var(--color-fg)] bg-[var(--card-bg)] text-[var(--text-default)] hover:bg-[var(--color-fg)]/10 transition"
-                >
-                  <CiLogin /> <span className="hidden sm:inline">Login</span>
-                </Link>
-              )}
 
               <Link
-                to="/subscription"
-                className="px-4 py-1 rounded-full text-[var(--brand)] border border-[var(--brand)] hover:bg-[var(--brand)] hover:text-[var(--bg-page)] transition"
+                to="/signal0"
+                className={`transition text-lg ${
+                  activeNav === "Signal-0" ? "text-[var(--text-default)] underline" : "text-[var(--text-gray)]"
+                }`}
+                onClick={() => setActiveNav("Signal-0")}
               >
-                Premium
+                Signal-0
               </Link>
 
-              <a
-                href="https://discord.gg"
-                className="text-[var(--text-default)] hover:text-[var(--brand)] transition"
-              >
-                <LiaDiscord className="text-2xl" />
-              </a>
-
-              <ThemeToggle />
             </div>
+          </div>
+
+          {/* Right: actions (desktop) */}
+          <div className="hidden lg:flex items-center gap-4 ml-auto">
+            {/* Flame + count */}
+            <div className="flex justify-center items-center gap-2 px-3 py-1 rounded-full">
+              <FaFire className="text-xl text-[rgb(255,140,0)]" />
+              <span className="text-md font-medium text-[var(--text-default)]">0</span>
+            </div>
+
+            {/* Premium pill */}
+            <Link
+              to="/subscription"
+              className="px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-3"
+            >
+              <span className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-yellow-300 to-yellow-500 text-black border border-yellow-600 shadow-sm">
+                Premium
+              </span>
+            </Link>
+
+            {/* Avatar (circular) */}
+            {user ? (
+              <>
+                <Link
+                  to="/profile"
+                  className="w-10 h-10 rounded-full overflow-hidden border border-[var(--panel-border)] flex items-center justify-center"
+                >
+                  {user?.data?.profilePic ? (
+                    // if user.avatar is a URL
+                    <img src={user.data.profilePic} alt="avatar" className="w-full h-full object-cover" />
+                  ) : (
+                    <FaUserCircle className="text-[var(--text-default)] text-xl" />
+                  )}
+                </Link>
+
+                {/* Bell */}
+                <button className="p-2 rounded-full hover:bg-[var(--card-bg)] transition">
+                  <FaBell className="text-[var(--text-default)]" />
+                </button>
+
+                {/* Discord */}
+                <a href="https://discord.gg" className="p-2 rounded-full hover:bg-[var(--card-bg)] transition">
+                  <LiaDiscord className="text-[var(--text-default)] text-lg" />
+                </a>
+
+                {/* Theme toggle */}
+                <div className="p-2 rounded-full">
+                  <ThemeToggle />
+                </div>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/sign-in"
+                  className="flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--panel-border)] bg-[var(--card-bg)] text-sm"
+                >
+                  <CiLogin />
+                  <span>Login</span>
+                </Link>
+
+                <div className="p-2 rounded-full">
+                  <ThemeToggle />
+                </div>
+              </>
+            )}
           </div>
 
           {/* Mobile actions (visible on small screens) */}
           <div className="flex items-center lg:hidden gap-2">
             {user ? (
-              // show a compact profile button on mobile when logged in
               <Link
                 to="/profile"
-                className="flex items-center gap-2 text-[var(--text-default)] bg-[var(--card-bg)] px-3 py-1 rounded-full text-sm"
+                className="flex items-center gap-2 bg-gray-300 px-2 py-1 rounded-full text-sm"
                 onClick={() => setIsOpen(false)}
               >
                 <FaUserCircle />
@@ -197,7 +211,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
               aria-controls="mobile-menu"
               className="p-2 rounded-md text-[var(--text-default)] focus:outline-none focus:ring-2 focus:ring-[var(--brand)]"
             >
-              {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
+              {isOpen ? <FaTimes size={18} /> : <FaBars size={18} />}
             </button>
           </div>
         </div>
@@ -230,7 +244,6 @@ const Navbar = ({ activeNav, setActiveNav }) => {
               </div>
             )}
 
-            {/* quick logout / login action */}
             {user ? (
               <button
                 onClick={() => {
@@ -258,8 +271,9 @@ const Navbar = ({ activeNav, setActiveNav }) => {
             <Link to="/" onClick={() => setIsOpen(false)} className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10">Home</Link>
             <Link to="/problems" onClick={() => setIsOpen(false)} className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10">Problems</Link>
             <Link to="/collections" onClick={() => setIsOpen(false)} className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10">Collections</Link>
-            <Link to="/signal0" onClick={() => setIsOpen(false)} className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10">Signal-0</Link>
+            <Link to="/signal0" onClick={() => setIsOpen(false)} className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10">Deep-0</Link>
             <Link to="/leaderboard" onClick={() => setIsOpen(false)} className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10">Leaderboard</Link>
+            <Link to="/shop" onClick={() => setIsOpen(false)} className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10">Shop</Link>
           </div>
 
           <div className="border-t border-[var(--panel-border)] pt-4 flex flex-col gap-3">
@@ -282,7 +296,6 @@ const Navbar = ({ activeNav, setActiveNav }) => {
                 <a href="https://discord.gg" className="text-[var(--text-default)] hover:text-[var(--brand)] transition">
                   <LiaDiscord className="text-xl" />
                 </a>
-                {/* add other social icons if needed */}
               </div>
 
               <div>
