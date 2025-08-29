@@ -1,5 +1,5 @@
 import { useContext, useMemo, useState } from "react";
-import { FaBook, FaChartLine, FaChevronDown, FaArrowRight } from "react-icons/fa";
+import { FaBook, FaChartLine, FaChevronDown, FaArrowRight, FaCheckCircle } from "react-icons/fa";
 import { AuthContext } from "../stores/authStore";
 import MiniCalendar from "../components/MiniCalendar";
 import { Listbox } from "@headlessui/react";
@@ -185,7 +185,7 @@ export default function ProblemsPage() {
                     ) : (
                       filtered.map((p) => (
                         <tr key={p._id} className="bg-zinc-900 transition cursor-pointer hover:bg-zinc-800" onClick={() => navigate && navigate(`/problems/${p._id}`)}>
-                          <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">{p._id.slice(-5).toUpperCase()}</td>
+                          <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">{p.problemId}</td>
                           <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">{p.title}</td>
                           <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">
                             <span
@@ -203,7 +203,7 @@ export default function ProblemsPage() {
                           </td>
                           <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">{p.category}</td>
                           <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">
-                            <span className="text-[var(--color-fg)] text-xs">{p.status}</span>
+                            <span className="text-[var(--color-fg)] text-center text-xs">{p.status.toLowerCase() === "solved" ? <FaCheckCircle color="green" size={20}/> : ""}</span>
                           </td>
                         </tr>
                       ))
