@@ -15,6 +15,7 @@ import ProblemSolver from './pages/ProblemPage.jsx'
 import Signal0 from './pages/Signal0.jsx'
 import ForgotPassword from './pages/ForgotPassword.jsx'
 import ResetPassword from './pages/ResetPassword.jsx'
+import AdminDashboard from './pages/Dashboard.jsx'
 
 const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
         path: '/collections',
         element: <CollectionsPage />,
       },
+      // {
+      //   path: '/dashboard',
+      //   element: <AdminDashboard />,
+      // },
       {
         path: '*',
         element: <PageNotFound />,

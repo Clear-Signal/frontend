@@ -9,14 +9,18 @@ import { AuthContext } from "../stores/authStore";
 
 const Navbar = ({ activeNav, setActiveNav }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const menuRef = useRef(null);
   const btnRef = useRef(null);
+  const profileRef = useRef(null);
+  const profileBtnRef = useRef(null);
   const location = useLocation();
 
   const { user, logout } = useContext(AuthContext);
 
   useEffect(() => {
     setIsOpen(false);
+    setIsProfileOpen(false);
   }, [location]);
 
   useEffect(() => {
@@ -30,10 +34,31 @@ const Navbar = ({ activeNav, setActiveNav }) => {
       ) {
         setIsOpen(false);
       }
+      // close profile dropdown if click outside of it
+      if (
+        isProfileOpen &&
+        profileRef.current &&
+        !profileRef.current.contains(e.target) &&
+        profileBtnRef.current &&
+        !profileBtnRef.current.contains(e.target)
+      ) {
+        setIsProfileOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
+  }, [isOpen, isProfileOpen]);
+
+  // close profile dropdown on Escape
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape") {
+        setIsProfileOpen(false);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -63,7 +88,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           {/* Left: Logo */}
-          <Link to="/" className="flex gap-3" onClick={() => setActiveNav("Home")}>
+          <Link to="/" className="flex items-center gap-3" onClick={() => setActiveNav("Home")}>
             <img
               src={Logo}
               alt="Logo"
@@ -114,7 +139,6 @@ const Navbar = ({ activeNav, setActiveNav }) => {
               >
                 Signal-0
               </Link>
-
             </div>
           </div>
 
@@ -136,50 +160,98 @@ const Navbar = ({ activeNav, setActiveNav }) => {
               </span>
             </Link>
 
-            {/* Avatar (circular) */}
+            {/* Avatar (circular) with dropdown */}
             {user ? (
-              <>
-                <Link
-                  to="/profile"
-                  className="w-10 h-10 rounded-full overflow-hidden border border-[var(--panel-border)] flex items-center justify-center"
+              <div className="relative" ref={profileRef}>
+                <button
+                  ref={profileBtnRef}
+                  onClick={() => setIsProfileOpen((s) => !s)}
+                  aria-expanded={isProfileOpen}
+                  aria-controls="profile-menu"
+                  className="w-10 h-10 rounded-full overflow-hidden border border-[var(--panel-border)] flex items-center justify-center cursor-pointer"
                 >
                   {user?.data?.profilePic ? (
-                    // if user.avatar is a URL
                     <img src={user.data.profilePic} alt="avatar" className="w-full h-full object-cover" />
                   ) : (
                     <FaUserCircle className="text-[var(--text-default)] text-xl" />
                   )}
-                </Link>
-
-                {/* Bell */}
-                <button className="p-2 rounded-full hover:bg-[var(--card-bg)] transition">
-                  <FaBell className="text-[var(--text-default)]" />
                 </button>
 
-                {/* Discord */}
-                <a href="https://discord.gg" className="p-2 rounded-full hover:bg-[var(--card-bg)] transition">
-                  <LiaDiscord className="text-[var(--text-default)] text-lg" />
-                </a>
-
-                {/* Theme toggle */}
-                <div className="p-2 rounded-full">
-                  <ThemeToggle />
-                </div>
-              </>
+                {/* Dropdown */}
+                {isProfileOpen && (
+                  <div
+                    id="profile-menu"
+                    role="menu"
+                    aria-label="Profile menu"
+                    className="absolute -right-18 p-2 mt-2 w-44 rounded-md shadow-lg border border-[var(--panel-border)] bg-[var(--card-bg)] z-50 cursor-pointer"
+                  >
+                    <div className="py-1">
+                      <Link
+                        to="/profile"
+                        onClick={() => setIsProfileOpen(false)}
+                        className="block px-4 py-2 rounded-md text-sm text-[var(--text-default)] hover:bg-zinc-700"
+                        role="menuitem"
+                      >
+                        Profile
+                      </Link>
+                      {/* <Link
+                        to="/dashboard"
+                        onClick={() => setIsProfileOpen(false)}
+                        className="block px-4 py-2 rounded-md text-sm text-[var(--text-default)] hover:bg-zinc-700"
+                        role="menuitem"
+                      >
+                        Dashboard
+                      </Link> */}
+                      <button
+                        onClick={() => {
+                          logout && logout();
+                          setIsProfileOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-2 rounded-md text-sm text-[var(--text-default)] hover:bg-zinc-700 flex items-center gap-2"
+                        role="menuitem"
+                      >
+                        <FaSignOutAlt />
+                        Logout
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             ) : (
               <>
                 <Link
                   to="/sign-in"
-                  className="flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--panel-border)] bg-[var(--card-bg)] text-sm"
+                  className="flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--panel-border)] bg-gray-400 text-sm"
                 >
                   <CiLogin />
-                  <span>Login</span>
+                  <span className="font-semibold">Login</span>
                 </Link>
 
                 <div className="p-2 rounded-full">
                   <ThemeToggle />
                 </div>
               </>
+            )}
+
+            {/* Bell */}
+            {user && (
+              <button className="p-2 rounded-full hover:bg-[var(--card-bg)] transition">
+                <FaBell className="text-[var(--text-default)]" />
+              </button>
+            )}
+
+            {/* Discord */}
+            {user && (
+              <a href="https://discord.gg" className="p-2 rounded-full hover:bg-[var(--card-bg)] transition">
+                <LiaDiscord className="text-[var(--text-default)] text-lg" />
+              </a>
+            )}
+
+            {/* Theme toggle (if user exists, already rendered above within user block previously; keep consistent) */}
+            {!user ? null : (
+              <div className="p-2 rounded-full">
+                <ThemeToggle />
+              </div>
             )}
           </div>
 

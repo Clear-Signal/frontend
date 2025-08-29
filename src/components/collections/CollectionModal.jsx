@@ -1,32 +1,14 @@
 import { useEffect, useRef } from "react";
 import { FiX, FiExternalLink } from "react-icons/fi";
+import useFetch from "../../hooks/useFetch";
 
-const collection = {
-  id: "deep-learning",
-  title: "Deep Learning",
-  description:
-    "Build deep learning fundamentals by implementing key concepts from scratch using Python and NumPy.",
-  badgeUrl: "/badges/deep.png",
-  progress: 0,
-  externalUrl: "https://your-resource.example",
-  sections: [
-    {
-      id: "linear-algebra",
-      title: "Linear Algebra",
-      progress: 0,
-      problems: [
-        { id: 1, title: "Matrix-Vector Dot Product" },
-        { id: 2, title: "Transpose of a Matrix" },
-        { id: 3, title: "Dot Product Calculator" },
-      ],
-    },
-  ],
-};
-
-export default function CollectionModal({ isOpen, onClose, onOpenProblem }) {
+export default function CollectionModal({ isOpen, onClose, onOpenProblem, collectionId }) {
   const modalRef = useRef(null);
   const backdropRef = useRef(null);
   const previouslyFocused = useRef(null);
+
+  const { data: collection, loading, error } = useFetch(`/api/general/collection/${collectionId}`);
+  console.log(collection);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -71,12 +53,12 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem }) {
   if (!isOpen || !collection) return null;
 
   const {
-    title,
+    name,
     description,
     badgeUrl,
     progress = 0,
     externalUrl,
-    sections = [],
+    topics = [],
   } = collection;
 
   return (
@@ -107,19 +89,19 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem }) {
             {badgeUrl ? (
               <img
                 src={badgeUrl}
-                alt={`${title} badge`}
+                alt={`${name} badge`}
                 className="w-12 h-12 object-contain"
               />
             ) : (
               <div className="text-[var(--color-fg)] font-semibold">
-                {(title || "C").slice(0, 2)}
+                {(name || "C").slice(0, 2)}
               </div>
             )}
           </div>
 
           <div className="flex-1 min-w-0">
             <h2 className="text-2xl font-bold text-[var(--color-fg)] leading-tight">
-              {title}
+              {name}
             </h2>
             <p className="mt-2 text-sm text-[var(--color-fg)] truncate">
               {description}
@@ -167,35 +149,35 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem }) {
         {/* Body - scrollable */}
         <div className="h-[calc(100%-150px)] overflow-y-auto p-6">
           <div className="space-y-6">
-            {sections.length === 0 ? (
-              <div className="text-[var(--color-muted)]">No sections yet.</div>
+            {topics.length === 0 ? (
+              <div className="text-[var(--color-muted)]">No topics yet.</div>
             ) : (
-              sections.map((section, si) => (
+              topics.map((topic, ti) => (
                 <section
-                  key={section.id || si}
+                  key={topic._id || ti}
                   className="bg-[var(--color-surface-2)] border border-[var(--color-gray)] rounded-lg overflow-hidden"
                 >
                   <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-gray)] bg-[var(--color-bg)]/60">
                     <div className="text-lg font-semibold">
-                      {si + 1}. {section.title}
+                      {ti + 1}. {topic.name}
                     </div>
                     <div className="text-sm text-green-500">
-                      {section.progress ?? 0}% Completed
+                      {topic.progress ?? 0}% Completed
                     </div>
                   </div>
 
                   <div className="px-4 py-4 space-y-3">
-                    {!section.problems || section.problems.length === 0 ? (
+                    {!topic.questions || topic.questions.length === 0 ? (
                       <div className="text-[var(--color-fg)] px-3 py-6">
-                        No problems in this section.
+                        No questions in this topic.
                       </div>
                     ) : (
-                      section.problems.map((prob, pi) => (
+                      topic.questions.map((prob, pi) => (
                         <button
-                          key={prob.id || pi}
+                          key={prob._id || pi}
                           onClick={() => onOpenProblem && onOpenProblem(prob)}
                           className="w-full text-left px-4 py-3 rounded-md bg-[transparent] border border-[var(--color-gray)] hover:bg-[var(--color-gray)]/50 transition flex items-center gap-3 cursor-pointer"
-                          title={prob.title}
+                          name={prob.title}
                         >
                           <div className="flex-1 min-w-0">
                             <div className="font-medium text-[var(--color-fg)] truncate">
