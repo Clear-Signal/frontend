@@ -4,6 +4,7 @@ import { AuthContext } from "../stores/authStore";
 import SettingsPanel from "../components/profile/SettingPanel";
 import ProblemsPanel from "../components/profile/ProblemPanel";
 import ProfileCard from "../components/profile/ProfileCard";
+import useFetch from "../hooks/useFetch";
 
 const emptyStats = {
   problemsSolved: 0,
@@ -21,36 +22,17 @@ export default function ProfilePage({ initialUser }) {
   const logout = auth?.logout;
 
   const [activeTab, setActiveTab] = useState("problems"); // 'problems' | 'settings'
-  const [stats, setStats] = useState(emptyStats);
-  const [loading, setLoading] = useState(false);
   const [privacy, setPrivacy] = useState({
     showEmail: true,
     showSocial: true,
     showBadges: true,
   });
 
+  const response = useFetch("/api/user/stats");
+  const { data: stats, loading, error } = response;
+
   console.log(user);
 
-  useEffect(() => {
-    if (!user?._id) return;
-    let cancelled = false;
-    setLoading(true);
-    fetch(`/api/user/${encodeURIComponent(user._id)}/stats`, { credentials: "include" })
-      .then(async (res) => {
-        if (!res.ok) throw new Error("Failed to fetch stats");
-        return res.json();
-      })
-      .then((data) => {
-        if (!cancelled) setStats((s) => ({ ...s, ...data }));
-      })
-      .catch(() => {
-        if (!cancelled) setStats(emptyStats);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => (cancelled = true);
-  }, [user?._id]);
 
   // save profile handler (from SettingsPanel)
   function handleSaveProfile(updated) {
@@ -62,7 +44,7 @@ export default function ProfilePage({ initialUser }) {
   return (
     <div className="min-h-[80vh] px-6 py-8 bg-[#18181B] text-[var(--color-fg)]">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <ProfileCard user={user} stats={stats} onLogout={logout} />
+        <ProfileCard user={user} onLogout={logout} response={response} />
 
         <main className="lg:col-span-8">
           {/* top tabs */}

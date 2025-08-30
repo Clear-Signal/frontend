@@ -6,6 +6,7 @@ import { CiLogin } from "react-icons/ci";
 import { LiaDiscord } from "react-icons/lia";
 import ThemeToggle from "./ThemeToggle";
 import { AuthContext } from "../stores/authStore";
+import NotificationModal from "./NotificationModal";
 
 const Navbar = ({ activeNav, setActiveNav }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,6 +16,8 @@ const Navbar = ({ activeNav, setActiveNav }) => {
   const profileRef = useRef(null);
   const profileBtnRef = useRef(null);
   const location = useLocation();
+
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
 
   const { user, logout } = useContext(AuthContext);
 
@@ -147,7 +150,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
             {/* Flame + count */}
             <div className="flex justify-center items-center gap-2 px-3 py-1 rounded-full">
               <FaFire className="text-xl text-[rgb(255,140,0)]" />
-              <span className="text-md font-medium text-[var(--text-default)]">0</span>
+              <span className="text-lg  font-medium text-[var(--text-default)]">{user?.data?.flameScore || 0}</span>
             </div>
 
             {/* Premium pill */}
@@ -235,8 +238,8 @@ const Navbar = ({ activeNav, setActiveNav }) => {
 
             {/* Bell */}
             {user && (
-              <button className="p-2 rounded-full hover:bg-[var(--card-bg)] transition">
-                <FaBell className="text-[var(--text-default)]" />
+              <button className="p-2 rounded-full hover:bg-[var(--card-bg)] transition cursor-pointer">
+                <FaBell className="text-[var(--text-default)]" onClick={() => setIsNotificationOpen(true)} />
               </button>
             )}
 
@@ -377,6 +380,9 @@ const Navbar = ({ activeNav, setActiveNav }) => {
           </div>
         </div>
       </div>
+      {isNotificationOpen && (
+        <NotificationModal message="No notifications yet." onClose={() => setIsNotificationOpen(false)} />
+      )}
     </nav>
   );
 };

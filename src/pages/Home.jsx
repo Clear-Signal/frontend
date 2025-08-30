@@ -36,10 +36,11 @@ export default function Home() {
     const linkedInProfileURL = params.get("linkedInProfileURL");
     const kaggleUsername = params.get("kaggleUsername");
     const profilePic = params.get("profilePic");
+    const flameScore = parseInt(params.get("flameScore")) || 0;
 
     if (fullName && email && role) {
       const userData = {
-        data: { fullName, email, role, gitHubUsername, linkedInProfileURL, kaggleUsername, profilePic },
+        data: { fullName, email, role, gitHubUsername, linkedInProfileURL, kaggleUsername, profilePic, flameScore },
       };
       setUser(userData);
       localStorage.setItem("user", JSON.stringify(userData));

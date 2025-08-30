@@ -19,6 +19,7 @@ export default function useFetch(url, options = {}) {
         headers: options.headers || {},
         data: options.body || null,
         params: options.params || {},
+        withCredentials: true
       });
       setData(response.data);
     } catch (err) {

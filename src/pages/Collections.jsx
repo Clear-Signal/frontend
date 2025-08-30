@@ -3,6 +3,7 @@ import CollectionCard from "../components/collections/CollectionCard";
 import CollectionModal from "../components/collections/CollectionModal";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
+import LoadingScreen from "../components/LoadingScreen";
 
 
 export default function CollectionsPage() {
@@ -14,7 +15,7 @@ export default function CollectionsPage() {
   function handleView(collection) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
-
+  if (loading) return <LoadingScreen />;
   return (
     <main className="min-h-screen bg-[var(--color-bg-black)] text-[var(--color-fg)] py-12">
       <div className="max-w-7xl mx-auto px-6">

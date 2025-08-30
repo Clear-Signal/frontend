@@ -1,6 +1,7 @@
 // Hero.jsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../stores/authStore";
 
 /**
  * Hero with dotted background:
@@ -10,6 +11,8 @@ import { Link } from "react-router-dom";
  *  - dotted SVG ring that fades in when circle mode is active
  */
 const Hero = () => {
+  const { user } = useContext(AuthContext);
+
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
   const rafRef = useRef(null);
@@ -323,7 +326,7 @@ const Hero = () => {
         <div className="mt-12">
           {/* Button: hovering this button toggles circle mode */}
           <Link
-            to="/problems"
+            to={user ? "/problems" : "/sign-in"}
             onPointerEnter={() => setCircleMode(true)}
             onPointerLeave={() => setCircleMode(false)}
             className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border border-white/30 bg-[var(--color-bg-black)]/60 text-white font-semibold text-lg transition-transform transform hover:scale-105 hover:bg-white/10 duration-300 shadow-md"
