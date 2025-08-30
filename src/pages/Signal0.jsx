@@ -73,29 +73,29 @@ export default function Signal0() {
                     Signal-0
                 </h1>
                 <p className="text-gray-400 text-sm">Create quizzes from your study</p>
-                <div className="w-full max-w-3xl mt-8">
+                <div className="w-full max-w-2xl mt-8">
                     <div className="bg-[#101213] border border-[#2b2f33] rounded-2xl p-6 drop-shadow-[0_8px_30px_rgba(0,0,0,0.6)]">
-                        <div className="flex items-center gap-4">
-                            <label className="text-xs text-gray-300 w-36">Topic or concept</label>
-                            <select className="flex-1 bg-[#0f1113] border border-[#232629] rounded px-3 py-2 text-sm">
+                        <div className="flex max-w-lg items-center gap-4">
+                            <label className="text-xs font-bold text-gray-300 w-36">Topic or concept</label>
+                            <select className="flex-1 min-w-1.5 bg-[#0f1113] border border-[#232629] rounded py-2 text-sm">
                                 <option>Numpy</option>
                                 <option>Neural Networks</option>
                                 <option>Decision Trees</option>
                             </select>
                             <div className="text-sm text-gray-500">or upload PDF</div>
                         </div>
-                        <textarea placeholder="e.g. Neural Networks, Decision Trees..." className="w-full mt-4 bg-[#0b0c0d] border border-[#232629] rounded p-4 h-24 text-sm placeholder:text-gray-400" maxLength={350} />
-                        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
-                            <div className="border-dashed border-2 border-[#2b2f33] rounded-lg py-8 flex flex-col items-center justify-center text-gray-400">
+                        <input placeholder="e.g. Neural Networks, Decision Trees..." className="w-full mt-4 bg-[#101213] border border-[#232629] rounded p-4  text-sm placeholder:text-gray-500" maxLength={350} />
+                        <div className="mt-6 mx-34 grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
+                            <div className="border-dashed col-span-2 border-2 border-[#2b2f33] rounded-lg py-8 flex flex-col items-center justify-center text-gray-400">
                                 <svg width="36" height="36" viewBox="0 0 24 24" fill="none" className="mb-2">
                                     <path d="M12 3v14" stroke="#9aa0a6" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                                     <path d="M7 8l5-5 5 5" stroke="#9aa0a6" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                                 Drag & drop PDF here
                             </div>
-                            <div className="flex gap-3 justify-end">
+                            <div className="gap-3 col-span-2 justify-content items-center">
+                                <button className="px-4 mx-2 py-2 bg-gray-400 text-black rounded-md text-sm font-semibold">Generate</button>
                                 <button className="px-4 py-2 border border-[#2b2f33] rounded-md text-sm">Clear</button>
-                                <button className="px-4 py-2 bg-[#ff8c2b] text-black rounded-md text-sm font-semibold">Generate</button>
                             </div>
                         </div>
                     </div>
