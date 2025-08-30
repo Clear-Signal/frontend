@@ -16,6 +16,8 @@ import Signal0 from './pages/Signal0.jsx'
 import ForgotPassword from './pages/ForgotPassword.jsx'
 import ResetPassword from './pages/ResetPassword.jsx'
 import AdminDashboard from './pages/Dashboard.jsx'
+import PaymentSuccessPage from './pages/PaymentSuccessPage.jsx'
+import PaymentFailurePage from './pages/PaymentFailurePage.jsx'
 
 const router = createBrowserRouter([
   {
@@ -70,6 +72,14 @@ const router = createBrowserRouter([
       //   path: '/dashboard',
       //   element: <AdminDashboard />,
       // },
+      {
+        path: '/premium-success/:session_id?',
+        element: <PaymentSuccessPage />,
+      },
+        {
+        path: '/premium-cancel',
+        element: <PaymentFailurePage />,
+      },
       {
         path: '*',
         element: <PageNotFound />,

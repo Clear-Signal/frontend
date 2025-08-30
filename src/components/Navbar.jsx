@@ -1,6 +1,13 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaBars, FaTimes, FaUserCircle, FaSignOutAlt, FaBell, FaFire } from "react-icons/fa";
+import {
+  FaBars,
+  FaTimes,
+  FaUserCircle,
+  FaSignOutAlt,
+  FaBell,
+  FaFire,
+} from "react-icons/fa";
 import Logo from "../../public/Logo.jpg";
 import { CiLogin } from "react-icons/ci";
 import { LiaDiscord } from "react-icons/lia";
@@ -91,13 +98,19 @@ const Navbar = ({ activeNav, setActiveNav }) => {
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           {/* Left: Logo */}
-          <Link to="/" className="flex items-center gap-3" onClick={() => setActiveNav("Home")}>
+          <Link
+            to="/"
+            className="flex items-center gap-3"
+            onClick={() => setActiveNav("Home")}
+          >
             <img
               src={Logo}
               alt="Logo"
               className="h-9 w-9 rounded-full object-cover border border-[var(--panel-border)]"
             />
-            <h1 className="text-[var(--text-default)] text-lg font-semibold hidden sm:inline">Clear-Signal</h1>
+            <h1 className="text-[var(--text-default)] text-lg font-semibold hidden sm:inline">
+              Clear-Signal
+            </h1>
           </Link>
 
           {/* Center: primary nav (desktop only) */}
@@ -106,7 +119,9 @@ const Navbar = ({ activeNav, setActiveNav }) => {
               <Link
                 to="/problems"
                 className={`transition text-lg ${
-                  activeNav === "Problems" ? "text-[var(--text-default)] underline" : "text-[var(--text-gray)]"
+                  activeNav === "Problems"
+                    ? "text-[var(--text-default)] underline"
+                    : "text-[var(--text-gray)]"
                 }`}
                 onClick={() => setActiveNav("Problems")}
               >
@@ -116,7 +131,9 @@ const Navbar = ({ activeNav, setActiveNav }) => {
               <Link
                 to="/collections"
                 className={`transition text-lg ${
-                  activeNav === "Collections" ? "text-[var(--text-default)] underline" : "text-[var(--text-gray)]"
+                  activeNav === "Collections"
+                    ? "text-[var(--text-default)] underline"
+                    : "text-[var(--text-gray)]"
                 }`}
                 onClick={() => setActiveNav("Collections")}
               >
@@ -126,7 +143,9 @@ const Navbar = ({ activeNav, setActiveNav }) => {
               <Link
                 to="/leaderboard"
                 className={`transition text-lg ${
-                  activeNav === "Leaderboard" ? "text-[var(--text-default)] underline" : "text-[var(--text-gray)]"
+                  activeNav === "Leaderboard"
+                    ? "text-[var(--text-default)] underline"
+                    : "text-[var(--text-gray)]"
                 }`}
                 onClick={() => setActiveNav("Leaderboard")}
               >
@@ -136,7 +155,9 @@ const Navbar = ({ activeNav, setActiveNav }) => {
               <Link
                 to="/signal0"
                 className={`transition text-lg ${
-                  activeNav === "Signal-0" ? "text-[var(--text-default)] underline" : "text-[var(--text-gray)]"
+                  activeNav === "Signal-0"
+                    ? "text-[var(--text-default)] underline"
+                    : "text-[var(--text-gray)]"
                 }`}
                 onClick={() => setActiveNav("Signal-0")}
               >
@@ -150,18 +171,22 @@ const Navbar = ({ activeNav, setActiveNav }) => {
             {/* Flame + count */}
             <div className="flex justify-center items-center gap-2 px-3 py-1 rounded-full">
               <FaFire className="text-xl text-[rgb(255,140,0)]" />
-              <span className="text-lg  font-medium text-[var(--text-default)]">{user?.data?.flameScore || 0}</span>
+              <span className="text-lg  font-medium text-[var(--text-default)]">
+                {user?.data?.flameScore || 0}
+              </span>
             </div>
 
             {/* Premium pill */}
-            <Link
-              to="/subscription"
-              className="px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-3"
-            >
-              <span className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-yellow-300 to-yellow-500 text-black border border-yellow-600 shadow-sm">
-                Premium
-              </span>
-            </Link>
+            {!user?.data?.hasPremiumAccess && (
+              <Link
+                to="/subscription"
+                className="px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-3"
+              >
+                <span className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-yellow-300 to-yellow-500 text-black border border-yellow-600 shadow-sm">
+                  Premium
+                </span>
+              </Link>
+            )}
 
             {/* Avatar (circular) with dropdown */}
             {user ? (
@@ -174,7 +199,11 @@ const Navbar = ({ activeNav, setActiveNav }) => {
                   className="w-10 h-10 rounded-full overflow-hidden border border-[var(--panel-border)] flex items-center justify-center cursor-pointer"
                 >
                   {user?.data?.profilePic ? (
-                    <img src={user.data.profilePic} alt="avatar" className="w-full h-full object-cover" />
+                    <img
+                      src={user.data.profilePic}
+                      alt="avatar"
+                      className="w-full h-full object-cover"
+                    />
                   ) : (
                     <FaUserCircle className="text-[var(--text-default)] text-xl" />
                   )}
@@ -239,13 +268,19 @@ const Navbar = ({ activeNav, setActiveNav }) => {
             {/* Bell */}
             {user && (
               <button className="p-2 rounded-full hover:bg-[var(--card-bg)] transition cursor-pointer">
-                <FaBell className="text-[var(--text-default)]" onClick={() => setIsNotificationOpen(true)} />
+                <FaBell
+                  className="text-[var(--text-default)]"
+                  onClick={() => setIsNotificationOpen(true)}
+                />
               </button>
             )}
 
             {/* Discord */}
             {user && (
-              <a href="https://discord.gg" className="p-2 rounded-full hover:bg-[var(--card-bg)] transition">
+              <a
+                href="https://discord.gg"
+                className="p-2 rounded-full hover:bg-[var(--card-bg)] transition"
+              >
                 <LiaDiscord className="text-[var(--text-default)] text-lg" />
               </a>
             )}
@@ -296,7 +331,9 @@ const Navbar = ({ activeNav, setActiveNav }) => {
       <div
         id="mobile-menu"
         ref={menuRef}
-        className={`lg:hidden transition-all duration-200 ease-in-out origin-top ${isOpen ? "max-h-screen" : "max-h-0 overflow-hidden"}`}
+        className={`lg:hidden transition-all duration-200 ease-in-out origin-top ${
+          isOpen ? "max-h-screen" : "max-h-0 overflow-hidden"
+        }`}
       >
         <div className="px-4 pt-4 pb-6 space-y-4 bg-[var(--card-bg)] border-t border-[var(--panel-border)]">
           {/* Mobile user area */}
@@ -305,15 +342,25 @@ const Navbar = ({ activeNav, setActiveNav }) => {
               <div className="flex items-center gap-3">
                 <FaUserCircle className="text-[var(--text-default)] text-2xl" />
                 <div>
-                  <Link to="/profile" onClick={() => setIsOpen(false)} className="text-[var(--text-default)] font-semibold">
+                  <Link
+                    to="/profile"
+                    onClick={() => setIsOpen(false)}
+                    className="text-[var(--text-default)] font-semibold"
+                  >
                     {userLabel}
                   </Link>
-                  <div className="text-xs text-[var(--text-muted)] truncate max-w-[180px]">{user?.email}</div>
+                  <div className="text-xs text-[var(--text-muted)] truncate max-w-[180px]">
+                    {user?.email}
+                  </div>
                 </div>
               </div>
             ) : (
               <div>
-                <Link to="/sign-in" onClick={() => setIsOpen(false)} className="text-[var(--text-default)] font-semibold">
+                <Link
+                  to="/sign-in"
+                  onClick={() => setIsOpen(false)}
+                  className="text-[var(--text-default)] font-semibold"
+                >
                   Sign in
                 </Link>
               </div>
@@ -332,28 +379,65 @@ const Navbar = ({ activeNav, setActiveNav }) => {
                 <span className="hidden sm:inline">Logout</span>
               </button>
             ) : (
-              <Link
-                to="/subscription"
-                onClick={() => setIsOpen(false)}
-                className="text-sm px-3 py-1 rounded-full border border-[var(--brand)] text-[var(--brand)] hover:bg-[var(--brand)] hover:text-[var(--bg-page)] transition"
-              >
-                Premium
-              </Link>
+              <>
+                {user?.data?.hasPremiumAccess && (
+                  <Link
+                    to="/subscription"
+                    onClick={() => setIsOpen(false)}
+                    className="text-sm px-3 py-1 rounded-full border border-[var(--brand)] text-[var(--brand)] hover:bg-[var(--brand)] hover:text-[var(--bg-page)] transition"
+                  >
+                    Premium
+                  </Link>
+                )}
+              </>
             )}
           </div>
 
           <div className="flex flex-col gap-3 pt-2">
-            <Link to="/" onClick={() => setIsOpen(false)} className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10">Home</Link>
-            <Link to="/problems" onClick={() => setIsOpen(false)} className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10">Problems</Link>
-            <Link to="/collections" onClick={() => setIsOpen(false)} className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10">Collections</Link>
-            <Link to="/signal0" onClick={() => setIsOpen(false)} className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10">Deep-0</Link>
-            <Link to="/leaderboard" onClick={() => setIsOpen(false)} className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10">Leaderboard</Link>
-            <Link to="/shop" onClick={() => setIsOpen(false)} className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10">Shop</Link>
+            <Link
+              to="/"
+              onClick={() => setIsOpen(false)}
+              className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10"
+            >
+              Home
+            </Link>
+            <Link
+              to="/problems"
+              onClick={() => setIsOpen(false)}
+              className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10"
+            >
+              Problems
+            </Link>
+            <Link
+              to="/collections"
+              onClick={() => setIsOpen(false)}
+              className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10"
+            >
+              Collections
+            </Link>
+            <Link
+              to="/signal0"
+              onClick={() => setIsOpen(false)}
+              className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10"
+            >
+              Signal-0
+            </Link>
+            <Link
+              to="/leaderboard"
+              onClick={() => setIsOpen(false)}
+              className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10"
+            >
+              Leaderboard
+            </Link>
           </div>
 
           <div className="border-t border-[var(--panel-border)] pt-4 flex flex-col gap-3">
             {!user && (
-              <Link to="/sign-in" onClick={() => setIsOpen(false)} className="w-full text-center px-4 py-2 rounded-full bg-[var(--card-bg)] text-[var(--text-default)]">
+              <Link
+                to="/sign-in"
+                onClick={() => setIsOpen(false)}
+                className="w-full text-center px-4 py-2 rounded-full bg-[var(--card-bg)] text-[var(--text-default)]"
+              >
                 <div className="flex items-center justify-center gap-2">
                   <CiLogin /> Sign in
                 </div>
@@ -361,14 +445,21 @@ const Navbar = ({ activeNav, setActiveNav }) => {
             )}
 
             {user && (
-              <Link to="/profile" onClick={() => setIsOpen(false)} className="w-full text-center px-4 py-2 rounded-full border border-[var(--panel-border)] text-[var(--text-default)]">
+              <Link
+                to="/profile"
+                onClick={() => setIsOpen(false)}
+                className="w-full text-center px-4 py-2 rounded-full border border-[var(--panel-border)] text-[var(--text-default)]"
+              >
                 View Profile
               </Link>
             )}
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <a href="https://discord.gg" className="text-[var(--text-default)] hover:text-[var(--brand)] transition">
+                <a
+                  href="https://discord.gg"
+                  className="text-[var(--text-default)] hover:text-[var(--brand)] transition"
+                >
                   <LiaDiscord className="text-xl" />
                 </a>
               </div>
@@ -381,7 +472,10 @@ const Navbar = ({ activeNav, setActiveNav }) => {
         </div>
       </div>
       {isNotificationOpen && (
-        <NotificationModal message="No notifications yet." onClose={() => setIsNotificationOpen(false)} />
+        <NotificationModal
+          message="No notifications yet."
+          onClose={() => setIsNotificationOpen(false)}
+        />
       )}
     </nav>
   );

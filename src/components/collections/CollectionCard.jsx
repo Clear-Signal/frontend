@@ -1,13 +1,13 @@
 import { FiChevronRight, FiExternalLink } from "react-icons/fi";
 import { initialsFromTitle } from "../../utils/helper";
 
-export default function CollectionCard({ collection, onView, setOpenCollection }) {
+export default function CollectionCard({ collection, onView, user }) {
   const { name, section, progress = 0, coverImageUrl, resource } = collection;
   return (
     <article
-      className="group pt-2 relative rounded-xl border border-[var(--color-muted)] bg-zinc-900 overflow-hidden flex flex-col hover:scale-105 transition-transform duration-500 ease-in-out cursor-pointer"
+      className={`group pt-2 relative rounded-xl border border-[var(--color-muted)] bg-zinc-900 overflow-hidden flex flex-col hover:scale-105 transition-transform duration-500 ease-in-out ${ !user?"cursor-pointer": user.data?.hasPremiumAccess ? "opacity-100 cursor-pointer" : "opacity-50 cursor-not-allowed"}`}
       aria-labelledby={`col-${collection._id}-title`}
-      onClick={() => setOpenCollection((prev) => (prev === collection._id ? null : collection._id))}
+      onClick={() => onView()}
     >
       {/* top area */}
       <div className="p-6 flex items-start gap-4">

@@ -37,10 +37,11 @@ export default function Home() {
     const kaggleUsername = params.get("kaggleUsername");
     const profilePic = params.get("profilePic");
     const flameScore = parseInt(params.get("flameScore")) || 0;
+    const hasPremiumAccess = params.get("hasPremiumAccess") === "true";
 
     if (fullName && email && role) {
       const userData = {
-        data: { fullName, email, role, gitHubUsername, linkedInProfileURL, kaggleUsername, profilePic, flameScore },
+        data: { fullName, email, role, gitHubUsername, linkedInProfileURL, kaggleUsername, profilePic, flameScore, hasPremiumAccess },
       };
       setUser(userData);
       localStorage.setItem("user", JSON.stringify(userData));
