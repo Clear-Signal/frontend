@@ -5,6 +5,7 @@ import SettingsPanel from "../components/profile/SettingPanel";
 import ProblemsPanel from "../components/profile/ProblemPanel";
 import ProfileCard from "../components/profile/ProfileCard";
 import useFetch from "../hooks/useFetch";
+import LoadingScreen from "../components/LoadingScreen";
 
 const emptyStats = {
   problemsSolved: 0,
@@ -21,6 +22,8 @@ export default function ProfilePage({ initialUser }) {
   const user = initialUser || auth?.user?.data || null;
   const logout = auth?.logout;
 
+  const navigate = auth?.navigate;
+
   const [activeTab, setActiveTab] = useState("problems"); // 'problems' | 'settings'
   const [privacy, setPrivacy] = useState({
     showEmail: true,
@@ -31,15 +34,17 @@ export default function ProfilePage({ initialUser }) {
   const response = useFetch("/api/user/stats");
   const { data: stats, loading, error } = response;
 
-  console.log(user);
-
-
+  // console.log(user);
   // save profile handler (from SettingsPanel)
   function handleSaveProfile(updated) {
-    // set optimistic UI; send to server if you want
     setStats((s) => ({ ...s }));
-    // TODO: call backend to persist profile
   }
+
+  useEffect(() => {
+    if(!user) navigate("/sign-in");
+  }, [user]);
+
+  if(loading || !user) return <LoadingScreen />;
 
   return (
     <div className="min-h-[80vh] px-6 py-8 bg-[#18181B] text-[var(--color-fg)]">

@@ -67,8 +67,8 @@ export default function PaymentSuccessPage() {
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold mt-6">Payment Successful!</h1>
             <p className="text-gray-400 mt-2 max-w-sm mx-auto">Welcome aboard! Your premium subscription is now active and ready to use.</p>
-            <Link to="/dashboard" className="mt-8 inline-block w-full max-w-xs rounded-lg bg-zinc-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-zinc-500 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-900">
-              Go to Dashboard
+            <Link to="/" className="mt-8 inline-block w-full max-w-xs rounded-lg bg-zinc-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-zinc-500 transition focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-zinc-900">
+              Go to Home
             </Link>
           </motion.div>
         );

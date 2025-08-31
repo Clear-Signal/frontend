@@ -118,7 +118,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
             <div className="flex gap-6 items-center">
               <Link
                 to="/problems"
-                className={`transition text-lg ${
+                className={`transition text-lg cursor-pointer hover:text-[var(--text-default)] ${
                   activeNav === "Problems"
                     ? "text-[var(--text-default)] underline"
                     : "text-[var(--text-gray)]"
@@ -130,7 +130,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
 
               <Link
                 to="/collections"
-                className={`transition text-lg ${
+                className={`transition text-lg cursor-pointer hover:text-[var(--text-default)] ${
                   activeNav === "Collections"
                     ? "text-[var(--text-default)] underline"
                     : "text-[var(--text-gray)]"
@@ -142,7 +142,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
 
               <Link
                 to="/leaderboard"
-                className={`transition text-lg ${
+                className={`transition text-lg cursor-pointer hover:text-[var(--text-default)] ${
                   activeNav === "Leaderboard"
                     ? "text-[var(--text-default)] underline"
                     : "text-[var(--text-gray)]"
@@ -154,7 +154,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
 
               <Link
                 to="/signal0"
-                className={`transition text-lg ${
+                className={`transition text-lg cursor-pointer hover:text-[var(--text-default)] ${
                   activeNav === "Signal-0"
                     ? "text-[var(--text-default)] underline"
                     : "text-[var(--text-gray)]"
