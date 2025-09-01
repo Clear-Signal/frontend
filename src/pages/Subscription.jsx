@@ -4,6 +4,7 @@ import useFetch from "../hooks/useFetch";
 import LoadingScreen from "../components/LoadingScreen";
 import axios from "axios";
 import { AuthContext } from "../stores/authStore";
+import { useNavigate } from "react-router-dom";
 
 // Promo codes remain the same
 const PROMOS = {
@@ -13,7 +14,7 @@ const PROMOS = {
 
 export default function SubscriptionPage() {
   const [selected, setSelected] = useState(null);
-  
+  const navigate = useNavigate();
   // ✅ 1. Use an object to store input values for each plan's promo code
   const [promoInputs, setPromoInputs] = useState({});
   // ✅ 2. Use an object to store applied promos, keyed by plan ID
@@ -61,7 +62,8 @@ export default function SubscriptionPage() {
   }
 
   useEffect(() => {
-    if(user.data?.hasPremiumAccess) {
+    if(!user) navigate("/sign-in");
+    if(user?.data?.hasPremiumAccess) {
       // If user has premium access, redirect to dashboard
       window.location.href = "/dashboard";
     } else if (plans && plans.length > 0 && !selected) {
@@ -112,7 +114,7 @@ export default function SubscriptionPage() {
     setPromoErrors(prev => ({ ...prev, [planId]: "" }));
   }
 
-  if (loading) return <LoadingScreen />;
+  if (loading || !user) return <LoadingScreen />;
   if (error || !plans || !plans.length) {
     return (
         <div className="min-h-screen px-4 py-12 bg-[var(--color-bg-black)] text-center text-red-400">

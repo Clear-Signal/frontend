@@ -13,7 +13,6 @@ import LeaderboardPage from './pages/Leaderboard.jsx'
 import CollectionsPage from './pages/Collections.jsx'
 import ProblemSolver from './pages/ProblemPage.jsx'
 import Signal0 from './pages/Signal0.jsx'
-import ForgotPassword from './pages/ForgotPassword.jsx'
 import ResetPassword from './pages/ResetPassword.jsx'
 import AdminDashboard from './pages/Dashboard.jsx'
 import PaymentSuccessPage from './pages/PaymentSuccessPage.jsx'
@@ -31,10 +30,6 @@ const router = createBrowserRouter([
       {
         path: '/sign-in',
         element: <AuthPage />,
-      },
-      {
-        path: '/forgot-password',
-        element: <ForgotPassword />,
       },
       {
         path: '/reset-password/:token',
