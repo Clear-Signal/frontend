@@ -116,7 +116,7 @@ export default function AuthPage() {
                 className="w-10 h-10 rounded-full"
               />
               <h1 className="text-white text-2xl font-bold ml-2">
-                Clear-Signal
+                Pixel Blank
               </h1>
             </div>
             <div className="relative z-10 w-full max-w-md p-8 bg-[#1a1a1a] rounded-2xl shadow-lg">
@@ -131,8 +131,8 @@ export default function AuthPage() {
                 {isForgot
                   ? "Enter the email tied to your account and we'll send reset instructions."
                   : isSignup
-                  ? "Sign up to access your Clear-Signal profile and progress"
-                  : "Sign in to access your Clear-Signal profile and progress"}
+                  ? "Sign up to access your Pixel Blank profile and progress"
+                  : "Sign in to access your Pixel Blank profile and progress"}
               </p>
 
               {(localError || (!isForgot && error)) && (

@@ -109,7 +109,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
               className="h-9 w-9 rounded-full object-cover border border-[var(--panel-border)]"
             />
             <h1 className="text-[var(--text-default)] text-lg font-semibold hidden sm:inline">
-              Clear-Signal
+              PixelBlank
             </h1>
           </Link>
 
@@ -161,7 +161,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
                 }`}
                 onClick={() => setActiveNav("Signal-0")}
               >
-                Signal-0
+                Pixel-0
               </Link>
             </div>
           </div>
@@ -420,7 +420,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
               onClick={() => setIsOpen(false)}
               className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10"
             >
-              Signal-0
+              Pixel-0
             </Link>
             <Link
               to="/leaderboard"

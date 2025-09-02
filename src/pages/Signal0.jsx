@@ -128,7 +128,7 @@ export default function Signal0() {
               <div className="text-[10px] uppercase bg-[#0b1220] px-2 py-1 rounded-md border border-[#243145] text-[#9db3ff]">BETA</div>
             </div>
             <h1 className="text-5xl md:text-8xl sm:text-7xl leading-none font-bold tracking-tight" style={{ fontFamily: "Inter, sans-serif" }}>
-              Signal-0
+              Pixel-0
             </h1>
             <p className="text-gray-400 text-sm">Create quizzes from your study</p>
             <div className="w-full max-w-2xl mt-8">
@@ -248,7 +248,7 @@ export default function Signal0() {
         <div className="max-w-6xl mx-auto px-6 md:px-12 lg:px-24 py-3">
           <div className="bg-[#060708]/60 border border-[#222428] rounded-t-xl py-3 px-4 flex items-center justify-between text-sm text-gray-300">
             <div className="flex items-center gap-3">
-              <div className="bg-[#0b0f10] border border-[#2b2f33] px-3 py-1 rounded">Deep-0</div>
+              <div className="bg-[#0b0f10] border border-[#2b2f33] px-3 py-1 rounded">Pixel-0</div>
               <div className="opacity-70">3/3 lifetime remaining</div>
             </div>
             <div className="flex items-center gap-6">

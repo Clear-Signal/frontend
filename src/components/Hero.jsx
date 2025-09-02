@@ -310,8 +310,8 @@ const Hero = () => {
       {/* content */}
       <div className="relative z-10 w-full max-w-6xl mx-auto px-6 py-20 flex flex-col items-center text-center">
         <h1 className="font-bold text-[4.2rem] leading-[0.9] lg:text-[6rem] lg:leading-[0.88] tracking-tight">
-          <span className="inline-block mr-2">Clear-</span>
-          <span className="inline-block">Signal</span>
+          <span className="inline-block mr-2">Pixel</span>
+          <span className="inline-block">Blank</span>
           <span
             className="inline-block min-w-3 min-h-22 rounded-sm align-middle ml-3 bg-slate-400/50 animate-pulse "
           />

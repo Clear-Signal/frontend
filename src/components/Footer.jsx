@@ -9,9 +9,9 @@ export default function Footer() {
 
         {/* Left Section */}
         <div>
-          <h2 className="text-[var(--text-default)] text-lg font-semibold">Clear-Signal</h2>
+          <h2 className="text-[var(--text-default)] text-lg font-semibold">PixelBlank</h2>
           <p className="mt-2 text-sm text-gray-400">
-            Learn and grow your knowledge about Machine Learning using Clear-Signal
+            Learn and grow your knowledge about Machine Learning using PixelBlank
           </p>
         </div>
 
@@ -41,7 +41,7 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-gray-800 mt-10 pt-4 text-center text-sm text-gray-500">
-        © 2025 Clear-Signal. All rights reserved.
+        © 2025 PixelBlank. All rights reserved.
       </div>
     </footer>
   );
