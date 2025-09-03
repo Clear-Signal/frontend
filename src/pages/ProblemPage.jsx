@@ -43,6 +43,12 @@ const PlaceholderContent = ({ title }) => (
   </div>
 );
 
+const difficultyThemes = {
+  easy: "bg-green-400 text-black",
+  medium: "bg-yellow-400 text-black",
+  hard: "bg-red-400 text-black",
+};
+
 const SubmissionsDropdown = ({ problemId, onSelectSubmission, onClose }) => {
   const { data: submissionsData, loading } = useFetch(
     `/api/user/code/all-submissions/${problemId}`
@@ -335,6 +341,12 @@ export default function ProblemSolver() {
 
   if (loading) return <LoadingScreen />;
 
+  // derive left panel title for placeholder
+  const leftTabTitle =
+    descriptionTab === "description"
+      ? "Problem Description"
+      : descriptionTab.charAt(0).toUpperCase() + descriptionTab.slice(1);
+
   // zoom handlers
   const zoomIn = () => setFontSize((s) => Math.min(32, s + 1));
   const zoomOut = () => setFontSize((s) => Math.max(10, s - 1));
@@ -367,7 +379,7 @@ export default function ProblemSolver() {
                   </div>
 
                   {/* center - tabs */}
-                  <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-6 ">
                     {["Problem Description", "Solution", "Video", "Comments"].map((t) => {
                       const key = t === "Problem Description" ? "description" : t.toLowerCase();
                       const active = descriptionTab === key;
@@ -375,7 +387,7 @@ export default function ProblemSolver() {
                         <button
                           key={t}
                           onClick={() => setDescriptionTab(key)}
-                          className={`relative px-3 py-1 text-sm font-medium ${active ? "text-white" : "text-gray-400"}`}
+                          className={`relative px-3 py-1 text-sm font-medium cursor-pointer  ${active ? "text-white" : "text-gray-400"}`}
                         >
                           {t}
                           {active && <span className="absolute left-0 right-0 -bottom-3 h-0.5 bg-white rounded" />}
@@ -395,130 +407,138 @@ export default function ProblemSolver() {
               </div>
 
               {/* content card area */}
-              <div className="px-6 overflow-y-auto flex-grow">
-                <div className="rounded-lg bg-[#1e1e1e] border border-zinc-800 p-6 shadow-sm">
-                  <div className="flex items-start gap-4">
-                    {/* left small book icon */}
-                    <div className="flex-shrink-0 mt-1">
-                      <div className="w-9 h-9 rounded-md bg-[#1e1e1e] border border-zinc-700 flex items-center justify-center text-gray-300">
-                        📘
+              {descriptionTab === "description" ? (
+                <div className="px-6 overflow-y-auto flex-grow">
+                  <div className="rounded-lg bg-[#1e1e1e] border border-zinc-800 p-6 shadow-sm">
+                    <div className="flex items-start gap-4">
+                      {/* left small book icon */}
+                      <div className="flex-shrink-0 mt-1">
+                        <div className="w-9 h-9 rounded-md bg-[#1e1e1e] border border-zinc-700 flex items-center justify-center text-gray-300">
+                          📘
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <h1 className="text-3xl font-bold text-white leading-tight">
-                            {problem?.title}
-                          </h1>
-                          <div className="mt-3 flex items-center gap-2">
-                            {/* difficulty pill - brown */}
-                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-800 text-amber-50 border border-amber-700">
-                              Medium
-                            </span>
-                            {/* category pill */}
-                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#1e1e1e] text-gray-300 border border-zinc-700">
-                              Machine Learning
-                            </span>
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h1 className="text-3xl font-bold text-white leading-tight">
+                              {problem?.title}
+                            </h1>
+                            <div className="mt-3 flex items-center gap-2">
+                              {/* difficulty pill - brown */}
+                              <span className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ${difficultyThemes[problem?.difficulty.toLowerCase()] || "bg-gray-100 text-gray-800"}`}>
+                                {problem?.difficulty}
+                              </span>
+                              {/* category pill */}
+                              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#1e1e1e] text-gray-300 border border-zinc-700">
+                                {problem?.category}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* small action icon on right of title */}
+                          <div className="ml-4">
+                            <button className="w-10 h-10 rounded-md bg-[#1e1e1e] border border-zinc-700 flex items-center justify-center text-gray-300">
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 3v4" stroke="#C7C7C7" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M12 17v4" stroke="#C7C7C7" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M4 7h16" stroke="#C7C7C7" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                                <path d="M4 15h16" stroke="#C7C7C7" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            </button>
                           </div>
                         </div>
 
-                        {/* small action icon on right of title */}
-                        <div className="ml-4">
-                          <button className="w-10 h-10 rounded-md bg-[#1e1e1e] border border-zinc-700 flex items-center justify-center text-gray-300">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                              <path d="M12 3v4" stroke="#C7C7C7" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                              <path d="M12 17v4" stroke="#C7C7C7" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                              <path d="M4 7h16" stroke="#C7C7C7" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                              <path d="M4 15h16" stroke="#C7C7C7" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-                            </svg>
-                          </button>
+                        {/* description */}
+                        <div className="mt-6 prose prose-invert text-gray-300 max-w-none">
+                          <p className="leading-relaxed whitespace-pre-wrap break-words">
+                            {problem?.description}
+                          </p>
                         </div>
-                      </div>
 
-                      {/* description */}
-                      <div className="mt-6 prose prose-invert text-gray-300 max-w-none">
-                        <p className="leading-relaxed whitespace-pre-wrap break-words">
-                          {problem?.description}
-                        </p>
-                      </div>
+                        {/* Example block */}
+                        {problem?.sample && (
+                          <div className="mt-6">
+                            <h3 className="text-lg font-semibold text-white mb-3">Example:</h3>
 
-                      {/* Example block */}
-                      {problem?.sample && (
-                        <div className="mt-6">
-                          <h3 className="text-lg font-semibold text-white mb-3">Example:</h3>
-
-                          <div className="space-y-4">
-                            <div>
-                              <div className="text-sm text-gray-400 mb-2">Input:</div>
-                              <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm">
-                                <pre className="font-mono whitespace-pre-wrap text-gray-200 m-0">{problem.sample.input}</pre>
-                                {/* place any additional small inputs like feature_i/threshold below if available */}
-                              </div>
-                            </div>
-
-                            <div>
-                              <div className="text-sm text-gray-400 mb-2">Output:</div>
-                              <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm">
-                                <pre className="font-mono whitespace-pre-wrap text-gray-200 m-0">{problem.sample.output}</pre>
-                              </div>
-                            </div>
-
-                            {problem.sample.reasoning && (
+                            <div className="space-y-4">
                               <div>
-                                <div className="text-sm text-gray-400 mb-2">Reasoning:</div>
-                                <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm text-gray-300">
-                                  <pre className="whitespace-pre-wrap m-0">{problem.sample.reasoning}</pre>
+                                <div className="text-sm text-gray-400 mb-2">Input:</div>
+                                <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm">
+                                  <pre className="font-mono whitespace-pre-wrap text-gray-200 m-0">{problem.sample.input}</pre>
+                                  {/* place any additional small inputs like feature_i/threshold below if available */}
                                 </div>
                               </div>
-                            )}
+
+                              <div>
+                                <div className="text-sm text-gray-400 mb-2">Output:</div>
+                                <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm">
+                                  <pre className="font-mono whitespace-pre-wrap text-gray-200 m-0">{problem.sample.output}</pre>
+                                </div>
+                              </div>
+
+                              {problem.sample.reasoning && (
+                                <div>
+                                  <div className="text-sm text-gray-400 mb-2">Reasoning:</div>
+                                  <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm text-gray-300">
+                                    <pre className="whitespace-pre-wrap m-0">{problem.sample.reasoning}</pre>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        )}
 
-                      {/* bottom area: learn button & contributors */}
-                      <div className="mt-8 pt-6 border-t border-zinc-800 space-y-6">
-                        <div>
-                          <button
-                            onClick={() => setIsLearnPanelOpen((prev) => !prev)}
-                            className="px-4 py-2 text-sm border border-zinc-700 rounded-3xl hover:bg-zinc-800 transition disabled:opacity-50"
-                            disabled={!problem?.aboutTopic}
-                          >
-                            Learn About topic
-                          </button>
-                          <AnimatePresence>
-                            {isLearnPanelOpen && (
-                              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.28, ease: "easeInOut" }} style={{ overflow: "hidden" }}>
-                                <LearnTopicPanel htmlContent={problem?.aboutTopic} />
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                          <div className="flex flex-col items-start gap-1 text-sm">
-                            <span className="text-gray-200 text-sm">Contributors:</span>
-                            <a href="#" className="flex items-center gap-1.5 text-zinc-400 hover:text-white hover:underline">
-                              Moe Chabot <FiExternalLink size={12} />
-                            </a>
+                        {/* bottom area: learn button & contributors */}
+                        <div className="mt-8 pt-6 border-t border-zinc-800 space-y-6">
+                          <div>
+                            <button
+                              onClick={() => setIsLearnPanelOpen((prev) => !prev)}
+                              className="px-4 py-2 text-sm border border-zinc-700 rounded-3xl hover:bg-zinc-800 transition disabled:opacity-50"
+                              disabled={!problem?.aboutTopic}
+                            >
+                              Learn About topic
+                            </button>
+                            <AnimatePresence>
+                              {isLearnPanelOpen && (
+                                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.28, ease: "easeInOut" }} style={{ overflow: "hidden" }}>
+                                  <LearnTopicPanel htmlContent={problem?.aboutTopic} />
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
                           </div>
 
-                          <button className="px-4 py-2 text-sm bg-[#1e1e1e] border border-zinc-700 rounded-3xl hover:bg-zinc-800 transition">
-                            Contribute
-                          </button>
+                          <div className="flex items-center justify-between">
+                            <div className="flex flex-col items-start gap-1 text-sm">
+                              <span className="text-gray-200 text-sm">Contributors:</span>
+                              <a href="#" className="flex items-center gap-1.5 text-zinc-400 hover:text-white hover:underline">
+                                Moe Chabot <FiExternalLink size={12} />
+                              </a>
+                            </div>
+
+                            <button className="px-4 py-2 text-sm bg-[#1e1e1e] border border-zinc-700 rounded-3xl hover:bg-zinc-800 transition">
+                              Contribute
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* request edit button */}
-                <div className="py-4 text-center bg-[#1e1e1e]">
-                  <button onClick={() => setIsEditModalOpen(true)} className="px-5 py-2 text-sm bg-[var(--color-bg)] border border-zinc-700 rounded-lg hover:bg-zinc-800 transition duration-500 cursor-pointer ">
-                    <span className="flex gap-2 items-center"><FaEdit /> Request Edit</span>
-                  </button>
+                  {/* request edit button */}
+                  <div className="py-4 text-center bg-[#1e1e1e]">
+                    <button onClick={() => setIsEditModalOpen(true)} className="px-5 py-2 text-sm bg-[var(--color-bg)] border border-zinc-700 rounded-lg hover:bg-zinc-800 transition duration-500 cursor-pointer ">
+                      <span className="flex gap-2 items-center"><FaEdit /> Request Edit</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="px-6 overflow-y-auto flex-grow">
+                  <div className="rounded-lg min-h-full flex justify-center items-center bg-[#1e1e1e] border border-zinc-800 p-6 shadow-sm">
+                    <PlaceholderContent title={leftTabTitle} />
+                  </div>
+                </div>
+              )}
             </div>
           </Panel>
 
