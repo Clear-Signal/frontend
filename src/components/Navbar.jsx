@@ -109,7 +109,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
               className="h-9 w-9 rounded-full object-cover border border-[var(--panel-border)]"
             />
             <h1 className="text-[var(--text-default)] text-lg font-semibold hidden sm:inline">
-              PixelBlank
+              PixelBank
             </h1>
           </Link>
 
