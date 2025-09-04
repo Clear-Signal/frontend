@@ -33,6 +33,7 @@ import LearnTopicPanel from "../components/LearnAboutTopic";
 import RequestEditModal from "../components/RequestEdit";
 import { MdKeyboard } from "react-icons/md";
 import SolutionSection from "../components/SolutionSection";
+import { LuStar, LuStarOff } from "react-icons/lu";
 
 // --- Sub-components ---
 
@@ -143,14 +144,16 @@ export default function ProblemSolver() {
   const [isSubmissionsOpen, setIsSubmissionsOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLearnPanelOpen, setIsLearnPanelOpen] = useState(false);
-
+  
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const params = useParams();
   const problemId = params.id;
-
+  
   const [width] = useWindowSize();
   const isMobile = width < 1024;
+  
+  const [isFavorite, setIsFavorite] = useState(localStorage.getItem(`isFavorite-${problemId}`) === "true" || false);
 
   const { data: problem, loading } = useFetch(
     `/api/general/problems/${problemId}`
@@ -365,6 +368,10 @@ export default function ProblemSolver() {
 
   // toggle theme
   const toggleTheme = () => setIsDark((d) => !d);
+  const toggleFavorite = () => {
+    setIsFavorite((f) => !f);
+    localStorage.setItem(`isFavorite-${problemId}`, !isFavorite);
+  };
 
   return (
     <div className="min-h-screen bg-black text-gray-200 p-4">
@@ -460,9 +467,10 @@ export default function ProblemSolver() {
                     <div className="flex items-center gap-2">
                       <button
                         className="p-2 rounded-md hover:bg-zinc-800 text-gray-400 cursor-pointer"
-                        title="Toggle mute"
+                        title="favorite"
+                        onClick={toggleFavorite}
                       >
-                        🔇
+                        {!isFavorite ? <LuStarOff size={18} /> : <LuStar size={18} className="text-yellow-600" />}
                       </button>
 
                       {/* fullscreen toggle (same control you already have) */}

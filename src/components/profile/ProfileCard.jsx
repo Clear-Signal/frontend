@@ -1,6 +1,7 @@
 import { CiLogout } from "react-icons/ci";
 import { FaFire } from "react-icons/fa";
 import { initialsFromName } from "../../utils/helper";
+import FireLottie from "../FireLottie";
 
 const ProfileCardSkeleton = () => (
   <aside className="lg:col-span-4">
@@ -113,7 +114,7 @@ export default function ProfileCard({ auth, user, onLogout, response }) {
                 Maximum Flame Score Attained
               </p>
               <div className="text-3xl font-bold mt-2 flex items-center gap-3 text-[var(--color-fg)]">
-                <FaFire className="text-[var(--color-accent)]" />
+                <FireLottie size={36} />
                 <span>{stats.flameScore || 0}</span> {/* Placeholder */}
               </div>
               <div className="text-xs text-[var(--color-fg)] mt-1">

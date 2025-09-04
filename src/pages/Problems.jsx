@@ -9,6 +9,7 @@ import Pagination from "../components/ProblemsPagination";
 import Dropdown from "../components/Dropdown";
 import DailyChallenge from "../components/DailyChallenge";
 import Footer from "../components/Footer";
+import CollectionCarousel from "../components/collections/CollectionCarousel";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -29,7 +30,6 @@ export default function ProblemsPage() {
   const [query, setQuery] = useState("");
   const [difficulty, setDifficulty] = useState("all");
   const [category, setCategory] = useState("all");
-  const [expanded, setExpanded] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // ✅ State for pagination
 
   const { navigate } = useContext(AuthContext);
@@ -86,9 +86,10 @@ export default function ProblemsPage() {
           {/* Daily Challenge section (unchanged) */}
           <DailyChallenge challenge={challenge} />
           <div className="rounded-2xl border-[1px] border-[var(--color-muted)] bg-[var(--color-bg-black)] p-5 shadow-sm">
-            <h2 className="text-xl font-semibold flex items-center gap-3">
+            <h2 className="text-2xl font-semibold flex items-center gap-3">
               <FaBook /> Problem Explorer
             </h2>
+            <CollectionCarousel/>
             {/* Filters section (unchanged) */}
             <div className="flex flex-col md:flex-row md:items-center md:gap-3 my-4">
               <div className="flex items-center gap-2 flex-1 flex-wrap">

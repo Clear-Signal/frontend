@@ -14,6 +14,7 @@ import { LiaDiscord } from "react-icons/lia";
 import ThemeToggle from "./ThemeToggle";
 import { AuthContext } from "../stores/authStore";
 import NotificationModal from "./NotificationModal";
+import FireLottie from "./FireLottie";
 
 const Navbar = ({ activeNav, setActiveNav }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -170,7 +171,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
           <div className="hidden lg:flex items-center gap-4 ml-auto">
             {/* Flame + count */}
             <div className="flex justify-center items-center gap-2 px-3 py-1 rounded-full">
-              <FaFire className="text-xl text-[rgb(255,140,0)]" />
+              <FireLottie size={26} />
               <span className="text-lg  font-medium text-[var(--text-default)]">
                 {user?.data?.flameScore || 0}
               </span>
