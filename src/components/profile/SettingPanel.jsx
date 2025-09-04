@@ -16,7 +16,7 @@ export default function SettingsPanel({
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState(null);
 
-  const { updateUser, loading } = useContext(AuthContext);
+  const { updateUser, updatePrivacy, loading } = useContext(AuthContext);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -27,6 +27,12 @@ export default function SettingsPanel({
     e.preventDefault();
     setMsg(null);
     updateUser(form, setMsg);
+  }
+
+  async function handleSavePrivacy(e) {
+    e.preventDefault();
+    setMsg(null);
+    updatePrivacy(privacy, setMsg);
   }
 
   function togglePrivacy(key) {
@@ -136,15 +142,15 @@ export default function SettingsPanel({
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                checked={privacy.showEmail}
-                onChange={() => togglePrivacy("showEmail")}
+                checked={privacy?.isEmailVisible}
+                onChange={() => togglePrivacy("isEmailVisible")}
                 className="sr-only"
               />
 
               {/* track */}
               <span
                 className={`block w-12 h-6 rounded-full transition-colors duration-200 ${
-                  privacy.showEmail
+                  privacy.isEmailVisible
                     ? "bg-blue-400"
                     : "bg-blue-400/10"
                 }`}
@@ -154,14 +160,14 @@ export default function SettingsPanel({
               {/* thumb */}
               <span
                 className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow-sm transform transition-transform duration-400 ${
-                  privacy.showEmail ? "translate-x-6" : "translate-x-0"
+                  privacy.isEmailVisible ? "translate-x-6" : "translate-x-0"
                 }`}
                 aria-hidden
               />
 
               {/* optional small label (keeps your existing On/Off text) */}
               <span className="ml-2 text-xs text-[var(--color-fg)]">
-                {privacy.showEmail ? "On" : "Off"}
+                {privacy.isEmailVisible ? "On" : "Off"}
               </span>
             </label>
           </div>
@@ -177,15 +183,15 @@ export default function SettingsPanel({
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                checked={privacy.showSocial}
-                onChange={() => togglePrivacy("showSocial")}
+                checked={privacy?.isSocialVisible}
+                onChange={() => togglePrivacy("isSocialVisible")}
                 className="sr-only"
               />
 
               {/* track */}
               <span
                 className={`block w-12 h-6 rounded-full transition-colors duration-400 ${
-                  privacy.showSocial
+                  privacy.isSocialVisible
                     ? "bg-blue-400"
                     : "bg-blue-400/10"
                 }`}
@@ -195,14 +201,14 @@ export default function SettingsPanel({
               {/* thumb */}
               <span
                 className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow-sm transform transition-transform duration-200 ${
-                  privacy.showSocial ? "translate-x-6" : "translate-x-0"
+                  privacy.isSocialVisible ? "translate-x-6" : "translate-x-0"
                 }`}
                 aria-hidden
               />
 
               {/* optional small label (keeps your existing On/Off text) */}
               <span className="ml-2 text-xs text-[var(--color-fg)]">
-                {privacy.showSocial ? "On" : "Off"}
+                {privacy.isSocialVisible ? "On" : "Off"}
               </span>
             </label>
           </div>
@@ -218,15 +224,15 @@ export default function SettingsPanel({
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                checked={privacy.showBadges}
-                onChange={() => togglePrivacy("showBadges")}
+                checked={privacy?.isBadgeVisible}
+                onChange={() => togglePrivacy("isBadgeVisible")}
                 className="sr-only"
               />
 
               {/* track */}
               <span
                 className={`block w-12 h-6 rounded-full transition-colors duration-400 ${
-                  privacy.showBadges
+                  privacy.isBadgeVisible
                     ? "bg-blue-400"
                     : "bg-blue-400/10"
                 }`}
@@ -236,14 +242,14 @@ export default function SettingsPanel({
               {/* thumb */}
               <span
                 className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white shadow-sm transform transition-transform duration-400 ${
-                  privacy.showBadges ? "translate-x-6" : "translate-x-0"
+                  privacy.isBadgeVisible ? "translate-x-6" : "translate-x-0"
                 }`}
                 aria-hidden
               />
 
               {/* optional small label (keeps your existing On/Off text) */}
               <span className="ml-2 text-xs text-[var(--color-fg)]">
-                {privacy.showBadges ? "On" : "Off"}
+                {privacy.isBadgeVisible ? "On" : "Off"}
               </span>
             </label>
           </div>
@@ -251,8 +257,9 @@ export default function SettingsPanel({
           <div>
             <button
               type="button"
-              onClick={() => setTimeout(() => {}, 250)}
-              className="w-full px-4 py-2 rounded-md bg-[var(--color-muted)] border border-[var(--color-border)] text-[var(--color-fg)]"
+              onClick={handleSavePrivacy}
+              disabled={loading}
+              className="w-full px-4 py-2 rounded-md bg-[var(--color-muted)] border border-[var(--color-border)] text-[var(--color-fg)]  cursor-pointer hover:scale-102 hover:bg-zinc-600 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Save Privacy Settings
             </button>

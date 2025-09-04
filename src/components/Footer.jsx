@@ -1,4 +1,5 @@
 import { FaTwitter, FaLinkedin, FaDiscord } from "react-icons/fa";
+import { FaX } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 import { Link } from "react-router-dom";
 
@@ -19,11 +20,10 @@ export default function Footer() {
         <div>
           <h2 className="text-[var(--text-default)] text-lg font-semibold">Quick Links</h2>
           <ul className="mt-2 space-y-2 text-sm">
-            <li><Link to="#" className="hover:text-gray-400">Problems</Link></li>
+            <li><Link to="/problems" className="hover:text-gray-400">Problems</Link></li>
             <li><Link to="#" className="hover:text-gray-400">FAQ</Link></li>
             <li><Link to="#" className="hover:text-gray-400">Terms and Conditions</Link></li>
-            <li><Link to="#" className="hover:text-gray-400">Submit Problem</Link></li>
-            <li><Link to="#" className="hover:text-gray-400">Creator Program</Link></li>
+            <li><Link to="/problems" className="hover:text-gray-400">Submit Problem</Link></li>
           </ul>
         </div>
 
@@ -31,10 +31,10 @@ export default function Footer() {
         <div>
           <h2 className="text-[var(--text-default)] text-lg font-semibold">Connect With Us</h2>
           <div className="mt-3 flex space-x-4 text-xl">
-            <Link to="#" className="hover:text-gray-400"><FaTwitter /></Link>
-            <Link to="#" className="hover:text-gray-400"><FaDiscord /></Link>
+            <Link to="https://x.com/" className="hover:text-gray-400"><FaX /></Link>
+            <Link to="https://discord.com/invite/" className="hover:text-gray-400"><FaDiscord /></Link>
             <Link to="#" className="hover:text-gray-400"><MdEmail /></Link>
-            <Link to="#" className="hover:text-gray-400"><FaLinkedin /></Link>
+            <Link to="https://www.linkedin.com/company/" className="hover:text-gray-400"><FaLinkedin /></Link>
           </div>
         </div>
       </div>

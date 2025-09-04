@@ -51,9 +51,7 @@ export default function RequestEditModal({ isOpen, onClose, problem }) {
     setSubmitError("");
     const payload = { problemId: problem._id, feedbackType: editType };
 
-    if (editType === 'general') {
-        payload.generalIssue = feedback;
-    } else {
+    if (editType !== 'general') {
         Object.keys(checkedFields).forEach(fieldKey => {
             if (checkedFields[fieldKey]) {
                 const schemaKey = fieldKey.charAt(0).toLowerCase() + fieldKey.slice(1).replace(' ', '');
@@ -62,11 +60,13 @@ export default function RequestEditModal({ isOpen, onClose, problem }) {
                 }
             }
         });
+    }else{
+      payload.description = feedback;
     }
 
     try {
-        await axios.post('/api/user/feedback/add', payload, { withCredentials: true });
-        alert("Feedback submitted successfully!");
+        console.log("Submitting payload:", payload);
+        await axios.post(`${import.meta.env.VITE_APP_URL}/api/user/feedback/add`, payload, { withCredentials: true });
         onClose();
     } catch (err) {
         setSubmitError(err.response?.data?.message || "An error occurred.");

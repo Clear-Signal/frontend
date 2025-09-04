@@ -22,7 +22,7 @@ export default function CollectionsPage() {
   const { freeCollections, premiumCollections } = useMemo(() => {
     const free = [];
     const premium = [];
-    (collections || []).forEach((collection) => {
+    (collections?.data || []).forEach((collection) => {
       if (collection.isPremium) {
         premium.push(collection);
       } else {
@@ -102,18 +102,20 @@ export default function CollectionsPage() {
           </section>
         )}
 
-        {!collections?.length && (
+        {!collections.data?.length && (
           <div className="text-center text-gray-500 py-16">
             <p>No collections are available at the moment.</p>
           </div>
         )}
       </div>
-      <CollectionModal
+      {openCollection && (
+        <CollectionModal
         isOpen={!!openCollection}
         onClose={() => setOpenCollection(null)}
         onOpenProblem={(problem) => navigate(`/problems/${problem._id}`)}
         collectionId={openCollection}
       />
+      )}
     </main>
   );
 }

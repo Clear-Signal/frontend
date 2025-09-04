@@ -152,7 +152,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
                 Leaderboard
               </Link>
 
-              <Link
+              {/* <Link
                 to="/signal0"
                 className={`transition text-lg cursor-pointer hover:text-[var(--text-default)] ${
                   activeNav === "Signal-0"
@@ -162,7 +162,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
                 onClick={() => setActiveNav("Signal-0")}
               >
                 Pixel-0
-              </Link>
+              </Link> */}
             </div>
           </div>
 
@@ -219,7 +219,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
                   >
                     <div className="py-1">
                       <Link
-                        to="/profile"
+                        to={`/profile/${user?.data?._id}`}
                         onClick={() => setIsProfileOpen(false)}
                         className="block px-4 py-2 rounded-md text-sm text-[var(--text-default)] hover:bg-zinc-700"
                         role="menuitem"
@@ -297,7 +297,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
           <div className="flex items-center lg:hidden gap-2">
             {user ? (
               <Link
-                to="/profile"
+                to={`/profile/${user?.data?._id}`}
                 className="flex items-center gap-2 bg-gray-300 px-2 py-1 rounded-full text-sm"
                 onClick={() => setIsOpen(false)}
               >
@@ -343,7 +343,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
                 <FaUserCircle className="text-[var(--text-default)] text-2xl" />
                 <div>
                   <Link
-                    to="/profile"
+                    to={`/profile/${user?.data?._id}`}
                     onClick={() => setIsOpen(false)}
                     className="text-[var(--text-default)] font-semibold"
                   >
@@ -415,13 +415,13 @@ const Navbar = ({ activeNav, setActiveNav }) => {
             >
               Collections
             </Link>
-            <Link
+            {/* <Link
               to="/signal0"
               onClick={() => setIsOpen(false)}
               className="block text-[var(--text-default)] px-3 py-2 rounded-md hover:bg-[var(--bg-page)]/10"
             >
               Pixel-0
-            </Link>
+            </Link> */}
             <Link
               to="/leaderboard"
               onClick={() => setIsOpen(false)}

@@ -11,6 +11,7 @@ export const AuthContext = createContext({
   logout: () => {},
   register: () => {},
   updateUser: () => {},
+  updatePrivacy: () => {},
   navigate: () => {},
   error: null,
   loading: false,
@@ -82,7 +83,7 @@ const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       setLoading(true);
-      const response = await axios.post(`${apiUrl}/api/auth/logout`);
+      const response = await axios.post(`${apiUrl}/api/auth/logout`, {}, { withCredentials: true });
       console.log(response.data);
       setUser(null);
       localStorage.removeItem("user");
@@ -109,7 +110,31 @@ const AuthProvider = ({ children }) => {
       if (response.data) {
         setUser(response.data);
         localStorage.setItem("user", JSON.stringify(response.data));
-        setMsg({ type: "success", text: "Profile updated." });
+        setMsg({ type: "success", text: "Profile Updated." });
+      }
+    } catch (error) {
+      console.error(error);
+      setError(
+        error.response ? error.response.data.message : "An error occurred"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updatePrivacy = async (updatedData, setMsg) => {
+    try {
+      setLoading(true);
+      const response = await axios.patch(
+        `${apiUrl}/api/user/profile/visibility`,
+        updatedData,
+        { withCredentials: true }
+      );
+      console.log(response.data);
+      if (response.data) {
+        setUser(response.data);
+        localStorage.setItem("user", JSON.stringify(response.data));
+        setMsg({ type: "success", text: "Privacy Updated." });
       }
     } catch (error) {
       console.error(error);
@@ -129,6 +154,7 @@ const AuthProvider = ({ children }) => {
         logout,
         register,
         updateUser,
+        updatePrivacy,
         setUser,
         error,
         loading,

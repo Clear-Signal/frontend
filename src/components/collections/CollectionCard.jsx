@@ -2,7 +2,10 @@ import { FiChevronRight, FiExternalLink } from "react-icons/fi";
 import { initialsFromTitle } from "../../utils/helper";
 
 export default function CollectionCard({ collection, onView, user }) {
-  const { name, section, progress = 0, coverImageUrl, resource } = collection;
+  const { name, section, solvedCount, totalQuestions, coverImageUrl, resource } = collection;
+  const progress = totalQuestions
+    ? Math.round((solvedCount / totalQuestions) * 100)
+    : 0;
   return (
     <article
       className={`group pt-2 relative rounded-xl border border-[var(--color-muted)] bg-zinc-900 overflow-hidden flex flex-col hover:scale-105 transition-transform duration-500 ease-in-out ${ !user?"cursor-pointer": user.data?.hasPremiumAccess ? "opacity-100 cursor-pointer" : "opacity-50 cursor-not-allowed"}`}
@@ -19,7 +22,7 @@ export default function CollectionCard({ collection, onView, user }) {
           <p className="mt-2 text-sm text-[var(--text-default)]">{section} sections</p>
 
           <div className="mt-4 text-sm font-medium text-[var(--text-default)]">
-            <span className="block"> {progress}% Completed</span>
+            <span className={`block ${progress>0 && "text-yellow-500"}`}> {progress}% Completed</span>
             
           </div>
         </div>

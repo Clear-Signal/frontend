@@ -8,6 +8,7 @@ import LoadingScreen from "../components/LoadingScreen";
 import Pagination from "../components/ProblemsPagination";
 import Dropdown from "../components/Dropdown";
 import DailyChallenge from "../components/DailyChallenge";
+import Footer from "../components/Footer";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -77,7 +78,8 @@ export default function ProblemsPage() {
   if (loading) return <LoadingScreen />;
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-black)] text-[var(--color-fg)] p-6">
+    <>
+      <div className="min-h-screen bg-[var(--color-bg-black)] text-[var(--color-fg)] p-6">
       <div className="mx-auto grid grid-cols-1 lg:grid-cols-8 gap-6">
         {/* Main explorer */}
         <section className="lg:col-span-5">
@@ -251,5 +253,7 @@ export default function ProblemsPage() {
         </aside>
       </div>
     </div>
+    <Footer />
+    </>
   );
 }

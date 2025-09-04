@@ -7,6 +7,7 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem, collec
   const backdropRef = useRef(null);
   const previouslyFocused = useRef(null);
 
+
   const { data: collection, loading, error } = useFetch(`/api/general/collection/${collectionId}`);
   console.log(collection);
 
@@ -59,7 +60,19 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem, collec
     progress = 0,
     externalUrl,
     topics = [],
+    solvedCount,
+    totalQuestions,
   } = collection;
+
+  const topicsSolvedCount = topics?.solvedCount || 0;
+  const topicsTotalQuestions = topics?.totalQuestions || 0;
+  const topicsProgress = topicsTotalQuestions
+    ? Math.round((topicsSolvedCount / topicsTotalQuestions) * 100)
+    : 0;
+
+  const progressPercent = totalQuestions
+    ? Math.round((solvedCount / totalQuestions) * 100)
+    : 0;
 
   return (
     <div
@@ -110,14 +123,13 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem, collec
             {/* progress bar */}
             <div className="mt-4">
               <div className="text-xs text-[var(--text-default)] mb-2">
-                {progress}% Complete
+                {progressPercent}% Complete
               </div>
-              <div className="w-full h-2 rounded-full bg-[var(--color-bg)]/40 border border-[var(--color-border)] overflow-hidden">
+              <div className="w-full h-2 rounded-full bg-zinc-700 overflow-hidden">
                 <div
-                  className="h-2 rounded-full transition-all"
+                  className="h-2 rounded-full transition-all bg-green-400"
                   style={{
-                    width: `${Math.max(0, Math.min(100, progress))}%`,
-                    background: "var(--color-primary)",
+                    width: `${Math.max(0, Math.min(100, progressPercent))}%`,
                   }}
                 />
               </div>
@@ -162,7 +174,7 @@ export default function CollectionModal({ isOpen, onClose, onOpenProblem, collec
                       {ti + 1}. {topic.name}
                     </div>
                     <div className="text-sm text-green-500">
-                      {topic.progress ?? 0}% Completed
+                      {(!topic.totalQuestions ? 0 : (topic.solvedQuestions / topic.totalQuestions * 100)).toFixed(0)}% Completed
                     </div>
                   </div>
 

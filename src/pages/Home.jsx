@@ -2,6 +2,7 @@
 import React, { useContext, useEffect } from "react";
 import Hero from "../components/Hero";
 import LearningCards from "../components/LearningCards";
+import Footer from "../components/Footer";
 import WhyClearSignal from "../components/WhyClearSignal";
 import { AuthContext } from "../stores/authStore";
 import Lenis from "@studio-freight/lenis";
@@ -29,6 +30,10 @@ export default function Home() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    const _id = params.get("_id");
+    const isEmailVisible = params.get("isEmailVisible") === "true";
+    const isSocialVisible = params.get("isSocialVisible") === "true";
+    const isBadgeVisible = params.get("isBadgeVisible") === "true";
     const fullName = params.get("fullName");
     const email = params.get("email");
     const role = params.get("role");
@@ -41,13 +46,26 @@ export default function Home() {
 
     if (fullName && email && role) {
       const userData = {
-        data: { fullName, email, role, gitHubUsername, linkedInProfileURL, kaggleUsername, profilePic, flameScore, hasPremiumAccess },
+        data: {
+          _id,
+          fullName,
+          email,
+          role,
+          gitHubUsername,
+          linkedInProfileURL,
+          kaggleUsername,
+          profilePic,
+          flameScore,
+          hasPremiumAccess,
+          isEmailVisible,
+          isSocialVisible,
+          isBadgeVisible,
+        },
       };
       setUser(userData);
       localStorage.setItem("user", JSON.stringify(userData));
       navigate("/", { replace: true });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   return (
@@ -55,6 +73,7 @@ export default function Home() {
       <Hero />
       <LearningCards />
       <WhyClearSignal />
+      <Footer />
     </main>
   );
 }

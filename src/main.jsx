@@ -36,17 +36,17 @@ const router = createBrowserRouter([
         element: <ResetPassword />,
       },
       {
-        path: '/profile',
+        path: '/profile/:userId',
         element: <Profile />,
       },
       {
         path: '/problems',
         element: <ProblemsPage />,
       },
-      {
-        path: '/signal0',
-        element: <Signal0 />,
-      },
+      // {
+      //   path: '/signal0',
+      //   element: <Signal0 />,
+      // },
       {
         path: '/problems/:id',
         element: <ProblemSolver />,

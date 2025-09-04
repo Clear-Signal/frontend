@@ -17,9 +17,9 @@ const ProfileCardSkeleton = () => (
   </aside>
 );
 
-export default function ProfileCard({ user, onLogout, response }) {
+export default function ProfileCard({ auth, user, onLogout, response }) {
   // 1. Fetch stats using your custom hook
-  const { data: stats, loading, error } = response
+  const { data: stats, loading, error } = response;
   console.log("Fetched stats:", stats);
 
   // 2. Handle loading and error states
@@ -107,9 +107,7 @@ export default function ProfileCard({ user, onLogout, response }) {
             </div>
           </div>
 
-          <div
-            className="col-span-2 rounded-xl border bg-zinc-800 border-[var(--color-border)] flex items-center justify-between hover:-translate-y-1 hover:bg-zinc-700 transition duration-300"
-          >
+          <div className="col-span-2 rounded-xl border bg-zinc-800 border-[var(--color-border)] flex items-center justify-between hover:-translate-y-1 hover:bg-zinc-700 transition duration-300">
             <div className="flex-1 p-4 rounded-l ">
               <p className="text-xs text-[var(--color-fg)]">
                 Maximum Flame Score Attained
@@ -126,15 +124,17 @@ export default function ProfileCard({ user, onLogout, response }) {
         </div>
 
         {/* Logout Button */}
-        <div>
-          <button
-            onClick={() => onLogout && onLogout()}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-zinc-800 hover:bg-red-800/50 border border-[var(--color-border)] text-[var(--color-fg)] hover:scale-105 transition duration-500 cursor-pointer"
-          >
-            <CiLogout className="text-[var(--color-fg)]" />
-            Logout
-          </button>
-        </div>
+        {auth?.user?.data?._id === user?._id && onLogout && (
+          <div>
+            <button
+              onClick={() => onLogout && onLogout()}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-zinc-800 hover:bg-red-800/50 border border-[var(--color-border)] text-[var(--color-fg)] hover:scale-105 transition duration-500 cursor-pointer"
+            >
+              <CiLogout className="text-[var(--color-fg)]" />
+              Logout
+            </button>
+          </div>
+        )}
       </div>
     </aside>
   );
