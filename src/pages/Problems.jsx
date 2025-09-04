@@ -126,16 +126,16 @@ export default function ProblemsPage() {
               <table className="w-full border-collapse text-sm">
                 <thead>
                   <tr className="text-left bg-zinc-900 text-[var(--color-fg)]">
-                    <th className="py-2 px-3 border-b border-[var(--color-fg)] w-16">
+                    <th className="py-2 px-3 border-b border-[var(--color-fg)] w-40">
                       ID
                     </th>
                     <th className="py-2 px-3 border-b border-[var(--color-fg)]">
                       Title
                     </th>
-                    <th className="py-2 px-3 border-b border-[var(--color-fg)] w-32">
+                    <th className="py-2 px-3 border-b border-[var(--color-fg)] w-20">
                       Difficulty
                     </th>
-                    <th className="py-2 px-3 border-b border-[var(--color-fg)] w-40">
+                    <th className="py-2 px-3 border-b border-[var(--color-fg)] w-24">
                       Category
                     </th>
                     <th className="py-2 px-3 border-b border-[var(--color-fg)] w-28">
@@ -165,13 +165,13 @@ export default function ProblemsPage() {
                             navigate && navigate(`/problems/${p._id}`)
                           }
                         >
-                          <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">
+                          <td className="py-3 px-3 border-b-1 border-[var(--color-fg)] align-center">
                             {p.problemId}
                           </td>
-                          <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">
+                          <td className="py-3 px-3 border-b-1 border-[var(--color-fg)] align-center">
                             {p.title}
                           </td>
-                          <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">
+                          <td className="py-3 px-3 border-b-1 border-[var(--color-fg)] align-center">
                             <span
                               className={
                                 difficultyStyle[
@@ -195,11 +195,11 @@ export default function ProblemsPage() {
                               {p.difficulty}
                             </span>
                           </td>
-                          <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">
+                          <td className="py-3 px-3 border-b-1 border-[var(--color-fg)] align-center text-center">
                             {p.category}
                           </td>
-                          <td className="py-5 px-3 border-b-2 border-[var(--color-fg)] align-top">
-                            <span className="text-[var(--color-fg)] text-center text-xs">
+                          <td className="py-3 px-3 border-b-1 border-[var(--color-fg)] align-center">
+                            <span className="w-full flex justify-center text-[var(--color-fg)] text-xs">
                               {p.status &&
                               p.status.toLowerCase() === "solved" ? (
                                 <FaCheckCircle color="green" size={20} />

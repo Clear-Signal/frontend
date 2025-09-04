@@ -20,6 +20,7 @@ import {
   FiPlus,
 } from "react-icons/fi";
 import { FaCheck, FaTimes, FaCircle, FaEdit } from "react-icons/fa";
+import { MdOutlineCloseFullscreen, MdOutlineOpenInFull } from "react-icons/md";
 import { VscPlay } from "react-icons/vsc";
 import { useNavigate, useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
@@ -370,292 +371,330 @@ export default function ProblemSolver() {
       <div className="mx-auto max-w-[96rem] h-[calc(100vh-2rem)]">
         <PanelGroup direction={isMobile ? "vertical" : "horizontal"}>
           <Panel defaultSize={50} minSize={30}>
-            {/* LEFT PANEL: styling updated to match provided design */}
-            <div className="rounded-lg border border-zinc-800 bg-[#0b0b0c] flex flex-col h-full overflow-hidden">
-              {/* Top rounded nav bar */}
-              <div className="mx-6 mt-2 mb-2">
-                <div className="flex items-center justify-between bg-[#1e1e1e] border border-zinc-800 rounded-xl px-3 py-1">
-                  {/* left - back arrow */}
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => window.history.back()}
-                      className="p-2 rounded-md hover:bg-zinc-800 text-gray-300"
-                      title="Back"
-                      aria-label="Back"
-                    >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        className="stroke-current text-gray-300"
-                      >
-                        <path
-                          d="M15 18l-6-6 6-6"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
-                  </div>
+            {/* LEFT PANEL: show full content when NOT fullscreen, show tiny sidebar when fullscreen */}
+            {isEditorFullscreen ? (
+              // ---- Collapsed sidebar while editor is fullscreen ----
+              // fixed narrow vertical bar on the left with exit-fullscreen button
+              <div
+                aria-hidden={false}
+                className="fixed left-4 top-4 bottom-4 z-[60] w-12 rounded-xl bg-[#0b0b0c] border border-zinc-800 flex items-start justify-center p-2 shadow-lg transition-all"
+              >
+                <div className="w-full flex flex-col items-center gap-4">
+                  {/* Exit fullscreen button */}
+                  <button
+                    onClick={() => setIsEditorFullscreen(false)}
+                    title="Exit fullscreen"
+                    aria-label="Exit fullscreen"
+                    className="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-zinc-800 text-gray-200 border border-zinc-700"
+                  >
+                    <MdOutlineCloseFullscreen size={18} />
+                  </button>
 
-                  {/* center - tabs */}
-                  <div className="flex items-center gap-6 ">
-                    {[
-                      "Problem Description",
-                      "Solution",
-                      "Video",
-                      "Comments",
-                    ].map((t) => {
-                      const key =
-                        t === "Problem Description"
-                          ? "description"
-                          : t.toLowerCase();
-                      const active = descriptionTab === key;
-                      return (
-                        <button
-                          key={t}
-                          onClick={() => setDescriptionTab(key)}
-                          className={`relative px-3 py-1 text-sm font-medium cursor-pointer  ${
-                            active ? "text-white" : "text-gray-400"
-                          }`}
-                        >
-                          {t}
-                          {active && (
-                            <span className="absolute left-0 right-0 -bottom-3 h-0.5 bg-white rounded" />
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* right - tiny icons */}
-                  <div className="flex items-center gap-2">
-                    <button
-                      className="p-2 rounded-md hover:bg-zinc-800 text-gray-400"
-                      title="Toggle mute"
-                    >
-                      {/* small speaker-off icon placeholder */}
-                      🔇
-                    </button>
-                  </div>
+                  {/* Optional: small spacer or other one-button controls (keep minimal) */}
+                  {/* <button className="w-10 h-10 rounded-md ...">...</button> */}
                 </div>
               </div>
+            ) : (
+              // ---- FULL LEFT PANEL: original layout (unchanged) ----
+              <div className="rounded-lg border border-zinc-800 bg-[#0b0b0c] flex flex-col h-full overflow-hidden">
+                {/* Top rounded nav bar */}
+                <div className="mx-6 mt-2 mb-2">
+                  <div className="flex items-center justify-between bg-[#1e1e1e] border border-zinc-800 rounded-xl px-3 py-1">
+                    {/* left - back arrow */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => window.history.back()}
+                        className="p-2 rounded-md hover:bg-zinc-800 text-gray-300"
+                        title="Back"
+                        aria-label="Back"
+                      >
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          className="stroke-current text-gray-300"
+                        >
+                          <path
+                            d="M15 18l-6-6 6-6"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                    </div>
 
-              {/* content card area */}
-              {descriptionTab === "description" ? (
-                <div className="px-6 overflow-y-auto flex-grow">
-                  <div className="rounded-lg bg-[#1e1e1e] border border-zinc-800 p-6 shadow-sm">
-                    <div className="flex items-start gap-4">
-                      {/* left small book icon */}
-                      <div className="flex-shrink-0 mt-1">
-                        <div className="w-9 h-9 rounded-md bg-[#1e1e1e] border border-zinc-700 flex items-center justify-center text-gray-300">
-                          📘
+                    {/* center - tabs */}
+                    <div className="flex items-center gap-6 ">
+                      {[
+                        "Problem Description",
+                        "Solution",
+                        "Video",
+                        "Comments",
+                      ].map((t) => {
+                        const key =
+                          t === "Problem Description"
+                            ? "description"
+                            : t.toLowerCase();
+                        const active = descriptionTab === key;
+                        return (
+                          <button
+                            key={t}
+                            onClick={() => setDescriptionTab(key)}
+                            className={`relative px-3 py-1 text-sm font-medium cursor-pointer  ${
+                              active ? "text-white" : "text-gray-400"
+                            }`}
+                          >
+                            {t}
+                            {active && (
+                              <span className="absolute left-0 right-0 -bottom-3 h-0.5 bg-white rounded" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* right - tiny icons */}
+                    <div className="flex items-center gap-2">
+                      <button
+                        className="p-2 rounded-md hover:bg-zinc-800 text-gray-400 cursor-pointer"
+                        title="Toggle mute"
+                      >
+                        🔇
+                      </button>
+
+                      {/* fullscreen toggle (same control you already have) */}
+                      <button
+                        onClick={() => setIsEditorFullscreen((f) => !f)}
+                        className="w-8 h-8 p-2 rounded-md hover:bg-zinc-800 flex items-center justify-center cursor-pointer"
+                        title="Toggle fullscreen"
+                        aria-label="Toggle fullscreen"
+                      >
+                        {isEditorFullscreen ? (
+                          <MdOutlineCloseFullscreen />
+                        ) : (
+                          <MdOutlineOpenInFull />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* content card area */}
+                {descriptionTab === "description" ? (
+                  <div className="px-6 overflow-y-auto flex-grow">
+                    <div className="rounded-lg bg-[#1e1e1e] border border-zinc-800 p-6 shadow-sm">
+                      <div className="flex items-start gap-4">
+                        {/* left small book icon */}
+                        <div className="flex-shrink-0 mt-1">
+                          <div className="w-9 h-9 rounded-md bg-[#1e1e1e] border border-zinc-700 flex items-center justify-center text-gray-300">
+                            📘
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="flex-1">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <h1 className="text-3xl font-bold text-white leading-tight">
-                              {problem?.title}
-                            </h1>
-                            <div className="mt-3 flex items-center gap-2">
-                              {/* difficulty pill - brown */}
-                              <span
-                                className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ${
-                                  difficultyThemes[
-                                    problem?.difficulty.toLowerCase()
-                                  ] || "bg-gray-100 text-gray-800"
-                                }`}
-                              >
-                                {problem?.difficulty}
-                              </span>
-                              {/* category pill */}
-                              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#1e1e1e] text-gray-300 border border-zinc-700">
-                                {problem?.category}
-                              </span>
+                        <div className="flex-1">
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <h1 className="text-3xl font-bold text-white leading-tight">
+                                {problem?.title}
+                              </h1>
+                              <div className="mt-3 flex items-center gap-2">
+                                {/* difficulty pill - brown */}
+                                <span
+                                  className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ${
+                                    difficultyThemes[
+                                      problem?.difficulty.toLowerCase()
+                                    ] || "bg-gray-100 text-gray-800"
+                                  }`}
+                                >
+                                  {problem?.difficulty}
+                                </span>
+                                {/* category pill */}
+                                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#1e1e1e] text-gray-300 border border-zinc-700">
+                                  {problem?.category}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* small action icon on right of title */}
+                            <div className="ml-4">
+                              <button className="w-10 h-10 rounded-md bg-[#1e1e1e] border border-zinc-700 flex items-center justify-center text-gray-300">
+                                <svg
+                                  width="18"
+                                  height="18"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                >
+                                  <path
+                                    d="M12 3v4"
+                                    stroke="#C7C7C7"
+                                    strokeWidth="1.6"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                  <path
+                                    d="M12 17v4"
+                                    stroke="#C7C7C7"
+                                    strokeWidth="1.6"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                  <path
+                                    d="M4 7h16"
+                                    stroke="#C7C7C7"
+                                    strokeWidth="1.6"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                  <path
+                                    d="M4 15h16"
+                                    stroke="#C7C7C7"
+                                    strokeWidth="1.6"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </svg>
+                              </button>
                             </div>
                           </div>
 
-                          {/* small action icon on right of title */}
-                          <div className="ml-4">
-                            <button className="w-10 h-10 rounded-md bg-[#1e1e1e] border border-zinc-700 flex items-center justify-center text-gray-300">
-                              <svg
-                                width="18"
-                                height="18"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                              >
-                                <path
-                                  d="M12 3v4"
-                                  stroke="#C7C7C7"
-                                  strokeWidth="1.6"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M12 17v4"
-                                  stroke="#C7C7C7"
-                                  strokeWidth="1.6"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M4 7h16"
-                                  stroke="#C7C7C7"
-                                  strokeWidth="1.6"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M4 15h16"
-                                  stroke="#C7C7C7"
-                                  strokeWidth="1.6"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                            </button>
+                          {/* description */}
+                          <div className="mt-6 prose prose-invert text-gray-300 max-w-none">
+                            <p className="leading-relaxed whitespace-pre-wrap break-words">
+                              {problem?.description}
+                            </p>
                           </div>
-                        </div>
 
-                        {/* description */}
-                        <div className="mt-6 prose prose-invert text-gray-300 max-w-none">
-                          <p className="leading-relaxed whitespace-pre-wrap break-words">
-                            {problem?.description}
-                          </p>
-                        </div>
+                          {/* Example block */}
+                          {problem?.sample && (
+                            <div className="mt-6">
+                              <h3 className="text-lg font-semibold text-white mb-3">
+                                Example:
+                              </h3>
 
-                        {/* Example block */}
-                        {problem?.sample && (
-                          <div className="mt-6">
-                            <h3 className="text-lg font-semibold text-white mb-3">
-                              Example:
-                            </h3>
-
-                            <div className="space-y-4">
-                              <div>
-                                <div className="text-sm text-gray-400 mb-2">
-                                  Input:
-                                </div>
-                                <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm">
-                                  <pre className="font-mono whitespace-pre-wrap text-gray-200 m-0">
-                                    {problem.sample.input}
-                                  </pre>
-                                  {/* place any additional small inputs like feature_i/threshold below if available */}
-                                </div>
-                              </div>
-
-                              <div>
-                                <div className="text-sm text-gray-400 mb-2">
-                                  Output:
-                                </div>
-                                <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm">
-                                  <pre className="font-mono whitespace-pre-wrap text-gray-200 m-0">
-                                    {problem.sample.output}
-                                  </pre>
-                                </div>
-                              </div>
-
-                              {problem.sample.reasoning && (
+                              <div className="space-y-4">
                                 <div>
                                   <div className="text-sm text-gray-400 mb-2">
-                                    Reasoning:
+                                    Input:
                                   </div>
-                                  <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm text-gray-300">
-                                    <pre className="whitespace-pre-wrap m-0">
-                                      {problem.sample.reasoning}
+                                  <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm">
+                                    <pre className="font-mono whitespace-pre-wrap text-gray-200 m-0">
+                                      {problem.sample.input}
+                                    </pre>
+                                    {/* place any additional small inputs like feature_i/threshold below if available */}
+                                  </div>
+                                </div>
+
+                                <div>
+                                  <div className="text-sm text-gray-400 mb-2">
+                                    Output:
+                                  </div>
+                                  <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm">
+                                    <pre className="font-mono whitespace-pre-wrap text-gray-200 m-0">
+                                      {problem.sample.output}
                                     </pre>
                                   </div>
                                 </div>
-                              )}
+
+                                {problem.sample.reasoning && (
+                                  <div>
+                                    <div className="text-sm text-gray-400 mb-2">
+                                      Reasoning:
+                                    </div>
+                                    <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm text-gray-300">
+                                      <pre className="whitespace-pre-wrap m-0">
+                                        {problem.sample.reasoning}
+                                      </pre>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        )}
+                          )}
 
-                        {/* bottom area: learn button & contributors */}
-                        <div className="mt-8 pt-6 border-t border-zinc-800 space-y-6">
-                          <div>
-                            <button
-                              onClick={() =>
-                                setIsLearnPanelOpen((prev) => !prev)
-                              }
-                              className="px-4 py-2 text-sm border border-zinc-700 rounded-3xl hover:bg-zinc-800 transition disabled:opacity-50"
-                              disabled={!problem?.aboutTopic}
-                            >
-                              Learn About topic
-                            </button>
-                            <AnimatePresence>
-                              {isLearnPanelOpen && (
-                                <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: "auto", opacity: 1 }}
-                                  exit={{ height: 0, opacity: 0 }}
-                                  transition={{
-                                    duration: 0.28,
-                                    ease: "easeInOut",
-                                  }}
-                                  style={{ overflow: "hidden" }}
-                                >
-                                  <LearnTopicPanel
-                                    htmlContent={problem?.aboutTopic}
-                                  />
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-
-                          <div className="flex items-center justify-between">
-                            <div className="flex flex-col items-start gap-1 text-sm">
-                              <span className="text-gray-200 text-sm">
-                                Contributors:
-                              </span>
-                              <a
-                                href="#"
-                                className="flex items-center gap-1.5 text-zinc-400 hover:text-white hover:underline"
+                          {/* bottom area: learn button & contributors */}
+                          <div className="mt-8 pt-6 border-t border-zinc-800 space-y-6">
+                            <div>
+                              <button
+                                onClick={() =>
+                                  setIsLearnPanelOpen((prev) => !prev)
+                                }
+                                className="px-4 py-2 text-sm border border-zinc-700 rounded-3xl hover:bg-zinc-800 transition disabled:opacity-50"
+                                disabled={!problem?.aboutTopic}
                               >
-                                Moe Chabot <FiExternalLink size={12} />
-                              </a>
+                                Learn About topic
+                              </button>
+                              <AnimatePresence>
+                                {isLearnPanelOpen && (
+                                  <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: "auto", opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{
+                                      duration: 0.28,
+                                      ease: "easeInOut",
+                                    }}
+                                    style={{ overflow: "hidden" }}
+                                  >
+                                    <LearnTopicPanel
+                                      htmlContent={problem?.aboutTopic}
+                                    />
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
                             </div>
 
-                            <button className="px-4 py-2 text-sm bg-[#1e1e1e] border border-zinc-700 rounded-3xl hover:bg-zinc-800 transition">
-                              Contribute
-                            </button>
+                            <div className="flex items-center justify-between">
+                              <div className="flex flex-col items-start gap-1 text-sm">
+                                <span className="text-gray-200 text-sm">
+                                  Contributors:
+                                </span>
+                                <a
+                                  href="#"
+                                  className="flex items-center gap-1.5 text-zinc-400 hover:text-white hover:underline"
+                                >
+                                  Moe Chabot <FiExternalLink size={12} />
+                                </a>
+                              </div>
+
+                              <button className="px-4 py-2 text-sm bg-[#1e1e1e] border border-zinc-700 rounded-3xl hover:bg-zinc-800 transition">
+                                Contribute
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* request edit button */}
-                  <div className="py-4 text-center bg-[#1e1e1e]">
-                    <button
-                      onClick={() => setIsEditModalOpen(true)}
-                      className="px-5 py-2 text-sm bg-[var(--color-bg)] border border-zinc-700 rounded-lg hover:bg-zinc-800 transition duration-500 cursor-pointer "
-                    >
-                      <span className="flex gap-2 items-center">
-                        <FaEdit /> Request Edit
-                      </span>
-                    </button>
+                    {/* request edit button */}
+                    <div className="py-4 text-center bg-[#1e1e1e]">
+                      <button
+                        onClick={() => setIsEditModalOpen(true)}
+                        className="px-5 py-2 text-sm bg-[var(--color-bg)] border border-zinc-700 rounded-lg hover:bg-zinc-800 transition duration-500 cursor-pointer "
+                      >
+                        <span className="flex gap-2 items-center">
+                          <FaEdit /> Request Edit
+                        </span>
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ) : descriptionTab === "solution" ? (
-                <SolutionSection
-                  problem={problem}
-                  problemId={problemId}
-                  setDescriptionTab={setDescriptionTab}
-                />
-              ) : (
-                <div className="px-6 overflow-y-auto flex-grow">
-                  <div className="rounded-lg min-h-full flex justify-center items-center bg-[#1e1e1e] border border-zinc-800 p-6 shadow-sm">
-                    <PlaceholderContent title={leftTabTitle} />
+                ) : descriptionTab === "solution" ? (
+                  <SolutionSection
+                    problem={problem}
+                    problemId={problemId}
+                    setDescriptionTab={setDescriptionTab}
+                  />
+                ) : (
+                  <div className="px-6 overflow-y-auto flex-grow">
+                    <div className="rounded-lg min-h-full flex justify-center items-center bg-[#1e1e1e] border border-zinc-800 p-6 shadow-sm">
+                      <PlaceholderContent title={leftTabTitle} />
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            )}
           </Panel>
 
           <PanelResizeHandle
@@ -675,7 +714,7 @@ export default function ProblemSolver() {
             <div
               className={`rounded-lg border border-zinc-800 bg-[#09090B] flex flex-col h-full overflow-hidden ${
                 isEditorFullscreen
-                  ? "fixed py-4 px-6 inset-0 z-50 !h-screen !rounded-none"
+                  ? "fixed py-4 px-6 pl-20 inset-0 z-50 !h-screen !rounded-none"
                   : ""
               }`}
             >
@@ -686,6 +725,14 @@ export default function ProblemSolver() {
                   <div className="flex items-center gap-2 px-3 py-2 rounded-md bg-[var(--color-bg)] border border-zinc-800">
                     <div className="text-sm font-semibold">Editor Mode</div>
                     <div className="w-2 h-2 rounded-full bg-green-300" />
+                  </div>
+                </div>
+                <div className="flex  items-center gap-3 cursor-pointer">
+                  <div className="flex items-center gap-1 px-3 py-2 rounded-md bg-[var(--color-bg)] border border-zinc-800">
+                    <div className="text-sm font-semibold">Python 3.9</div>
+                    <div className="w-1 h-3 rounded-full bg-yellow-300" />
+                    <div className="w-1 h-3 rounded-full bg-yellow-300" />
+                    <div className="w-1 h-3 rounded-full bg-yellow-300" />
                   </div>
                 </div>
 
@@ -814,14 +861,6 @@ export default function ProblemSolver() {
                       </motion.div>
                     )}
                   </AnimatePresence>
-
-                  {/* fullscreen toggle */}
-                  <button
-                    onClick={() => setIsEditorFullscreen((f) => !f)}
-                    className="w-8 h-8 rounded-md border-1 border-zinc-800 hover:bg-zinc-800 flex items-center justify-center cursor-pointer"
-                  >
-                    {isEditorFullscreen ? <FiMinimize /> : <FiMaximize />}
-                  </button>
                 </div>
               </div>
 
