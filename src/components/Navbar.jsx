@@ -95,7 +95,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
   const userLabel = user?.name || user?.username || user?.email || "Profile";
 
   return (
-    <nav className="font-code py-2 bg-[var(--color-bg-black)] border-b border-[var(--color-gray)]">
+    <nav className="font-code py-2 bg-white dark:bg-[var(--color-bg-black)] border-b border-[var(--color-bg)]/40 dark:border-[var(--color-gray)]">
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           {/* Left: Logo */}
@@ -109,7 +109,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
               alt="Logo"
               className="h-9 w-9 rounded-full object-cover border border-[var(--panel-border)]"
             />
-            <h1 className="text-[var(--text-default)] text-lg font-semibold hidden sm:inline">
+            <h1 className="dark:text-[var(--text-default)] text-black text-lg font-semibold hidden sm:inline">
               PixelBank
             </h1>
           </Link>
@@ -119,10 +119,10 @@ const Navbar = ({ activeNav, setActiveNav }) => {
             <div className="flex gap-6 items-center">
               <Link
                 to="/problems"
-                className={`transition text-lg cursor-pointer hover:text-[var(--text-default)] ${
+                className={`transition text-lg cursor-pointer dark:hover:text-[var(--text-default)] hover:text-[var(--color-bg)] ${
                   activeNav === "Problems"
-                    ? "text-[var(--text-default)] underline"
-                    : "text-[var(--text-gray)]"
+                    ? "dark:text-[var(--text-default)] text-[var(--color-bg)] underline"
+                    : "dark:text-[var(--text-gray)] text-[var(--color-bg)]/60"
                 }`}
                 onClick={() => setActiveNav("Problems")}
               >
@@ -131,10 +131,10 @@ const Navbar = ({ activeNav, setActiveNav }) => {
 
               <Link
                 to="/collections"
-                className={`transition text-lg cursor-pointer hover:text-[var(--text-default)] ${
+                className={`transition text-lg cursor-pointer dark:hover:text-[var(--text-default)] hover:text-[var(--color-bg)] ${
                   activeNav === "Collections"
-                    ? "text-[var(--text-default)] underline"
-                    : "text-[var(--text-gray)]"
+                    ? "dark:text-[var(--text-default)] text-[var(--color-bg)] underline"
+                    : "dark:text-[var(--text-gray)] text-[var(--color-bg)]/60"
                 }`}
                 onClick={() => setActiveNav("Collections")}
               >
@@ -143,10 +143,10 @@ const Navbar = ({ activeNav, setActiveNav }) => {
 
               <Link
                 to="/leaderboard"
-                className={`transition text-lg cursor-pointer hover:text-[var(--text-default)] ${
+                className={`transition text-lg cursor-pointer dark:hover:text-[var(--text-default)] hover:text-[var(--color-bg)] ${
                   activeNav === "Leaderboard"
-                    ? "text-[var(--text-default)] underline"
-                    : "text-[var(--text-gray)]"
+                    ? "dark:text-[var(--text-default)] text-[var(--color-bg)] underline"
+                    : "dark:text-[var(--text-gray)] text-[var(--color-bg)]/60"
                 }`}
                 onClick={() => setActiveNav("Leaderboard")}
               >
@@ -172,7 +172,7 @@ const Navbar = ({ activeNav, setActiveNav }) => {
             {/* Flame + count */}
             <div className="flex justify-center items-center gap-2 px-3 py-1 rounded-full">
               <FireLottie size={26} />
-              <span className="text-lg  font-medium text-[var(--text-default)]">
+              <span className="text-lg  font-medium text-[var(--color-bg)] dark:text-[var(--text-default)]">
                 {user?.data?.flameScore || 0}
               </span>
             </div>
@@ -268,9 +268,9 @@ const Navbar = ({ activeNav, setActiveNav }) => {
 
             {/* Bell */}
             {user && (
-              <button className="p-2 rounded-full hover:bg-[var(--card-bg)] transition cursor-pointer">
+              <button className="p-2 rounded-full hover:bg-zinc-300 dark:hover:bg-[var(--card-bg)] transition cursor-pointer">
                 <FaBell
-                  className="text-[var(--text-default)]"
+                  className="text-[var(--color-bg)] dark:text-[var(--text-default)]"
                   onClick={() => setIsNotificationOpen(true)}
                 />
               </button>
@@ -280,9 +280,9 @@ const Navbar = ({ activeNav, setActiveNav }) => {
             {user && (
               <a
                 href="https://discord.gg"
-                className="p-2 rounded-full hover:bg-[var(--card-bg)] transition"
+                className="p-2 rounded-full hover:bg-zinc-300 dark:hover:bg-[var(--card-bg)] transition"
               >
-                <LiaDiscord className="text-[var(--text-default)] text-lg" />
+                <LiaDiscord className="text-[var(--color-bg)] dark:text-[var(--text-default)] text-lg" />
               </a>
             )}
 

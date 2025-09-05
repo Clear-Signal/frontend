@@ -2,16 +2,11 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../stores/authStore";
+import { SignalContext } from "../stores/signalStore";
 
-/**
- * Hero with dotted background:
- *  - same-size / same-color dots
- *  - smooth position-based parallax (follows pointer direction slowly)
- *  - morphs into a circular arrangement when hovering the Get Started button
- *  - dotted SVG ring that fades in when circle mode is active
- */
 const Hero = () => {
   const { user } = useContext(AuthContext);
+  const { isDark } = useContext(SignalContext);
 
   const containerRef = useRef(null);
   const canvasRef = useRef(null);
@@ -30,11 +25,20 @@ const Hero = () => {
   const circleModeRef = useRef(circleMode);
 
   // constants for appearance
-  const DOT_COLOR_RGB = "255,255,255"; // r,g,b - single color for all dots
+  // r,g,b - single color for all dots
+  const [DOT_COLOR_RGB, setDotColorRGB] = useState("0,0,0");
   const DOT_RADIUS = 2.1; // identical radius for all particles
   const DOT_ALPHA = 0.9; // identical alpha for all particles
-
   // update ref whenever circleMode changes so main animation sees it
+
+  useEffect(() => {
+    if (isDark) {
+      setDotColorRGB("255,255,255");
+    } else {
+      setDotColorRGB("0,0,0");
+    }
+  }, [isDark]);
+
   useEffect(() => {
     circleModeRef.current = circleMode;
   }, [circleMode]);
@@ -152,8 +156,8 @@ const Hero = () => {
         const t = i / len;
         const angle = t * Math.PI * 2;
         const jitterR = (Math.random() - 0.5) * 5; // small radial jitter
-        const px = cx + (rad ) * Math.cos(angle);
-        const py = cy + (rad) * Math.sin(angle);
+        const px = cx + rad * Math.cos(angle);
+        const py = cy + rad * Math.sin(angle);
         particlesRef.current[i].targetX = px;
         particlesRef.current[i].targetY = py;
       }
@@ -181,8 +185,12 @@ const Hero = () => {
       pointerPosRef.current.inside = false;
     };
     container.addEventListener("pointermove", onPointerMove, { passive: true });
-    container.addEventListener("pointerleave", onPointerLeave, { passive: true });
-    container.addEventListener("pointercancel", onPointerLeave, { passive: true });
+    container.addEventListener("pointerleave", onPointerLeave, {
+      passive: true,
+    });
+    container.addEventListener("pointercancel", onPointerLeave, {
+      passive: true,
+    });
 
     // ResizeObserver: resize canvas + re-init particles; recompute circle targets if needed
     const ro = new ResizeObserver(() => {
@@ -258,7 +266,6 @@ const Hero = () => {
         p.x += (targetX - p.x) * lerpFactor;
         p.y += (targetY - p.y) * lerpFactor;
 
-
         const drawX = p.x + offX;
         const drawY = p.y + offY;
 
@@ -285,11 +292,8 @@ const Hero = () => {
     };
     // run once
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [DOT_COLOR_RGB]);
 
-  // When circleMode toggles we don't need to call computeCircleTargets from outside
-  // because the animation loop detects circleModeRef.current and computes there.
-  // However, update circleModeRef so the loop sees the change immediately.
   useEffect(() => {
     circleModeRef.current = circleMode;
   }, [circleMode]);
@@ -297,7 +301,7 @@ const Hero = () => {
   return (
     <section
       ref={containerRef}
-      className="relative overflow-hidden bg-[var(--color-bg-black)] text-white min-h-[72vh] lg:min-h-screen flex items-center"
+      className="relative overflow-hidden bg-white text-black dark:bg-[var(--color-bg-black)] dark:text-white min-h-[72vh] lg:min-h-screen flex items-center"
       aria-label="Hero"
     >
       {/* canvas */}
@@ -312,12 +316,10 @@ const Hero = () => {
         <h1 className="font-bold text-[4.2rem] leading-[0.9] lg:text-[6rem] lg:leading-[0.88] tracking-tight">
           <span className="inline-block mr-2">Pixel</span>
           <span className="inline-block">Bank</span>
-          <span
-            className="inline-block min-w-3 min-h-22 rounded-sm align-middle ml-3 bg-slate-400/50 animate-pulse "
-          />
+          <span className="inline-block min-w-3 min-h-22 rounded-sm align-middle ml-3 bg-slate-400/50 animate-pulse " />
         </h1>
 
-        <p className="mt-6 max-w-xl text-[1.1rem] text-sky-300/90 font-medium tracking-wide">
+        <p className="mt-6 max-w-xl text-2xl font-semibold text-sky-800 dark:text-sky-200 tracking-wide">
           Practice Machine Learning and Data Science
           <br />
           problems
@@ -329,7 +331,7 @@ const Hero = () => {
             to={user ? "/problems" : "/sign-in"}
             onPointerEnter={() => setCircleMode(true)}
             onPointerLeave={() => setCircleMode(false)}
-            className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border border-white/30 bg-[var(--color-bg-black)]/60 text-white font-semibold text-lg transition-transform transform hover:scale-105 hover:bg-white/10 duration-300 shadow-md"
+            className="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full border dark:border-white/30 border-zinc-600 bg-white text-black dark:bg-[var(--color-bg-black)]/60 dark:text-white font-semibold text-lg transition-transform transform hover:scale-105 hover:bg-white/10 duration-300 shadow-md"
           >
             Get Started
           </Link>

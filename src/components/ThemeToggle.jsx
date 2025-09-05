@@ -1,19 +1,20 @@
 // ThemeToggle.jsx
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiSun, FiMoon } from "react-icons/fi";
+import { SignalContext } from "../stores/signalStore";
 const ThemeToggle = () => {
-  const [isDark, setIsDark] = useState(false);
+  const { isDark, setIsDark } = useContext(SignalContext);
 
   // Initialize from localStorage or system preference
   useEffect(() => {
     const stored = localStorage.getItem("theme");
     if (stored === "dark" || (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
       setIsDark(true);
-      document.documentElement.setAttribute("data-theme", "dark");
+      document.documentElement.classList.add("dark");
     } else {
       setIsDark(false);
-      document.documentElement.removeAttribute("data-theme");
+      document.documentElement.classList.remove("dark");
     }
   }, []);
 
@@ -21,10 +22,10 @@ const ThemeToggle = () => {
     const next = !isDark;
     setIsDark(next);
     if (next) {
-      document.documentElement.setAttribute("data-theme", "dark");
+      document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
     } else {
-      document.documentElement.removeAttribute("data-theme");
+      document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
     }
   };
@@ -33,7 +34,7 @@ const ThemeToggle = () => {
     <button
       onClick={toggle}
       aria-label="Toggle dark mode"
-      className="relative inline-flex items-center rounded-full p-1 w-16 h-9 bg-[var(--color-bg)] shadow-sm focus:outline-none border-2 border-[var(--color-border)] cursor-pointer"
+      className="relative inline-flex items-center rounded-full p-1 w-16 h-9 dark:bg-[var(--color-bg)] bg-yellow-300 shadow-sm focus:outline-none border-1 border-[var(--color-border)] cursor-pointer"
     >
       <span className="absolute inset-0 rounded-full pointer-events-none" />
 
@@ -41,7 +42,7 @@ const ThemeToggle = () => {
       <motion.span
         layout
         transition={{ type: "spring", stiffness: 500, damping: 30 }}
-        className="z-10 inline-flex items-center justify-center w-7 h-7 rounded-full bg-[var(--color-muted)] border border-[var(--color-border)]"
+        className="z-10 inline-flex items-center justify-center w-7 h-7 rounded-full dark:bg-[var(--color-muted)] bg-[var(--color-fg)] border border-[var(--color-border)]"
         style={{
           boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
           translateX: isDark ? "28px" : "0px",

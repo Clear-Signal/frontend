@@ -36,15 +36,15 @@ const features = [
 
 const WhyClearSignal = () => {
   return (
-    <section className="bg-[var(--color-bg-black)] text-white py-12">
+    <section className="bg-white text-black dark:bg-[var(--color-bg-black)] dark:text-white py-12">
       <h2 className="text-center text-2xl font-bold mb-10">Why Pixel Bank?</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-auto px-8">
         {features.map((item, index) => (
           <div
             key={index}
-            className="p-6 py-12 rounded-3xl border border-[var(--color-fg)] shadow hover:bg-gradient-to-br hover:from-[var(--color-gray)]/50 hover:to-[var(--color-bg-black)] hover:scale-105 transition duration-700 cursor-pointer"
+            className="p-6 py-12 rounded-3xl border border-[var(--color-bg)]/10 dark:border-[var(--color-fg)] shadow hover:bg-gradient-to-br hover:from-[var(--color-fg)]/40 dark:hover:from-[var(--color-gray)]/50 hover:to-[var(--color-fg)] dark:hover:to-[var(--color-bg-black)] hover:scale-105 transition duration-700 cursor-pointer"
           >
-            <div className="ml-3 flex items-center mb-8 text-fg">{item.icon}</div>
+            <div className="ml-3 flex items-center mb-8 text-bg dark:text-fg">{item.icon}</div>
             <h3 className="font-semibold text-lg mb-2">{item.title}</h3>
             <p className="text-sm text-gray-400">{item.description}</p>
           </div>

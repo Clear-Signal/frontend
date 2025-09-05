@@ -2,10 +2,14 @@ import { createContext, useState } from "react";
 
 const apiURL = import.meta.env.VITE_APP_URL;
 
-export const SignalContext = createContext({});
+export const SignalContext = createContext({
+  isDark: false,
+  setIsDark: () => {},
+});
 
 const SignalProvider = ({ children }) => {
-  return <SignalContext.Provider value={{}}>{children}</SignalContext.Provider>;
+  const [isDark, setIsDark] = useState(false);
+  return <SignalContext.Provider value={{ isDark, setIsDark }}>{children}</SignalContext.Provider>;
 };
 
 export default SignalProvider;

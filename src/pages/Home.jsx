@@ -1,5 +1,5 @@
 // Home.jsx
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Hero from "../components/Hero";
 import LearningCards from "../components/LearningCards";
 import Footer from "../components/Footer";
@@ -69,7 +69,7 @@ export default function Home() {
   }, [navigate]);
 
   return (
-    <main className="min-h-screen font-sans bg-[var(--bg-page)] text-[var(--text-default)]">
+    <main className="min-h-screen font-sans bg-white text-black dark:bg-[var(--bg-page)] dark:text-[var(--text-default)]">
       <Hero />
       <LearningCards />
       <WhyClearSignal />

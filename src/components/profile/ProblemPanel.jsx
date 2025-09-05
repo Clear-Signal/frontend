@@ -2,9 +2,11 @@ import { FaMedal, FaRegStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 export default function ProblemsPanel({ stats }) {
-  const easy = (stats?.easyQuestionsSolved * 100) / (stats?.totalQuestionsSolved ?? 1) || 0;
-  const medium = (stats?.mediumQuestionsSolved * 100) / (stats?.totalQuestionsSolved ?? 1) || 0;
-  const hard = (stats?.hardQuestionsSolved * 100) / (stats?.totalQuestionsSolved ?? 1) || 0;
+  const easy = ((stats?.easyQuestionsSolved * 100) / (stats?.totalQuestionsSolved || 1))?.toFixed(0) || 0;
+  const medium = ((stats?.mediumQuestionsSolved * 100) / (stats?.totalQuestionsSolved || 1))?.toFixed(0) || 0;
+  const hard = ((stats?.hardQuestionsSolved * 100) / (stats?.totalQuestionsSolved || 1))?.toFixed(0) || 0;
+
+  console.log(easy, medium, hard);
 
   return (
     <div className="rounded-xl bg-zinc-800/50 border border-[var(--color-border)] p-6 shadow-sm space-y-6">

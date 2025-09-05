@@ -31,13 +31,13 @@ const topics = [
 
 const LearningCards = () => {
   return (
-    <div className="bg-[var(--color-bg-black)] text-white py-12">
+    <div className="bg-white text-black dark:bg-[var(--color-bg-black)] dark:text-white py-12">
       <h2 className="text-center text-2xl font-bold mb-8">What Will You Learn?</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mx-auto px-8">
         {topics.map((item, index) => (
           <div
             key={index}
-            className="rounded-2xl border border-[var(--color-fg)] px-6 py-9 shadow-md hover:bg-[var(--color-fg)]/10 transition duration-500 cursor-pointer"
+            className="rounded-2xl border border-[var(--color-bg)]/10 dark:border-[var(--color-fg)] px-6 py-9 shadow-md hover:bg-[var(--color-bg)]/10 dark:hover:bg-[var(--color-fg)]/10 transition duration-500 cursor-pointer"
           >
             <div className="flex justify-center items-center w-12 h-12 rounded-full text-[var(--card-bg)] bg-[var(--text-default)] mb-4">
               {item.icon}
