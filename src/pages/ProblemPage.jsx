@@ -144,6 +144,7 @@ export default function ProblemSolver() {
   const [isSubmissionsOpen, setIsSubmissionsOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isLearnPanelOpen, setIsLearnPanelOpen] = useState(false);
+   const [isHintVisible, setIsHintVisible] = useState(false);
   
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -158,6 +159,8 @@ export default function ProblemSolver() {
   const { data: problem, loading } = useFetch(
     `/api/general/problems/${problemId}`
   );
+
+  console.log("Fetched problem data:", problem);
 
   const monacoEditorRef = useRef(null);
   const monacoRef = useRef(null); // store monaco namespace
@@ -1027,11 +1030,40 @@ export default function ProblemSolver() {
                             </span>
                           </div>
                         </div>
-                        <div className="pt-2">
-                          <button className="px-3 py-1.5 rounded-md text-sm dark:bg-[#21262d] bg-white dark:hover:bg-gray-700 hover:bg-gray-300 border border-gray-700">
-                            ⚡ Get Hint
-                          </button>
-                        </div>
+                       <div className="pt-2">
+                    <button
+                      onClick={() => setIsHintVisible((prev) => !prev)} // Toggle state on click
+                      className="px-3 py-1.5 rounded-md text-sm dark:bg-[#21262d] bg-white dark:hover:bg-gray-700 hover:bg-gray-300 border border-gray-700"
+                    >
+                      {isHintVisible ? "Hide Hint" : "⚡ Get Hint"} 
+                    </button>
+
+                    {/* Conditionally render the hint with animation */}
+                    <AnimatePresence>
+                      {isHintVisible && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                          animate={{
+                            height: "auto",
+                            opacity: 1,
+                            marginTop: "1rem", // Add space when open
+                          }}
+                          exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                          transition={{ duration: 0.2, ease: "easeInOut" }}
+                          style={{ overflow: "hidden" }}
+                        >
+                          <div className="text-sm dark:text-gray-400 text-gray-800 mb-1">
+                            Hint
+                          </div>
+                          <div className="rounded-md dark:bg-[#161b22] bg-zinc-100 p-3 text-sm whitespace-pre-wrap dark:text-gray-300 text-zinc-700">
+                            {/* Access the hint from the problem object */}
+                            {problem?.getHint ||
+                              "No hint available for this problem."}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                       </div>
                     ) : (
                       <div className="p-4 text-sm text-gray-500">

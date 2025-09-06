@@ -14,9 +14,10 @@ import CollectionsPage from './pages/Collections.jsx'
 import ProblemSolver from './pages/ProblemPage.jsx'
 import Signal0 from './pages/Signal0.jsx'
 import ResetPassword from './pages/ResetPassword.jsx'
-import AdminDashboard from './pages/Dashboard.jsx'
 import PaymentSuccessPage from './pages/PaymentSuccessPage.jsx'
 import PaymentFailurePage from './pages/PaymentFailurePage.jsx'
+import TermsAndConditions from './pages/TermsConditions.jsx'
+import FAQ from './pages/FaqPages.jsx'
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,14 @@ const router = createBrowserRouter([
       {
         path: '/problems/:id',
         element: <ProblemSolver />,
+      },
+       {
+        path: '/terms-and-conditions',
+        element: <TermsAndConditions />,
+      },
+       {
+        path: '/faqPage',
+        element: <FAQ />,
       },
       {
         path: '/subscription',

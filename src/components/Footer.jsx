@@ -21,8 +21,8 @@ export default function Footer() {
           <h2 className="dark:text-[var(--text-default)] text-gray-900 text-lg font-semibold">Quick Links</h2>
           <ul className="mt-2 space-y-2 text-sm">
             <li><Link to="/problems" className="hover:text-gray-400">Problems</Link></li>
-            <li><Link to="#" className="hover:text-gray-400">FAQ</Link></li>
-            <li><Link to="#" className="hover:text-gray-400">Terms and Conditions</Link></li>
+            <li><Link to="faqPage" className="hover:text-gray-400">FAQ</Link></li>
+            <li><Link to="/terms-and-conditions" className="hover:text-gray-400">Terms and Conditions</Link></li>
             <li><Link to="/problems" className="hover:text-gray-400">Submit Problem</Link></li>
           </ul>
         </div>
