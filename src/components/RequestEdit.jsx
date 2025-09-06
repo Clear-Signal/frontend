@@ -128,14 +128,14 @@ export default function RequestEditModal({ isOpen, onClose, problem }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 30, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="w-full max-w-4xl bg-[var(--color-bg)] text-white rounded-2xl shadow-xl border border-zinc-700 max-h-[90vh] flex flex-col"
+            className="w-full max-w-4xl dark:bg-[var(--color-bg)] bg-white dark:text-white text-black rounded-2xl shadow-xl border border-zinc-700 max-h-[90vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6 sm:p-8">
               <h2 className="text-xl font-semibold">Request Edit</h2>
-              <p className="text-sm text-gray-400 mt-1">Help us improve this problem by suggesting edits or corrections.</p>
+              <p className="text-sm dark:text-gray-400 text-gray-800 mt-1">Help us improve this problem by suggesting edits or corrections.</p>
               <fieldset className="mt-6">
-                <legend className="text-sm font-medium text-gray-300">Edit Type</legend>
+                <legend className="text-sm font-medium dark:text-gray-300 text-gray-700">Edit Type</legend>
                 <div className="mt-2 flex items-center gap-6">
                   {["General Feedback", "Specific Changes"].map(type => {
                      const value = type.split(' ')[0].toLowerCase();
@@ -156,12 +156,12 @@ export default function RequestEditModal({ isOpen, onClose, problem }) {
             <div className="px-6 sm:px-8 py-6 overflow-y-auto">
               {editType === 'general' ? (
                 <div>
-                  <label htmlFor="feedback" className="text-sm font-medium text-gray-300">Describe the issue or suggest improvements</label>
+                  <label htmlFor="feedback" className="text-sm font-medium dark:text-gray-300 text-gray-800">Describe the issue or suggest improvements</label>
                   <div className="relative">
                      <textarea
                         id="feedback" value={feedback} onChange={(e) => setFeedback(e.target.value)}
                         maxLength={500} placeholder="Describe the issue or suggest improvements..."
-                        className="w-full mt-2 bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-sm placeholder:text-gray-500 h-30 resize-none focus:outline-none focus:ring-2 focus:ring-zinc-500"
+                        className="w-full mt-2 dark:bg-zinc-900 bg-white border dark:border-zinc-700 border-zinc-300 rounded-lg p-3 text-sm placeholder:text-gray-500 h-30 resize-none focus:outline-none focus:ring-2 focus:ring-zinc-500"
                      />
                      <span className="absolute bottom-3 right-3 text-xs text-gray-500">{feedback.length}/500</span>
                   </div>
@@ -169,9 +169,9 @@ export default function RequestEditModal({ isOpen, onClose, problem }) {
               ) : (
                 // ✅ 3. Updated JSX structure for "Specific Changes"
                 <div className="space-y-6">
-                  <p className="text-sm font-medium text-gray-300 -mb-2">Select the fields you want to edit and provide your changes:</p>
+                  <p className="text-sm font-medium dark:text-gray-300 text-gray-800 mb-2">Select the fields you want to edit and provide your changes:</p>
                   {FIELDS.map(field => (
-                    <div key={field} className="border-t border-zinc-800 pt-4">
+                    <div key={field} className="pt-1">
                       <label className="flex items-center gap-3 cursor-pointer">
                         <input type="checkbox" checked={!!checkedFields[field]} onChange={() => handleCheckboxChange(field)}
                           className="h-4 w-4 rounded bg-zinc-700 border-zinc-600 text-zinc-500 focus:ring-zinc-500"
@@ -197,10 +197,10 @@ export default function RequestEditModal({ isOpen, onClose, problem }) {
               )}
             </div>
 
-            <div className="px-6 sm:px-8 py-4 bg-[var(--color-bg)] flex items-center justify-end gap-3 rounded-b-2xl mt-auto">
+            <div className="px-6 sm:px-8 py-4 dark:bg-[var(--color-bg)] bg-white flex items-center justify-end gap-3 rounded-b-2xl mt-auto">
               {submitError && <p className="text-xs text-red-400 mr-auto">{submitError}</p>}
-              <button onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-lg hover:bg-zinc-800 transition border border-zinc-500 cursor-pointer">Cancel</button>
-              <button onClick={handleSubmit} disabled={isSubmitting} className="px-4 py-2 text-sm font-medium bg-zinc-400 text-black rounded-lg transition disabled:opacity-50 cursor-pointer">
+              <button onClick={onClose} className="px-4 py-2 text-sm font-medium rounded-lg dark:hover:bg-zinc-800 hover:bg-zinc-300 transition border border-zinc-500 cursor-pointer">Cancel</button>
+              <button onClick={handleSubmit} disabled={isSubmitting} className="px-4 py-2 text-sm font-medium dark:bg-zinc-400 bg-zinc-200 text-black rounded-lg transition disabled:opacity-50 cursor-pointer">
                 {isSubmitting ? "Submitting..." : "Submit Request"}
               </button>
             </div>

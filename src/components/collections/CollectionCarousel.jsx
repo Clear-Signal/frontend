@@ -31,12 +31,12 @@ export default function CollectionCarousel() {
           {loading &&
             Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="min-w-[220px] w-[220px] bg-transparent">
-                <div className="rounded-md p-4 bg-[#0f1113] border border-zinc-800">
+                <div className="rounded-md p-4 dark:bg-[#0f1113] bg-white border border-zinc-300 dark:border-zinc-800">
                   <div className="flex flex-col items-center gap-3">
-                    <div className="w-20 h-20 rounded-md bg-zinc-800 animate-pulse" />
+                    <div className="w-20 h-20 rounded-md dark:bg-zinc-800 bg-white animate-pulse" />
                     <div className="h-4 w-32 bg-zinc-700 rounded animate-pulse" />
                     <div className="h-2 w-full bg-zinc-800 rounded mt-3 animate-pulse" />
-                    <div className="text-xs text-gray-500 mt-2">
+                    <div className="text-xs dark:text-gray-500 text-gray-700 mt-2">
                       0/0 completed
                     </div>
                   </div>
@@ -71,20 +71,20 @@ export default function CollectionCarousel() {
                   className="min-w-30 cursor-pointer"
                   title={c?.description}
                 >
-                  <div className="rounded-md p-4  hover:shadow-[0_6px_20px_rgba(0,0,0,0.6)] transition">
+                  <div className="rounded-md p-4  ">
                     <div className="flex flex-col items-center gap-3">
                       <img src={c?.coverImageUrl} alt="" className="w-20 h-20 rounded-full" />
 
-                      <div className="text-sm font-semibold text-gray-100 text-center leading-tight">
+                      <div className="text-sm font-semibold dark:text-gray-100 text-gray-500 text-center leading-tight">
                         <div className="w-full">{c?.name}</div>
                       </div>
 
                       {/* thin rounded progress bar (matches screenshot) */}
                       <div className="w-full mt-2">
-                        <div className="h-2 bg-[#23262a] rounded-full overflow-hidden">
+                        <div className="h-2 dark:bg-[#23262a] bg-zinc-300 rounded-full overflow-hidden">
                           <div
                             className={`h-full rounded-full transition-all duration-300 ${
-                              percent >= 100 ? "bg-green-500" : "bg-white"
+                              percent >= 100 ? "bg-green-500" : "dark:bg-white bg-zinc-500"
                             }`}
                             style={{ width: progressWidth }}
                           />
@@ -107,7 +107,7 @@ export default function CollectionCarousel() {
         <div>
           <button
             onClick={() => navigate("/collections")}
-            className="text-sm text-white underline cursor-pointer"
+            className="text-sm dark:text-white text-black underline cursor-pointer"
             aria-label="View all collections"
           >
             View all collections

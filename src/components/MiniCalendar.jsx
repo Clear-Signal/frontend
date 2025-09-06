@@ -31,12 +31,12 @@ export default function MiniCalendar() {
           onClick={() =>
             setDate((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1))
           }
-          className="px-2 py-1 rounded text-[var(--color-fg)]"
+          className="px-2 py-1 rounded dark:text-[var(--color-fg)] text-[var(--color-bg)]"
         >
           ‹
         </button>
 
-        <div className="text-md font-semibold text-[var(--color-fg)]">
+        <div className="text-md font-semibold dark:text-[var(--color-fg)] text-[var(--color-bg)]">
           {monthName} {year}
         </div>
 
@@ -45,13 +45,13 @@ export default function MiniCalendar() {
           onClick={() =>
             setDate((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1))
           }
-          className="px-2 py-1 rounded text-[var(--color-fg)]"
+          className="px-2 py-1 rounded dark:text-[var(--color-fg)] text-[var(--color-bg)]"
         >
           ›
         </button>
       </div>
 
-      <div className="grid grid-cols-7 gap-1 text-center text-[14px] text-[var(--text-gray)] mb-2">
+      <div className="grid grid-cols-7 gap-1 text-center text-[14px] dark:text-[var(--text-gray)] text-gray-500 mb-2">
         <div>Sun</div>
         <div>Mon</div>
         <div>Tue</div>
@@ -71,10 +71,10 @@ export default function MiniCalendar() {
             <button
               key={i}
               type="button"
-              className={`h-8 rounded-md text-sm flex items-center justify-center text-[var(--color-fg)] ${
+              className={`h-8 rounded-md text-sm flex items-center justify-center dark:text-[var(--color-fg)] text-zinc-800 ${
                 isToday
                   ? "bg-[var(--color-primary)]/80"
-                  : "bg-[#4B5563]"
+                  : "dark:bg-[#4B5563] bg-gray-300"
               }`}
             >
               {d.getDate()}

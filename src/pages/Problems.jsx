@@ -175,17 +175,20 @@ export default function ProblemsPage() {
                             <td className="py-3 px-3 border-b dark:border-[var(--color-fg)] border-[var(--color-border)] align-center text-[var(--color-bg)] dark:text-[var(--color-fg)]">
                               <span
                                 className={`
-    flex items-center justify-center min-w-[70px] text-sm font-medium rounded
-    ${
-      (p.difficulty || "").toLowerCase() === "easy"
-        ? "dark:text-black bg-green-500 text-white"
-        : (p.difficulty || "").toLowerCase() === "medium"
-        ? "bg-amber-400 text-white dark:text-black"
-        : (p.difficulty || "").toLowerCase() === "hard"
-        ? "bg-red-600 dark:text-black text-white"
-        : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100"
-    }
-  `}
+                                    flex items-center justify-center min-w-[70px] text-sm font-medium rounded
+                                    ${
+                                      (p.difficulty || "").toLowerCase() ===
+                                      "easy"
+                                        ? "dark:text-black bg-green-500 text-white"
+                                        : (p.difficulty || "").toLowerCase() ===
+                                          "medium"
+                                        ? "bg-amber-400 text-white dark:text-black"
+                                        : (p.difficulty || "").toLowerCase() ===
+                                          "hard"
+                                        ? "bg-red-600 dark:text-black text-white"
+                                        : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100"
+                                    }
+                                  `}
                               >
                                 {p.difficulty.toLowerCase()}
                               </span>
@@ -231,19 +234,19 @@ export default function ProblemsPage() {
               <MiniCalendar />
             </div>
             <div className="rounded-2xl border dark:border-[var(--color-muted)] border-[var(--color-border)] dark:bg-zinc-900 bg-white p-4 text-center text-[var(--color-bg)] dark:text-[var(--color-fg)]">
-              <div className="text-sm text-[var(--color-fg)] dark:text-[var(--color-fg)]">
+              <div className="text-2xl text-[var(--color-bg)] dark:text-[var(--color-fg)] font-bold">
                 Your Stats
               </div>
               <div className="mt-3 text-2xl font-bold text-[var(--color-bg)] dark:text-[var(--color-fg)]">
                 {userStats?.completionRate || 0.0}%
               </div>
-              <div className="text-sm text-[var(--color-fg)] dark:text-[var(--color-fg)] mt-1">
+              <div className="text-sm text-[var(--color-bg)] dark:text-[var(--color-fg)] mt-1">
                 Completion Rate
               </div>
               <div className="mt-4 text-xl font-semibold text-[var(--color-bg)] dark:text-[var(--color-fg)]">
                 {userStats?.totalQuestionsSolved || 0}
               </div>
-              <div className="text-sm text-[var(--color-fg)] dark:text-[var(--color-fg)]">
+              <div className="text-sm text-[var(--color-bg)] dark:text-[var(--color-fg)]">
                 Problems Solved
               </div>
             </div>

@@ -22,7 +22,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-3 py-1 rounded border border-[var(--color-border)] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        className="px-3 py-1 rounded border dark:border-[var(--color-border)] border-zinc-900 text-black dark:text-white disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         Previous
       </button>
@@ -33,10 +33,10 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
             <button
               key={index}
               onClick={() => onPageChange(page)}
-              className={`px-3 py-1 rounded border ${
+              className={`px-3 py-1 rounded cursor-pointer ${
                 currentPage === page
-                  ? "bg-[var(--color-fg)] text-[var(--color-bg)] border-[var(--color-fg)]"
-                  : "border-[var(--color-border)] hover:bg-zinc-800"
+                  ? "dark:bg-[var(--color-fg)] dark:text-[var(--color-bg)] text-[var(--color-bg)] border border-[var(--color-border)] dark:border-[var(--color-fg)]"
+                  : "dark:text-[var(--color-fg)] text-[var(--color-bg)] dark:hover:bg-zinc-800 hover:bg-zinc-300"
               }`}
             >
               {page}
@@ -52,7 +52,7 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-3 py-1 rounded border border-[var(--color-border)] disabled:opacity-50 disabled:cursor-not-allowed"
+        className="px-3 py-1 rounded border dark:border-[var(--color-border)] border-zinc-900 text-black dark:text-white disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         Next
       </button>

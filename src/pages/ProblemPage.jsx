@@ -38,7 +38,7 @@ import { LuStar, LuStarOff } from "react-icons/lu";
 // --- Sub-components ---
 
 const PlaceholderContent = ({ title }) => (
-  <div className="flex items-center justify-center h-full text-gray-500">
+  <div className="flex items-center justify-center h-full dark:text-gray-500 text-gray-800">
     <div className="text-center">
       <h2 className="text-2xl font-bold">{title}</h2>
       <p>Content for this section is not yet available.</p>
@@ -47,9 +47,9 @@ const PlaceholderContent = ({ title }) => (
 );
 
 const difficultyThemes = {
-  easy: "bg-green-400 text-black",
-  medium: "bg-yellow-400 text-black",
-  hard: "bg-red-400 text-black",
+  easy: "dark:bg-green-400 dark:text-black bg-green-300 text-zinc-700",
+  medium: "dark:bg-yellow-400 dark:text-black bg-yellow-300 text-zinc-700",
+  hard: "dark:bg-red-400 dark:text-black bg-red-300 text-zinc-700",
 };
 
 const SubmissionsDropdown = ({ problemId, onSelectSubmission, onClose }) => {
@@ -79,10 +79,10 @@ const SubmissionsDropdown = ({ problemId, onSelectSubmission, onClose }) => {
       ref={dropdownRef}
       className="absolute bottom-full top-10 right-0 mb-2 w-72 p-2 rounded-lg shadow-lg z-20"
     >
-      <div className="p-3 border-b rounded-t-lg bg-zinc-800 border-zinc-700">
-        <h4 className="font-semibold text-white">Recent Submissions</h4>
+      <div className="p-3 border-b rounded-t-lg dark:bg-zinc-800 bg-zinc-200 border-zinc-700">
+        <h4 className="font-semibold dark:text-white text-black">Recent Submissions</h4>
       </div>
-      <ul className="max-h-80 rounded-b-lg bg-zinc-800 overflow-y-auto">
+      <ul className="max-h-80 rounded-b-lg dark:bg-zinc-800 bg-zinc-100 overflow-y-auto">
         {loading ? (
           <li className="p-4 text-center text-gray-400">Loading...</li>
         ) : submissions.length === 0 ? (
@@ -94,7 +94,7 @@ const SubmissionsDropdown = ({ problemId, onSelectSubmission, onClose }) => {
             <li
               key={sub._id}
               onClick={() => handleItemClick(sub)}
-              className="flex items-center justify-between p-3 hover:bg-zinc-700 cursor-pointer text-sm"
+              className="flex items-center justify-between p-3 dark:hover:bg-zinc-700 hover:bg-zinc-300 cursor-pointer text-sm"
             >
               <div className="flex items-center gap-2">
                 <FaCircle
@@ -374,7 +374,7 @@ export default function ProblemSolver() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-gray-200 p-4">
+    <div className="min-h-screen dark:bg-black dark:text-gray-200 bg-white text-zinc-900 p-4">
       <div className="mx-auto max-w-[96rem] h-[calc(100vh-2rem)]">
         <PanelGroup direction={isMobile ? "vertical" : "horizontal"}>
           <Panel defaultSize={50} minSize={30}>
@@ -384,7 +384,7 @@ export default function ProblemSolver() {
               // fixed narrow vertical bar on the left with exit-fullscreen button
               <div
                 aria-hidden={false}
-                className="fixed left-4 top-4 bottom-4 z-[60] w-12 rounded-xl bg-[#0b0b0c] border border-zinc-800 flex items-start justify-center p-2 shadow-lg transition-all"
+                className="fixed left-4 top-4 bottom-4 z-[60] w-12 rounded-xl dark:bg-[#0b0b0c] bg-white border dark:border-zinc-800 border-zinc-300 flex items-start justify-center p-2 shadow-lg transition-all"
               >
                 <div className="w-full flex flex-col items-center gap-4">
                   {/* Exit fullscreen button */}
@@ -403,15 +403,15 @@ export default function ProblemSolver() {
               </div>
             ) : (
               // ---- FULL LEFT PANEL: original layout (unchanged) ----
-              <div className="rounded-lg border border-zinc-800 bg-[#0b0b0c] flex flex-col h-full overflow-hidden">
+              <div className="rounded-lg border dark:border-zinc-800 border-zinc-300 dark:bg-[#0b0b0c] bg-white flex flex-col h-full overflow-hidden">
                 {/* Top rounded nav bar */}
                 <div className="mx-6 mt-2 mb-2">
-                  <div className="flex items-center justify-between bg-[#1e1e1e] border border-zinc-800 rounded-xl px-3 py-1">
+                  <div className="flex items-center justify-between dark:bg-[#1e1e1e] bg-white border dark:border-zinc-800 border-zinc-100 rounded-xl px-3 py-1">
                     {/* left - back arrow */}
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => window.history.back()}
-                        className="p-2 rounded-md hover:bg-zinc-800 text-gray-300"
+                        className="p-2 rounded-md hover:bg-zinc-800 dark:text-gray-300 text-gray-700"
                         title="Back"
                         aria-label="Back"
                       >
@@ -420,7 +420,7 @@ export default function ProblemSolver() {
                           height="16"
                           viewBox="0 0 24 24"
                           fill="none"
-                          className="stroke-current text-gray-300"
+                          className="stroke-current dark:text-gray-300 text-gray-700"
                         >
                           <path
                             d="M15 18l-6-6 6-6"
@@ -451,12 +451,12 @@ export default function ProblemSolver() {
                             key={t}
                             onClick={() => setDescriptionTab(key)}
                             className={`relative px-3 py-1 text-sm font-medium cursor-pointer  ${
-                              active ? "text-white" : "text-gray-400"
+                              active ? "dark:text-white text-black" : "dark:text-gray-400 text-gray-600"
                             }`}
                           >
                             {t}
                             {active && (
-                              <span className="absolute left-0 right-0 -bottom-3 h-0.5 bg-white rounded" />
+                              <span className="absolute left-0 right-0 -bottom-2 h-0.5 dark:bg-white bg-black rounded" />
                             )}
                           </button>
                         );
@@ -466,7 +466,7 @@ export default function ProblemSolver() {
                     {/* right - tiny icons */}
                     <div className="flex items-center gap-2">
                       <button
-                        className="p-2 rounded-md hover:bg-zinc-800 text-gray-400 cursor-pointer"
+                        className="p-2 rounded-md dark:hover:bg-zinc-800 hover:bg-zinc-300 dark:text-gray-400 text-gray-600 cursor-pointer"
                         title="favorite"
                         onClick={toggleFavorite}
                       >
@@ -476,7 +476,7 @@ export default function ProblemSolver() {
                       {/* fullscreen toggle (same control you already have) */}
                       <button
                         onClick={() => setIsEditorFullscreen((f) => !f)}
-                        className="w-8 h-8 p-2 rounded-md hover:bg-zinc-800 flex items-center justify-center cursor-pointer"
+                        className="w-8 h-8 p-2 rounded-md dark:hover:bg-zinc-800 hover:bg-zinc-300 dark:text-gray-400 text-gray-600 flex items-center justify-center cursor-pointer"
                         title="Toggle fullscreen"
                         aria-label="Toggle fullscreen"
                       >
@@ -493,11 +493,11 @@ export default function ProblemSolver() {
                 {/* content card area */}
                 {descriptionTab === "description" ? (
                   <div className="px-6 overflow-y-auto flex-grow">
-                    <div className="rounded-lg bg-[#1e1e1e] border border-zinc-800 p-6 shadow-sm">
+                    <div className="rounded-lg dark:bg-[#1e1e1e] bg-white border dark:border-zinc-800 border-zinc-300 p-6 shadow-sm">
                       <div className="flex items-start gap-4">
                         {/* left small book icon */}
                         <div className="flex-shrink-0 mt-1">
-                          <div className="w-9 h-9 rounded-md bg-[#1e1e1e] border border-zinc-700 flex items-center justify-center text-gray-300">
+                          <div className="w-9 h-9 rounded-md dark:bg-[#1e1e1e] dark:border dark:border-zinc-700 flex items-center justify-center dark:text-gray-300 text-gray-700">
                             📘
                           </div>
                         </div>
@@ -505,7 +505,7 @@ export default function ProblemSolver() {
                         <div className="flex-1">
                           <div className="flex items-start justify-between">
                             <div>
-                              <h1 className="text-3xl font-bold text-white leading-tight">
+                              <h1 className="text-3xl font-bold dark:text-white text-black leading-tight">
                                 {problem?.title}
                               </h1>
                               <div className="mt-3 flex items-center gap-2">
@@ -514,21 +514,21 @@ export default function ProblemSolver() {
                                   className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold ${
                                     difficultyThemes[
                                       problem?.difficulty.toLowerCase()
-                                    ] || "bg-gray-100 text-gray-800"
+                                    ] || "dark:bg-gray-100 dark:text-gray-800 bg-gray-300 text-gray-800"
                                   }`}
                                 >
                                   {problem?.difficulty}
                                 </span>
                                 {/* category pill */}
-                                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#1e1e1e] text-gray-300 border border-zinc-700">
+                                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold dark:bg-[#1e1e1e] bg-zinc-200 dark:text-gray-300 text-gray-800 border border-zinc-300 dark:border-zinc-700">
                                   {problem?.category}
                                 </span>
                               </div>
                             </div>
 
                             {/* small action icon on right of title */}
-                            <div className="ml-4">
-                              <button className="w-10 h-10 rounded-md bg-[#1e1e1e] border border-zinc-700 flex items-center justify-center text-gray-300">
+                            {/* <div className="ml-4">
+                              <button className="w-10 h-10 rounded-md dark:bg-[#1e1e1e] bg-white border dark:border-zinc-700 border-zinc-400 flex items-center justify-center text-gray-300">
                                 <svg
                                   width="18"
                                   height="18"
@@ -565,11 +565,11 @@ export default function ProblemSolver() {
                                   />
                                 </svg>
                               </button>
-                            </div>
+                            </div> */}
                           </div>
 
                           {/* description */}
-                          <div className="mt-6 prose prose-invert text-gray-300 max-w-none">
+                          <div className="mt-6 prose prose-invert dark:text-gray-300 text-gray-800 max-w-none">
                             <p className="leading-relaxed whitespace-pre-wrap break-words">
                               {problem?.description}
                             </p>
@@ -578,17 +578,17 @@ export default function ProblemSolver() {
                           {/* Example block */}
                           {problem?.sample && (
                             <div className="mt-6">
-                              <h3 className="text-lg font-semibold text-white mb-3">
+                              <h3 className="text-lg font-semibold dark:text-white text-zinc-800 mb-3">
                                 Example:
                               </h3>
 
                               <div className="space-y-4">
                                 <div>
-                                  <div className="text-sm text-gray-400 mb-2">
+                                  <div className="text-sm dark:text-gray-400 text-zinc-700 mb-2">
                                     Input:
                                   </div>
-                                  <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm">
-                                    <pre className="font-mono whitespace-pre-wrap text-gray-200 m-0">
+                                  <div className="rounded-md dark:bg-[#1e1e1e] bg-zinc-100 border-2 border-zinc-300 dark:border-zinc-700 p-4 text-sm">
+                                    <pre className="font-mono whitespace-pre-wrap dark:text-gray-200 text-zinc-700 m-0">
                                       {problem.sample.input}
                                     </pre>
                                     {/* place any additional small inputs like feature_i/threshold below if available */}
@@ -596,11 +596,11 @@ export default function ProblemSolver() {
                                 </div>
 
                                 <div>
-                                  <div className="text-sm text-gray-400 mb-2">
+                                  <div className="text-sm dark:text-gray-400 text-zinc-700 mb-2">
                                     Output:
                                   </div>
-                                  <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm">
-                                    <pre className="font-mono whitespace-pre-wrap text-gray-200 m-0">
+                                  <div className="rounded-md dark:bg-[#1e1e1e] bg-zinc-100 border-2 border-zinc-300 dark:border-zinc-700 p-4 text-sm">
+                                    <pre className="font-mono whitespace-pre-wrap dark:text-gray-200 text-zinc-700 m-0">
                                       {problem.sample.output}
                                     </pre>
                                   </div>
@@ -608,10 +608,10 @@ export default function ProblemSolver() {
 
                                 {problem.sample.reasoning && (
                                   <div>
-                                    <div className="text-sm text-gray-400 mb-2">
+                                    <div className="text-sm dark:text-gray-400 text-zinc-700 mb-2">
                                       Reasoning:
                                     </div>
-                                    <div className="rounded-md bg-[#1e1e1e] border-2 border-zinc-700 p-4 text-sm text-gray-300">
+                                    <div className="rounded-md bg-white dark:bg-[#1e1e1e] p-4 text-md dark:text-gray-300 text-zinc-700">
                                       <pre className="whitespace-pre-wrap m-0">
                                         {problem.sample.reasoning}
                                       </pre>
@@ -623,13 +623,13 @@ export default function ProblemSolver() {
                           )}
 
                           {/* bottom area: learn button & contributors */}
-                          <div className="mt-8 pt-6 border-t border-zinc-800 space-y-6">
+                          <div className="mt-8 pt-6 border-zinc-800 space-y-6">
                             <div>
                               <button
                                 onClick={() =>
                                   setIsLearnPanelOpen((prev) => !prev)
                                 }
-                                className="px-4 py-2 text-sm border border-zinc-700 rounded-3xl hover:bg-zinc-800 transition disabled:opacity-50"
+                                className="px-4 py-2 text-sm border dark:border-zinc-700 rounded-3xl dark:hover:bg-zinc-800 hover:bg-zinc-300 transition disabled:opacity-50 cursor-pointer"
                                 disabled={!problem?.aboutTopic}
                               >
                                 Learn About topic
@@ -656,18 +656,18 @@ export default function ProblemSolver() {
 
                             <div className="flex items-center justify-between">
                               <div className="flex flex-col items-start gap-1 text-sm">
-                                <span className="text-gray-200 text-sm">
+                                <span className="dark:text-gray-200 text-gray-700 text-sm">
                                   Contributors:
                                 </span>
                                 <a
                                   href="#"
-                                  className="flex items-center gap-1.5 text-zinc-400 hover:text-white hover:underline"
+                                  className="flex items-center gap-1.5 dark:text-zinc-400 text-zinc-600 dark:hover:text-white hover:text-black hover:underline"
                                 >
                                   Moe Chabot <FiExternalLink size={12} />
                                 </a>
                               </div>
 
-                              <button className="px-4 py-2 text-sm bg-[#1e1e1e] border border-zinc-700 rounded-3xl hover:bg-zinc-800 transition">
+                              <button className="px-4 py-2 text-sm dark:bg-[#1e1e1e] bg-white border border-zinc-700 rounded-3xl dark:hover:bg-zinc-800 hover:bg-zinc-300 transition cursor-pointer">
                                 Contribute
                               </button>
                             </div>
@@ -677,10 +677,10 @@ export default function ProblemSolver() {
                     </div>
 
                     {/* request edit button */}
-                    <div className="py-4 text-center bg-[#1e1e1e]">
+                    <div className="py-4 text-center dark:bg-[#1e1e1e] bg-white">
                       <button
                         onClick={() => setIsEditModalOpen(true)}
-                        className="px-5 py-2 text-sm bg-[var(--color-bg)] border border-zinc-700 rounded-lg hover:bg-zinc-800 transition duration-500 cursor-pointer "
+                        className="px-5 py-2 text-sm dark:bg-[var(--color-bg)] bg-white border dark:border-zinc-700 border-zinc-300 rounded-lg dark:hover:bg-zinc-800 hover:bg-zinc-300 transition duration-500 cursor-pointer "
                       >
                         <span className="flex gap-2 items-center">
                           <FaEdit /> Request Edit
@@ -696,7 +696,7 @@ export default function ProblemSolver() {
                   />
                 ) : (
                   <div className="px-6 overflow-y-auto flex-grow">
-                    <div className="rounded-lg min-h-full flex justify-center items-center bg-[#1e1e1e] border border-zinc-800 p-6 shadow-sm">
+                    <div className="rounded-lg min-h-full flex justify-center items-center dark:bg-[#1e1e1e] bg-white border dark:border-zinc-800 border-zinc-300 p-6 shadow-sm">
                       <PlaceholderContent title={leftTabTitle} />
                     </div>
                   </div>
@@ -711,7 +711,7 @@ export default function ProblemSolver() {
             }`}
           >
             <div
-              className={`rounded-full bg-zinc-800 group-hover:bg-blue-500 transition-colors ${
+              className={`rounded-full dark:bg-zinc-800 bg-zinc-400 group-hover:bg-blue-500 transition-colors ${
                 isMobile ? "h-1.5 w-full" : "w-1.5 h-full"
               }`}
             />
@@ -720,7 +720,7 @@ export default function ProblemSolver() {
           <Panel defaultSize={50} minSize={30}>
             {/* RIGHT PANEL (unchanged) */}
             <div
-              className={`rounded-lg border border-zinc-800 bg-[#09090B] flex flex-col h-full overflow-hidden ${
+              className={`rounded-lg border dark:border-zinc-800 border-zinc-300 dark:bg-[#09090B] bg-white flex flex-col h-full overflow-hidden ${
                 isEditorFullscreen
                   ? "fixed py-4 px-6 pl-20 inset-0 z-50 !h-screen !rounded-none"
                   : ""
@@ -730,13 +730,13 @@ export default function ProblemSolver() {
               <div className="relative flex items-center justify-between m-2 p-2 flex-shrink-0">
                 {/* Center: language pill + 3-dot indicator */}
                 <div className="flex  items-center gap-3 cursor-pointer">
-                  <div className="flex items-center gap-2 px-3 py-2 rounded-md bg-[var(--color-bg)] border border-zinc-800">
+                  <div className="flex items-center gap-2 px-3 py-2 rounded-md dark:bg-[var(--color-bg)] bg-white border dark:border-zinc-800 border-zinc-300">
                     <div className="text-sm font-semibold">Editor Mode</div>
                     <div className="w-2 h-2 rounded-full bg-green-300" />
                   </div>
                 </div>
                 <div className="flex  items-center gap-3 cursor-pointer">
-                  <div className="flex items-center gap-1 px-3 py-2 rounded-md bg-[var(--color-bg)] border border-zinc-800">
+                  <div className="flex items-center gap-1 px-3 py-2 rounded-md dark:bg-[var(--color-bg)] bg-white border dark:border-zinc-800 border-zinc-300">
                     <div className="text-sm font-semibold">Python 3.9</div>
                     <div className="w-1 h-3 rounded-full bg-yellow-300" />
                     <div className="w-1 h-3 rounded-full bg-yellow-300" />
@@ -748,7 +748,7 @@ export default function ProblemSolver() {
                 <div className="flex items-center gap-4">
                   <button
                     onClick={toggleTheme}
-                    className="w-8 h-8 rounded-md border-1 border-zinc-800 hover:bg-zinc-800 flex items-center justify-center cursor-pointer"
+                    className="w-8 h-8 rounded-md border-1 dark:border-zinc-800 border-zinc-300 dark:hover:bg-zinc-800 hover:bg-zinc-300 flex items-center justify-center cursor-pointer"
                     title="Toggle theme"
                   >
                     <FiSun />
@@ -757,7 +757,7 @@ export default function ProblemSolver() {
                   {/* zoom out */}
                   <button
                     onClick={zoomOut}
-                    className="w-8 h-8 rounded-md border-1 border-zinc-800 hover:bg-zinc-800 flex items-center justify-center cursor-pointer"
+                    className="w-8 h-8 rounded-md border-1 dark:border-zinc-800 border-zinc-300 dark:hover:bg-zinc-800 hover:bg-zinc-300 flex items-center justify-center cursor-pointer"
                     title="Zoom out"
                   >
                     <FiMinus />
@@ -766,7 +766,7 @@ export default function ProblemSolver() {
                   {/* zoom in */}
                   <button
                     onClick={zoomIn}
-                    className="w-8 h-8 rounded-md border-1 border-zinc-800 hover:bg-zinc-800 flex items-center justify-center cursor-pointer"
+                    className="w-8 h-8 rounded-md border-1 dark:border-zinc-800 border-zinc-300 dark:hover:bg-zinc-800 hover:bg-zinc-300 flex items-center justify-center cursor-pointer"
                     title="Zoom in"
                   >
                     <FiPlus />
@@ -776,7 +776,7 @@ export default function ProblemSolver() {
                   <button
                     ref={shortcutsBtnRef}
                     onClick={() => setIsShortcutsOpen((s) => !s)}
-                    className="w-8 h-8 rounded-md border-1 border-zinc-800 hover:bg-zinc-800 flex items-center justify-center cursor-pointer relative"
+                    className="w-8 h-8 rounded-md border-1 dark:border-zinc-800 border-zinc-300 dark:hover:bg-zinc-800 hover:bg-zinc-300 flex items-center justify-center cursor-pointer relative"
                     title="Keyboard shortcuts"
                     aria-expanded={isShortcutsOpen}
                     aria-controls="editor-shortcuts-panel"
@@ -888,8 +888,8 @@ export default function ProblemSolver() {
                     theme={themeName}
                   />
                 </Panel>
-                <PanelResizeHandle className="h-2 w-full bg-[#161b22] flex items-center justify-center group outline-none">
-                  <div className="w-full h-1 rounded-full bg-gray-700 group-hover:bg-blue-500 transition-colors" />
+                <PanelResizeHandle className="h-2 w-full dark:bg-[#161b22] bg-white flex items-center justify-center group outline-none">
+                  <div className="w-full h-1 rounded-full dark:bg-gray-700 bg-gray-400 group-hover:bg-blue-500 transition-colors" />
                 </PanelResizeHandle>
                 <Panel defaultSize={40} minSize={20} className="flex flex-col">
                   <div className="p-3 border-b border-gray-800 flex items-center justify-between flex-wrap gap-2">
@@ -904,20 +904,20 @@ export default function ProblemSolver() {
                     <div className="flex flex-wrap items-center gap-2">
                       <button
                         onClick={handleReset}
-                        className="inline-flex items-center gap-2 px-3 py-2 rounded-md border-1 border-zinc-800 cursor-pointer hover:bg-zinc-800"
+                        className="inline-flex items-center gap-2 px-3 py-2 rounded-md border-1 dark:border-zinc-800 border-zinc-300 cursor-pointer dark:hover:bg-zinc-800 hover:bg-zinc-300"
                       >
                         <FiRefreshCw /> Reset
                       </button>
                       <button
                         onClick={handleSave}
-                        className="inline-flex items-center gap-2 px-3 py-2 rounded-md border-1 border-zinc-800 cursor-pointer hover:bg-zinc-800"
+                        className="inline-flex items-center gap-2 px-3 py-2 rounded-md border-1 dark:border-zinc-800 border-zinc-300 cursor-pointer dark:hover:bg-zinc-800 hover:bg-zinc-300"
                       >
                         <FiSave /> Save
                       </button>
                       <div className="relative">
                         <button
                           onClick={() => setIsSubmissionsOpen((prev) => !prev)}
-                          className="inline-flex items-center gap-2 px-3 py-2 rounded-md border-1 border-zinc-800 cursor-pointer hover:bg-zinc-800"
+                          className="inline-flex items-center gap-2 px-3 py-2 rounded-md border-1 dark:border-zinc-800 border-zinc-300 cursor-pointer dark:hover:bg-zinc-800 hover:bg-zinc-300"
                         >
                           <FiClock /> Submissions
                         </button>
@@ -931,14 +931,14 @@ export default function ProblemSolver() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex-grow bg-[#0d1117] overflow-y-auto">
+                  <div className="flex-grow dark:bg-[#0d1117] bg-white overflow-y-auto">
                     <div className="p-4">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-3">
-                          <h3 className="font-semibold text-white">
+                          <h3 className="font-semibold dark:text-white text-black">
                             Test Results
                           </h3>
-                          <span className="text-sm text-gray-400">
+                          <span className="text-sm dark:text-gray-400 text-gray-800">
                             {passedCount}/{totalCount}
                           </span>
                         </div>
@@ -952,7 +952,7 @@ export default function ProblemSolver() {
                           </span>
                         )}
                       </div>
-                      <div className="h-1.5 w-full bg-[#21262d] rounded-full overflow-hidden mb-3">
+                      <div className="h-1.5 w-full dark:bg-[#21262d] bg-zinc-300 rounded-full overflow-hidden mb-3">
                         <div
                           style={{
                             width:
@@ -961,7 +961,7 @@ export default function ProblemSolver() {
                                 : "0%",
                           }}
                           className={`h-full rounded-full transition-all duration-300 ${
-                            allTestsPassed ? "bg-green-500" : "bg-yellow-500"
+                            allTestsPassed ? "dark:bg-green-500 bg-green-300" : "bg-yellow-500"
                           }`}
                         />
                       </div>
@@ -973,7 +973,7 @@ export default function ProblemSolver() {
                           onClick={() => setTestResultTab(i)}
                           className={`flex items-center gap-2 py-2 px-3 text-sm ${
                             testResultTab === i
-                              ? "border-b-2 border-blue-500 text-white"
+                              ? "border-b-2 border-blue-500 dark:text-white text-zinc-800"
                               : "text-gray-400"
                           }`}
                         >
@@ -989,28 +989,28 @@ export default function ProblemSolver() {
                     {currentTestResult ? (
                       <div className="p-4 space-y-4">
                         <div>
-                          <div className="text-sm text-gray-400 mb-1">
+                          <div className="text-sm dark:text-gray-400 text-gray-800 mb-1">
                             Test Case
                           </div>
-                          <div className="rounded-md bg-[#161b22] p-3 text-sm font-mono">
+                          <div className="rounded-md dark:bg-[#161b22] bg-zinc-100 p-3 text-sm font-mono">
                             {currentTestResult.testCase}
                           </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
-                            <div className="text-sm text-gray-400 mb-1">
+                            <div className="text-sm dark:text-gray-400 text-gray-800 mb-1">
                               Expected
                             </div>
-                            <div className="rounded-md bg-[#161b22] p-3 text-sm font-mono">
+                            <div className="rounded-md dark:bg-[#161b22] bg-zinc-100 p-3 text-sm font-mono">
                               {currentTestResult.expectedOutput}
                             </div>
                           </div>
                           <div className="relative">
-                            <div className="text-sm text-gray-400 mb-1">
+                            <div className="text-sm dark:text-gray-400 text-gray-800 mb-1">
                               Your Output
                             </div>
                             <div
-                              className={`rounded-md bg-[#161b22] p-3 text-sm font-mono whitespace-pre-wrap ${
+                              className={`rounded-md dark:bg-[#161b22] bg-zinc-100 p-3 text-sm font-mono whitespace-pre-wrap ${
                                 !currentTestResult.passed && "text-red-400"
                               }`}
                             >
@@ -1028,7 +1028,7 @@ export default function ProblemSolver() {
                           </div>
                         </div>
                         <div className="pt-2">
-                          <button className="px-3 py-1.5 rounded-md text-sm bg-[#21262d] hover:bg-gray-700 border border-gray-700">
+                          <button className="px-3 py-1.5 rounded-md text-sm dark:bg-[#21262d] bg-white dark:hover:bg-gray-700 hover:bg-gray-300 border border-gray-700">
                             ⚡ Get Hint
                           </button>
                         </div>

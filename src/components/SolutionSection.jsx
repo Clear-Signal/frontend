@@ -139,26 +139,26 @@ export default function SolutionSection({ problem, problemId, setDescriptionTab 
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.98, y: -8 }}
               transition={{ duration: 0.18 }}
-              className="relative z-[10000] w-[520px] max-w-full rounded-lg bg-[#121214] border border-zinc-800 p-6 text-center shadow-2xl"
+              className="relative z-[10000] w-[520px] max-w-full rounded-lg dark:bg-[#121214] bg-white border dark:border-zinc-800 border-zinc-300 p-6 text-center shadow-2xl"
               role="dialog"
               aria-modal="true"
               onClick={(e) => e.stopPropagation()}
             >
-              <h2 className="text-xl font-semibold text-white mb-2">View Solution</h2>
-              <p className="text-sm text-gray-300 mb-4">
+              <h2 className="text-xl font-semibold dark:text-white text-black mb-2">View Solution</h2>
+              <p className="text-sm dark:text-gray-300 text-gray-500 mb-4">
                 Viewing the solution will prevent you from earning the flame for <strong>4 hours</strong>.
               </p>
-              <p className="text-sm text-gray-200 font-semibold mb-6">Are you sure you want to proceed?</p>
+              <p className="text-sm dark:text-gray-200 text-gray-600 font-semibold mb-6">Are you sure you want to proceed?</p>
               <div className="flex items-center justify-center gap-4">
                 <button
                   onClick={handleCancel}
-                  className="px-4 py-2 rounded-md bg-[#1f2937] border border-zinc-700 text-gray-200"
+                  className="px-4 py-2 rounded-md dark:bg-[#1f2937] bg-zinc-300 border dark:border-zinc-700 border-zinc-300 dark:text-gray-200 text-gray-800 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleConfirm}
-                  className="px-4 py-2 rounded-md bg-black text-white border border-zinc-800"
+                  className="px-4 py-2 rounded-md dark:bg-black bg-white dark:text-white text-black border dark:border-zinc-800 border-zinc-300 cursor-pointer"
                 >
                   OK
                 </button>
@@ -178,21 +178,21 @@ export default function SolutionSection({ problem, problemId, setDescriptionTab 
       {/* Panel content */}
       {isUnlocked ? (
         <div className="px-6 overflow-y-auto flex-grow">
-          <div className="rounded-lg bg-[#1e1e1e] border border-zinc-800 p-6 shadow-sm">
-            <div className="mb-4 rounded-md bg-[#18181b] border border-zinc-700 p-3 text-center text-sm text-red-400">
+          <div className="rounded-lg dark:bg-[#1e1e1e] bg-white border dark:border-zinc-800 border-zinc-300 p-6 shadow-sm">
+            <div className="mb-4 rounded-md dark:bg-[#18181b] bg-white border dark:border-zinc-700 border-zinc-200 p-3 text-center text-sm text-red-400">
               <strong>You can earn flames again in </strong>
               <span className="text-red-500 font-semibold">{remainingText || "0h 0m 0s remaining"}</span>
             </div>
 
-            <div className="rounded-md bg-[#0f0f10] border border-zinc-700 p-4 text-sm relative">
+            <div className="rounded-md dark:bg-[#0f0f10] bg-white border dark:border-zinc-700 border-zinc-200 p-4 text-sm relative">
               <button
                 onClick={handleCopy}
-                className="absolute top-3 right-3 px-3 py-1 rounded-md bg-zinc-800 border border-zinc-700 text-gray-300 text-sm"
+                className="absolute top-3 right-3 px-1 py-1 rounded-md dark:bg-zinc-800 bg-white border dark:border-zinc-700 border-zinc-200 text-gray-300 text-sm cursor-pointer"
               >
                 📋
               </button>
 
-              <pre className="font-mono whitespace-pre-wrap text-gray-200 m-0">{solutionText}</pre>
+              <pre className="font-mono whitespace-pre-wrap dark:text-gray-200 text-gray-800 m-0">{solutionText}</pre>
             </div>
 
             {copied && <div className="mt-3 text-sm text-green-400">Copied!</div>}
@@ -200,8 +200,8 @@ export default function SolutionSection({ problem, problemId, setDescriptionTab 
         </div>
       ) : (
         <div className="px-6 overflow-y-auto flex-grow">
-          <div className="rounded-lg min-h-full flex justify-center items-center bg-[#1e1e1e] border border-zinc-800 p-6 shadow-sm">
-            <div className="flex items-center justify-center h-full text-gray-500">
+          <div className="rounded-lg min-h-full flex justify-center items-center dark:bg-[#1e1e1e] bg-white border dark:border-zinc-800 border-zinc-300 p-6 shadow-sm">
+            <div className="flex items-center justify-center h-full dark:text-gray-500 text-gray-800">
               <div className="text-center">
                 <h2 className="text-2xl font-bold">Solution</h2>
                 <p>Content for this section is not yet available.</p>
