@@ -79,182 +79,178 @@ export default function ProblemsPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-[var(--color-bg-black)] text-[var(--color-fg)] p-6">
-      <div className="mx-auto grid grid-cols-1 lg:grid-cols-8 gap-6">
-        {/* Main explorer */}
-        <section className="lg:col-span-5">
-          {/* Daily Challenge section (unchanged) */}
-          <DailyChallenge challenge={challenge} />
-          <div className="rounded-2xl border-[1px] border-[var(--color-muted)] bg-[var(--color-bg-black)] p-5 shadow-sm">
-            <h2 className="text-2xl font-semibold flex items-center gap-3">
-              <FaBook /> Problem Explorer
-            </h2>
-            <CollectionCarousel/>
-            {/* Filters section (unchanged) */}
-            <div className="flex flex-col md:flex-row md:items-center md:gap-3 my-4">
-              <div className="flex items-center gap-2 flex-1 flex-wrap">
-                <Dropdown
-                  value={difficulty}
-                  setValue={setDifficulty}
-                  options={["all", "easy", "medium", "hard"]}
-                  width="w-40"
-                />
-                <Dropdown
-                  value={category}
-                  setValue={setCategory}
-                  options={categories}
-                  width="w-44"
-                />
-                <Dropdown
-                  value={"Sort by ID"}
-                  setValue={() => {}}
-                  options={["Sort by ID"]}
-                  width="w-40"
-                />
+      <div className="min-h-screen dark:bg-[var(--color-bg-black)] bg-white text-[var(--color-bg)] dark:text-[var(--color-fg)] p-6">
+        <div className="mx-auto grid grid-cols-1 lg:grid-cols-8 gap-6">
+          {/* Main explorer */}
+          <section className="lg:col-span-5">
+            {/* Daily Challenge section (unchanged) */}
+            <DailyChallenge challenge={challenge} />
+            <div className="rounded-2xl border-[1px] dark:border-[var(--color-muted)] border-zinc-300 dark:bg-[var(--color-bg-black)] bg-white p-5 shadow-sm text-[var(--color-bg)] dark:text-[var(--color-fg)]">
+              <h2 className="text-2xl font-semibold flex items-center gap-3 text-[var(--color-bg)] dark:text-[var(--color-fg)]">
+                <FaBook /> Problem Explorer
+              </h2>
+              <CollectionCarousel />
+              {/* Filters section (unchanged) */}
+              <div className="flex flex-col md:flex-row md:items-center md:gap-3 my-4">
+                <div className="flex items-center gap-2 flex-1 flex-wrap">
+                  <Dropdown
+                    value={difficulty}
+                    setValue={setDifficulty}
+                    options={["all", "easy", "medium", "hard"]}
+                    width="w-40"
+                  />
+                  <Dropdown
+                    value={category}
+                    setValue={setCategory}
+                    options={categories}
+                    width="w-44"
+                  />
+                  <Dropdown
+                    value={"Sort by ID"}
+                    setValue={() => {}}
+                    options={["Sort by ID"]}
+                    width="w-40"
+                  />
+                </div>
+                <div className="mt-3 md:mt-0 md:ml-auto w-full md:w-64">
+                  <input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Search problems..."
+                    className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:bg-[var(--color-bg)] bg-white text-[var(--color-bg)] dark:text-[var(--color-fg)]"
+                  />
+                </div>
               </div>
-              <div className="mt-3 md:mt-0 md:ml-auto w-full md:w-64">
-                <input
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search problems..."
-                  className="w-full px-3 py-2 rounded border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-fg)]"
-                />
-              </div>
-            </div>
 
-            {/* Content Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse text-sm">
-                <thead>
-                  <tr className="text-left bg-zinc-900 text-[var(--color-fg)]">
-                    <th className="py-2 px-3 border-b border-[var(--color-fg)] w-40">
-                      ID
-                    </th>
-                    <th className="py-2 px-3 border-b border-[var(--color-fg)]">
-                      Title
-                    </th>
-                    <th className="py-2 px-3 border-b border-[var(--color-fg)] w-20">
-                      Difficulty
-                    </th>
-                    <th className="py-2 px-3 border-b border-[var(--color-fg)] w-24">
-                      Category
-                    </th>
-                    <th className="py-2 px-3 border-b border-[var(--color-fg)] w-28">
-                      Status
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginatedProblems.length === 0 ? (
-                    <tr>
-                      <td
-                        colSpan={5}
-                        className="py-6 text-center text-[var(--color-fg)]"
-                      >
-                        No problems found
-                      </td>
+              {/* Content Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse text-sm">
+                  <thead>
+                    <tr className="text-left dark:bg-zinc-900 bg-zinc-100 dark:text-[var(--color-fg)] text-zinc-700">
+                      <th className="py-2 px-3 border-b dark:border-[var(--color-fg)] border-[var(--color-border)] w-40">
+                        ID
+                      </th>
+                      <th className="py-2 px-3 border-b dark:border-[var(--color-fg)] border-[var(--color-border)]">
+                        Title
+                      </th>
+                      <th className="py-2 px-3 border-b dark:border-[var(--color-fg)] border-[var(--color-border)] w-20">
+                        Difficulty
+                      </th>
+                      <th className="py-2 px-3 border-b dark:border-[var(--color-fg)] border-[var(--color-border)] w-24">
+                        Category
+                      </th>
+                      <th className="py-2 px-3 border-b dark:border-[var(--color-fg)] border-[var(--color-border)] w-28">
+                        Status
+                      </th>
                     </tr>
-                  ) : (
-                    paginatedProblems.map(
-                      (
-                        p // ✅ Use paginatedProblems here
-                      ) => (
-                        <tr
-                          key={p._id}
-                          className="bg-zinc-900 transition cursor-pointer hover:bg-zinc-800"
-                          onClick={() =>
-                            navigate && navigate(`/problems/${p._id}`)
-                          }
+                  </thead>
+                  <tbody>
+                    {paginatedProblems.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={5}
+                          className="py-6 text-center dark:text-[var(--color-fg)] text-[var(--color-bg)]"
                         >
-                          <td className="py-3 px-3 border-b-1 border-[var(--color-fg)] align-center">
-                            {p.problemId}
-                          </td>
-                          <td className="py-3 px-3 border-b-1 border-[var(--color-fg)] align-center">
-                            {p.title}
-                          </td>
-                          <td className="py-3 px-3 border-b-1 border-[var(--color-fg)] align-center">
-                            <span
-                              className={
-                                difficultyStyle[
-                                  (p.difficulty || "").toLowerCase()
-                                ]
-                              }
-                              style={{
-                                background:
-                                  difficultyColor[
-                                    (p.difficulty || "").toLowerCase()
-                                  ]?.bg,
-                                color:
-                                  difficultyColor[
-                                    (p.difficulty || "").toLowerCase()
-                                  ]?.text,
-                                minWidth: "80px",
-                                justifyContent: "center",
-                                fontSize: "0.875rem",
-                              }}
-                            >
-                              {p.difficulty}
-                            </span>
-                          </td>
-                          <td className="py-3 px-3 border-b-1 border-[var(--color-fg)] align-center text-center">
-                            {p.category}
-                          </td>
-                          <td className="py-3 px-3 border-b-1 border-[var(--color-fg)] align-center">
-                            <span className="w-full flex justify-center text-[var(--color-fg)] text-xs">
-                              {p.status &&
-                              p.status.toLowerCase() === "solved" ? (
-                                <FaCheckCircle color="green" size={20} />
-                              ) : (
-                                ""
-                              )}
-                            </span>
-                          </td>
-                        </tr>
+                          No problems found
+                        </td>
+                      </tr>
+                    ) : (
+                      paginatedProblems.map(
+                        (
+                          p // ✅ Use paginatedProblems here
+                        ) => (
+                          <tr
+                            key={p._id}
+                            className="transition cursor-pointer dark:bg-zinc-900 bg-white dark:hover:bg-zinc-800 hover:bg-zinc-100"
+                            onClick={() =>
+                              navigate && navigate(`/problems/${p._id}`)
+                            }
+                          >
+                            <td className="py-3 px-3 border-b dark:border-[var(--color-fg)] border-[var(--color-border)] align-center text-[var(--color-bg)] dark:text-[var(--color-fg)]">
+                              {p.problemId}
+                            </td>
+                            <td className="py-3 px-3 border-b dark:border-[var(--color-fg)] border-[var(--color-border)] align-center text-[var(--color-bg)] dark:text-[var(--color-fg)]">
+                              {p.title}
+                            </td>
+                            <td className="py-3 px-3 border-b dark:border-[var(--color-fg)] border-[var(--color-border)] align-center text-[var(--color-bg)] dark:text-[var(--color-fg)]">
+                              <span
+                                className={`
+    flex items-center justify-center min-w-[70px] text-sm font-medium rounded
+    ${
+      (p.difficulty || "").toLowerCase() === "easy"
+        ? "dark:text-black bg-green-500 text-white"
+        : (p.difficulty || "").toLowerCase() === "medium"
+        ? "bg-amber-400 text-white dark:text-black"
+        : (p.difficulty || "").toLowerCase() === "hard"
+        ? "bg-red-600 dark:text-black text-white"
+        : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-100"
+    }
+  `}
+                              >
+                                {p.difficulty.toLowerCase()}
+                              </span>
+                            </td>
+                            <td className="py-3 px-3 border-b dark:border-[var(--color-fg)] border-[var(--color-border)] align-center text-center text-[var(--color-bg)] dark:text-[var(--color-fg)]">
+                              {p.category}
+                            </td>
+                            <td className="py-3 px-3 border-b dark:border-[var(--color-fg)] border-[var(--color-border)] align-center">
+                              <span className="w-full flex justify-center dark:text-[var(--color-fg)] text-[var(--color-bg)] text-xs">
+                                {p.status &&
+                                p.status.toLowerCase() === "solved" ? (
+                                  <FaCheckCircle color="green" size={20} />
+                                ) : (
+                                  ""
+                                )}
+                              </span>
+                            </td>
+                          </tr>
+                        )
                       )
-                    )
-                  )}
-                </tbody>
-              </table>
-            </div>
+                    )}
+                  </tbody>
+                </table>
+              </div>
 
-            {/* ✅ Render the dynamic pagination component */}
-            {totalPages > 1 && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            )}
-          </div>
-        </section>
+              {/* ✅ Render the dynamic pagination component */}
+              {totalPages > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
+              )}
+            </div>
+          </section>
 
-        {/* Sidebar (unchanged) */}
-        <aside className="max-w-md lg:grid gap-6 lg:-col-end-1 lg:col-span-2 max-h-15">
-          <div className="rounded-2xl border border-[var(--color-muted)] bg-zinc-900 p-4">
-            <div className="text-xl text-center font-semibold mb-3">
-              Progress Calendar
+          {/* Sidebar (unchanged) */}
+          <aside className="max-w-md lg:grid gap-6 lg:-col-end-1 lg:col-span-2 max-h-15">
+            <div className="rounded-2xl border dark:border-[var(--color-muted)] border-[var(--color-border)] dark:bg-zinc-900 bg-white p-4 text-[var(--color-bg)] dark:text-[var(--color-fg)]">
+              <div className="text-xl text-center font-semibold mb-3 text-[var(--color-bg)] dark:text-[var(--color-fg)]">
+                Progress Calendar
+              </div>
+              <MiniCalendar />
             </div>
-            <MiniCalendar />
-          </div>
-          <div className="rounded-2xl border border-[var(--color-muted)] bg-zinc-900 p-4 text-center">
-            <div className="text-sm text-[var(--color-fg)]">Your Stats</div>
-            <div className="mt-3 text-2xl font-bold">
-              {userStats?.completionRate || 0.0}%
+            <div className="rounded-2xl border dark:border-[var(--color-muted)] border-[var(--color-border)] dark:bg-zinc-900 bg-white p-4 text-center text-[var(--color-bg)] dark:text-[var(--color-fg)]">
+              <div className="text-sm text-[var(--color-fg)] dark:text-[var(--color-fg)]">
+                Your Stats
+              </div>
+              <div className="mt-3 text-2xl font-bold text-[var(--color-bg)] dark:text-[var(--color-fg)]">
+                {userStats?.completionRate || 0.0}%
+              </div>
+              <div className="text-sm text-[var(--color-fg)] dark:text-[var(--color-fg)] mt-1">
+                Completion Rate
+              </div>
+              <div className="mt-4 text-xl font-semibold text-[var(--color-bg)] dark:text-[var(--color-fg)]">
+                {userStats?.totalQuestionsSolved || 0}
+              </div>
+              <div className="text-sm text-[var(--color-fg)] dark:text-[var(--color-fg)]">
+                Problems Solved
+              </div>
             </div>
-            <div className="text-sm text-[var(--color-fg)] mt-1">
-              Completion Rate
-            </div>
-            <div className="mt-4 text-xl font-semibold">
-              {userStats?.totalQuestionsSolved || 0}
-            </div>
-            <div className="text-sm text-[var(--color-fg)]">
-              Problems Solved
-            </div>
-          </div>
-        </aside>
+          </aside>
+        </div>
       </div>
-    </div>
-    <Footer />
+      <Footer />
     </>
   );
 }

@@ -34,7 +34,7 @@ const ThemeToggle = () => {
     <button
       onClick={toggle}
       aria-label="Toggle dark mode"
-      className="relative inline-flex items-center rounded-full p-1 w-16 h-9 dark:bg-[var(--color-bg)] bg-yellow-300 shadow-sm focus:outline-none border-1 border-[var(--color-border)] cursor-pointer"
+      className="relative inline-flex items-center rounded-full p-1 w-16 h-9 dark:bg-blue-800 bg-yellow-300 shadow-sm focus:outline-none border-1 border-[var(--color-border)] cursor-pointer"
     >
       <span className="absolute inset-0 rounded-full pointer-events-none" />
 
@@ -77,8 +77,8 @@ const ThemeToggle = () => {
       </motion.span>
 
       {/* Optional labels (tiny) */}
-      <span className="absolute left-2 text-[10px] text-[var(--color-fg)]/60 select-none">☀</span>
-      <span className="absolute right-2 text-[10px] text-[var(--color-fg)]/60 select-none">🌙</span>
+      <span className="absolute dark:hidden left-2 text-[10px] text-[var(--color-fg)]/60 select-none">☀</span>
+      <span className="dark:absolute hidden right-2 text-[10px] text-[var(--color-fg)]/60 select-none">🌙</span>
     </button>
   );
 };

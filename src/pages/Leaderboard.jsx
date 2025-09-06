@@ -34,7 +34,6 @@ const TOP_STYLES = [
 
 export default function LeaderboardPage() {
   const [q, setQ] = useState("");
-  // const [perPage] = useState(50); // ❌ Removed perPage state
 
   const { data: apiResponse, loading, error } = useFetch("/api/general/ranking/all");
   const rankings = useMemo(() => apiResponse?.rankings || [], [apiResponse]);
@@ -56,7 +55,7 @@ export default function LeaderboardPage() {
 
   if (error) {
     return (
-        <div className="min-h-screen bg-[var(--color-bg-black)] text-center text-red-400 py-12">
+        <div className="min-h-screen dark:bg-[var(--color-bg-black)] bg-white text-center dark:text-red-400 text-red-300 py-12">
             <h1 className="text-2xl">Failed to load leaderboard data.</h1>
             <p>{error.message}</p>
         </div>
@@ -64,21 +63,20 @@ export default function LeaderboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-black)] text-[var(--color-fg)] py-12">
+    <div className="min-h-screen dark:bg-[var(--color-bg-black)] bg-white dark:text-[var(--color-fg)] text-black py-12">
       <div className="max-w-6xl mx-auto px-4">
         <h1 className="text-center text-2xl md:text-3xl font-semibold mb-6">
           Leaderboard
         </h1>
-        <div className="mx-auto w-full border-1 border-[var(--panel-border)] bg-zinc-900 py-6 px-8 rounded-2xl max-w-2xl">
-          <div className="w-full flex flex-row justify-evenly items-center text-[var(--color-light-gray)] text-sm px-4 py-2 ">
-            <div className="flex-1 text-center">Rank</div>
-            <div className="flex-grow text-left ml-20">User</div>
-            <div className="flex-1 text-right">Flame Score</div>
+        <div className="mx-auto w-full border-1 dark:border-[var(--panel-border)] border-zinc-300 dark:bg-zinc-900 bg-white py-6 px-8 rounded-2xl max-w-2xl">
+          <div className="w-full flex flex-row justify-evenly items-center dark:text-[var(--color-light-gray)] text-gray-500 text-sm px-4 py-2 ">
+            <div className="flex-1 text-left ml-10">Rank</div>
+            <div className="flex-grow text-left">User</div>
+            <div className="flex-1 text-right mr-5">Flame Score</div>
           </div>
           
-          <div className="rounded-xl overflow-hidden shadow-sm">
+          <div className="rounded-xl overflow-hidden">
             <ul>
-              {/* ❌ Removed .slice(0, perPage) to show all users */}
               {filtered.map((row) => {
                 const { rank, fullName, email, flameScore } = row;
                 const topStyle = rank <= 3 ? TOP_STYLES[rank - 1] : null;
@@ -135,7 +133,6 @@ export default function LeaderboardPage() {
             </ul>
           </div>
 
-          {/* ❌ Removed pagination footer */}
         </div>
       </div>
     </div>
